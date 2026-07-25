@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --maroon:#770937;
+  --maroon-dark: #a8084b;
+  --maroon-light: #8A1F38;
+  --cream: #F5F1E8;
+  --cream-soft: #FBF8F2;
+  --white: #FFFFFF;
+  --text-main: #2C1B22;
+  --text-muted: #8A7782;
+  --line: #ECE5D8;
+  --pink-soft: #F7E7EA;
+  --green: #2F6B4F;
+  --green-bg: #E4F3EA;
+  --premium-gold: #F3BF43;
+
+  --font-logo: 'Raleway', serif;
+  --font-body: 'Poppins', -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+*{ box-sizing: border-box; margin:0; padding:0; }
+
+body{
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--text-main);
+}
+
+a{ text-decoration:none; color:inherit; }
+button{ font-family: inherit; cursor:pointer; }
+input, select{ font-family: inherit; }
+
+.app{
+  display:grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+/* ===================== SIDEBAR (shared look) ===================== */
+.sidebar{
+  background: var(--cream-soft);
+  border-right: 1px solid var(--line);
+  padding: 24px 18px;
+  display:flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sidebar-logo{ display:flex; align-items:center; gap:8px; padding: 0 4px; text-decoration:none; }
+.logo-mark{ width: 28px; height: 28px; object-fit: contain; }
+.logo-text{
+  font-family: var(--font-logo);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+}
+
+.user-card{
+  display:flex; align-items:center; gap:10px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.user-avatar{
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--maroon); color: var(--white);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 15px; flex-shrink:0;
+  overflow: hidden;
+}
+.user-avatar img{ width: 100%; height: 100%; object-fit: cover; }
+.user-info{ display:flex; flex-direction: column; gap: 3px; }
+.user-hello{ font-size: 13px; font-weight: 600; }
+.plan-badge{
+  align-self:flex-start; font-size: 10px; font-weight: 600;
+  color: var(--white); background: var(--maroon);
+  padding: 2px 8px; border-radius: 999px;
+}
+
+.nav{ display:flex; flex-direction: column; gap: 4px; }
+.nav-item{
+  display:flex; align-items:center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 13.5px; font-weight: 500;
+  transition: background .15s ease, color .15s ease;
+}
+.nav-item:hover{ background: var(--pink-soft); }
+.nav-item.active{ background: var(--maroon); color: var(--white); font-weight: 600; }
+.nav-icon{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+
+/* --- premium sidebar styling --- */
+.sidebar.premium .nav-item.active{
+  background: rgba(243,191,67,0.15);
+  color: var(--maroon-dark);
+  box-shadow: inset 0 0 0 2px var(--premium-gold);
+}
+.sidebar.premium .plan-badge{
+  background: var(--premium-gold);
+  color: var(--maroon-dark);
+}
+
+.quote-card{
+  margin-top: auto;
+  background: var(--pink-soft);
+  border-radius: 16px;
+  padding: 18px 16px 20px;
+  color: var(--maroon);
+}
+.quote-mark{ font-size: 22px; }
+.quote-card p{ font-size: 13px; font-weight: 700; margin-top: 6px; }
+.quote-sub{ font-size: 11.5px; font-weight: 500 !important; color: #7A5F68; margin-top: 4px !important; line-height: 1.4; }
+
+/* ===================== MAIN ===================== */
+.main{ padding: 22px 28px 60px; }
+
+.back-link{
+  display:inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.back-link:hover{ color: var(--maroon); }
+
+.header-top{ margin-bottom: 24px; }
+.header-top h1{
+  font-family: var(--font-logo);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--maroon-dark);
+  display:flex;
+  align-items:center;
+  gap: 6px;
+}
+.sparkle{ font-size: 16px; }
+.subtitle{ font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+/* ===================== SETTINGS LAYOUT ===================== */
+.settings-layout{
+  display:flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 640px;
+}
+
+.settings-card{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.settings-card h3{
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.settings-sub{
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+
+.settings-note{
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 14px;
+}
+
+.save-status{
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* ===================== THEME SWITCH ===================== */
+.theme-switch-row{
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  gap: 28px;
+}
+
+.theme-option{
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  gap: 10px;
+}
+
+.theme-option-label{
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.theme-preview{
+  width: 96px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  padding: 8px;
+  display:flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color .15s ease;
+}
+
+.theme-preview--light{ background: #F5F1E8; }
+.theme-preview--light .theme-preview-bar{ background: #FBF8F2; border: 1px solid #ECE5D8; }
+.theme-preview--light .theme-preview-card{ background: #FFFFFF; border: 1px solid #ECE5D8; }
+
+.theme-preview--dark{ background: #0D0B0C; }
+.theme-preview--dark .theme-preview-bar{ background: #171416; }
+.theme-preview--dark .theme-preview-card{ background: #221D20; }
+
+.theme-preview-bar{
+  width: 40%;
+  height: 10px;
+  border-radius: 4px;
+}
+.theme-preview-card{
+  flex: 1;
+  border-radius: 6px;
+}
+
+.theme-option[data-theme-option="light"] .theme-preview{ border-color: var(--maroon); }
+.theme-option[data-theme-option="dark"] .theme-preview{ border-color: var(--line); }
+
+/* El toggle central: switch tipo pastilla, sol/luna a los costados */
+.theme-toggle{ cursor:pointer; }
+.theme-toggle input{ display:none; }
+
+.theme-toggle-track{
+  width: 56px;
+  height: 30px;
+  background: var(--pink-soft);
+  border-radius: 999px;
+  display:flex;
+  align-items:center;
+  padding: 3px;
+  transition: background .2s ease;
+}
+
+.theme-toggle-thumb{
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: transform .2s ease;
+}
+
+.theme-toggle input:checked + .theme-toggle-track{
+  background: var(--maroon);
+}
+.theme-toggle input:checked + .theme-toggle-track .theme-toggle-thumb{
+  transform: translateX(26px);
+}
+
+/* ===================== LANGUAGE ===================== */
+.lang-options{
+  display:flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.lang-option{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor:pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.lang-option:hover{ background: var(--pink-soft); }
+
+.lang-option input[type="radio"]{
+  accent-color: var(--maroon);
+  width: 15px;
+  height: 15px;
+}
+
+.lang-flag{ font-size: 18px; }
+
+.lang-option:has(input:checked){
+  border-color: var(--maroon);
+  background: var(--pink-soft);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 760px){
+  .app{ grid-template-columns: 1fr; }
+  .sidebar{ display:none; }
+  .main{ padding: 18px 16px 60px; }
+  .settings-card{ padding: 22px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; }
+}
+
+/* ============================================================
+   MODO OSCURO — metido directo acá (no en un archivo aparte)
+   para que no dependa de que otro CSS se haya subido bien.
+   Solo redefine fondo/texto/borde; --maroon, --premium-gold,
+   --green y los colores de categoría quedan intactos.
+   ============================================================ */
+[data-theme="dark"]{
+  --cream: #0D0B0C;
+  --cream-soft: #171416;
+  --white: #221D20;
+  --text-main: #F2ECEE;
+  --text-muted: #A79399;
+  --line: #352E31;
+  --pink-soft: #2B1B22;
+}
+
+[data-theme="dark"] .theme-preview--light{ background: #F5F1E8; }
+[data-theme="dark"] .theme-preview--dark{ background: #0D0B0C; }

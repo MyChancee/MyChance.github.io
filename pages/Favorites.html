@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Aplica el tema guardado ANTES de pintar la página, para
+  // evitar el flash de claro→oscuro al navegar entre páginas.
+  (function(){
+    try {
+      var t = localStorage.getItem("mychance_theme");
+      if (t) document.documentElement.setAttribute("data-theme", t);
+    } catch(e){}
+  })();
+</script>
+<title>MyChance — Favorites</title>
+<link rel="icon" type="image/png" href="../mychance-nav-icon.png">
+<link rel="stylesheet" href="../css/opportunities.css">
+<link rel="stylesheet" href="../css/Theme dark.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+     <a href="index.html" class="sidebar-logo">
+          <img src="../mychance-nav-icon.png" alt="" class="logo-mark icon-light">
+          <img src="../mychance_no_text_efefeb_HD (1).png" alt="" class="logo-mark icon-dark">
+          <span class="logo-text">MyChance</span>
+        </a>
+
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">👤</div>
+        <div class="user-info">
+          <span class="user-hello"><span data-i18n="sidebar.hello">Hello,</span> <span id="sidebarUserName">User</span></span>
+          <span class="plan-badge" id="planBadge" data-i18n="sidebar.plan.free">Free plan</span>
+        </div>
+      </div>
+ <nav class="nav">
+  <a href="dashboard.html" class="nav-item ">
+    <img src="../casa_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../casa_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.home">Home</span>
+  </a>
+  <a href="opportunities.html" class="nav-item">
+    <img src="../oportunidades_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../oportunidades_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.opportunities">Opportunities</span>
+  </a>
+  <a href="profile.html" class="nav-item">
+    <img src="../perfil_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../perfil_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.profile">Profile</span>
+  </a>
+  <a href="favorites.html" class="nav-item active">
+    <img src="../favoritos_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../favoritos_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.favorites">Favorites</span>
+  </a>
+  <a href="Settings.html" class="nav-item">
+    <img src="../configuracion_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../configuracion_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.settings">Settings</span>
+  </a>
+</nav>
+
+
+      <div class="quote-card">
+        <img src="../guardados_fav.png" alt="" class="quote-mark-icon icon-light">
+        <img src="../guardados_fav-white.png" alt="" class="quote-mark-icon icon-dark">
+        <p data-i18n="favorites.quote.title">Keep the ones that feel right.</p>
+        <p class="quote-sub" data-i18n="favorites.quote.sub">Your saved opportunities, all in one place.</p>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main">
+
+      <a href="dashboard.html" class="back-link" data-i18n="common.back">‹ Back</a>
+
+      <div class="header-top">
+        <div>
+          <h1>
+            <span data-i18n="favorites.title">Favorites</span>
+            <img src="../guardados_fav.png" alt="" class="sparkle-icon icon-light">
+            <img src="../guardados_fav-white.png" alt="" class="sparkle-icon icon-dark">
+          </h1>
+          <p class="subtitle" data-i18n="favorites.subtitle">Opportunities you've saved to come back to</p>
+        </div>
+      </div>
+
+      <div class="results-head">
+        <span id="resultsCount">0 opportunities found</span>
+      </div>
+
+      <div class="opp-grid" id="oppGrid"></div>
+
+    </main>
+
+    <!-- ===== DETAILS MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-box" id="modalBox">
+        <button class="modal-close" id="modalClose" data-i18n-aria-label="common.close" aria-label="Close">✕</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase/base.js"></script>
+<script src="../supabase/session.js"></script>
+<script src="../supabase/theme.js"></script>
+<script src="../supabase/language.js"></script>
+<script>
+  // Carga el nombre y la foto de perfil del usuario logueado en el sidebar.
+  async function loadSidebarUser() {
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !userData?.user) return;
+
+    const { data: usuario, error } = await supabaseClient
+      .from("Usuarios")
+      .select("full_name, avatar_url, plan")
+      .eq("id", userData.user.id)
+      .maybeSingle();
+
+    if (error || !usuario) return;
+
+    const nameEl = document.getElementById("sidebarUserName");
+    const avatarEl = document.getElementById("sidebarAvatar");
+    const planBadgeEl = document.getElementById("planBadge");
+    const sidebarEl = document.querySelector(".sidebar");
+
+    if (nameEl && usuario.full_name) nameEl.textContent = usuario.full_name.split(" ")[0];
+    if (avatarEl && usuario.avatar_url) avatarEl.innerHTML = `<img src="${usuario.avatar_url}" alt="">`;
+
+    const isPremium = usuario.plan === "premium" || usuario.plan === "enterprise";
+    if (planBadgeEl) {
+      const planKeyMap = { free: "sidebar.plan.free", premium: "sidebar.plan.premium", enterprise: "sidebar.plan.enterprise" };
+      planBadgeEl.setAttribute("data-i18n", planKeyMap[usuario.plan] || "sidebar.plan.free");
+      translateNode(localStorage.getItem(LANG_CACHE_KEY) || "es");
+    }
+    if (sidebarEl) sidebarEl.classList.toggle("premium", isPremium);
+  }
+
+  loadSidebarUser();
+</script>
+<script src="../supabase/Favorites.js"></script>
+</body>
+</html>

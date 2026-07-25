@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Aplica el tema guardado ANTES de pintar la página, para
+  // evitar el flash de claro→oscuro al navegar entre páginas.
+  (function(){
+    try {
+      var t = localStorage.getItem("mychance_theme");
+      if (t) document.documentElement.setAttribute("data-theme", t);
+    } catch(e){}
+  })();
+</script>
+<title>MyChance — Opportunities</title>
+<link rel="icon" type="image/png" href="../mychance-nav-icon.png">
+<link rel="stylesheet" href="../css/opportunities.css">
+<link rel="stylesheet" href="../css/Theme dark.css">
+<link rel="stylesheet" href="../css/FeedbackPrompt.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+          <a href="index.html" class="sidebar-logo">
+          <img src="../mychance-nav-icon.png" alt="" class="logo-mark icon-light">
+          <img src="../mychance_no_text_efefeb_HD (1).png" alt="" class="logo-mark icon-dark">
+          <span class="logo-text">MyChance</span>
+        </a>
+
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">👤</div>
+        <div class="user-info">
+          <span class="user-hello"><span data-i18n="sidebar.hello">Hello,</span> <span id="sidebarUserName">User</span></span>
+          <span class="plan-badge" id="planBadge" data-i18n="sidebar.plan.free">Free plan</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+  <a href="dashboard.html" class="nav-item ">
+    <img src="../casa_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../casa_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.home">Home</span>
+  </a>
+  <a href="opportunities.html" class="nav-item active">
+    <img src="../oportunidades_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../oportunidades_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.opportunities">Opportunities</span>
+  </a>
+  <a href="profile.html" class="nav-item">
+    <img src="../perfil_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../perfil_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.profile">Profile</span>
+  </a>
+  <a href="favorites.html" class="nav-item">
+    <img src="../favoritos_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../favoritos_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.favorites">Favorites</span>
+  </a>
+  <a href="Settings.html" class="nav-item">
+    <img src="../configuracion_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../configuracion_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.settings">Settings</span>
+  </a>
+</nav>
+
+
+
+      <div class="quote-card">
+        <span class="quote-mark">🏆</span>
+        <p data-i18n="quote.title">We guide, You shine</p>
+        <p class="quote-sub" data-i18n="quote.sub">Find the opportunities that will take you further.</p>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main">
+
+      <a href="dashboard.html" class="back-link" data-i18n="common.back">‹ Back</a>
+
+      <div class="header-top">
+        <div>
+          <h1><span data-i18n="opportunities.title">Opportunities</span> <span class="sparkle">✨</span></h1>
+          <p class="subtitle" data-i18n="opportunities.subtitle">Discover programs that match your goals</p>
+        </div>
+        <div class="header-actions">
+          <button class="saved-btn">
+            <img src="../guardados_fav.png" alt="" class="saved-icon icon-light">
+            <img src="../guardados_fav-white.png" alt="" class="saved-icon icon-dark">
+            <span data-i18n="opportunities.savedBtn">Saved Opportunities</span> (<span id="savedCount">0</span>)
+          </button>
+          <button class="icon-btn" id="notifBellBtn" data-i18n-aria-label="common.notifications" aria-label="Notifications">
+            <img src="../campana_icon.png" alt="" class="icon-btn-img bell-icon icon-light">
+            <img src="../campana_icon-white.png" alt="" class="icon-btn-img bell-icon icon-dark">
+          </button>
+         <a href="Profile.html" class="icon-btn" data-i18n-aria-label="nav.profile" aria-label="Profile">
+            <img src="../perfil_icon-white.png" alt="" class="icon-btn-img icon-light">
+            <img src="../perfil_icon.png" alt="" class="icon-btn-img icon-dark">
+          </a>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <div class="search-bar-lg">
+          <span class="search-icon">🔍</span>
+          <input id="searchInput" type="text" data-i18n-placeholder="opportunities.searchPlaceholder" placeholder="Search opportunities...">
+        </div>
+        <div class="sort-select-wrap">
+          <select id="sortSelect">
+            <option value="match" data-i18n="opportunities.sort.match">Sort by: Best match</option>
+            <option value="newest" data-i18n="opportunities.sort.newest">Sort by: Newest</option>
+            <option value="az" data-i18n="opportunities.sort.az">Sort by: A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="category-pills" id="categoryPills">
+        <button class="pill active" data-category="all" data-i18n="opportunities.pill.all">▦ All</button>
+        <button class="pill" data-category="scholarship">
+          <img src="../becas_icon.png" alt="" class="pill-icon icon-light">
+          <img src="../becas_icon-white.png" alt="" class="pill-icon icon-dark">
+          <span data-i18n="opportunities.pill.scholarship">Scholarships</span>
+        </button>
+        <button class="pill" data-category="exchange">
+          <img src="../intercambio_icon.png" alt="" class="pill-icon icon-light">
+          <img src="../intercambio_icon-white.png" alt="" class="pill-icon icon-dark">
+          <span data-i18n="opportunities.pill.exchange">Exchange</span>
+        </button>
+        <button class="pill" data-category="competition">
+          <img src="../competencias_icon.png" alt="" class="pill-icon icon-light">
+          <img src="../competencias_icon-white.png" alt="" class="pill-icon icon-dark">
+          <span data-i18n="opportunities.pill.competition">Competitions</span>
+        </button>
+        <button class="pill" data-category="leadership">
+          <img src="../liderazgo_icon.png" alt="" class="pill-icon icon-light">
+          <img src="../liderazgo_icon-white.png" alt="" class="pill-icon icon-dark">
+          <span data-i18n="opportunities.pill.leadership">Leadership</span>
+        </button>
+        <button class="pill" data-category="volunteering">
+          <img src="../voluntering_icon.png" alt="" class="pill-icon icon-light">
+          <img src="../voluntering_icon-white.png" alt="" class="pill-icon icon-dark">
+          <span data-i18n="opportunities.pill.volunteering">Volunteering</span>
+        </button>
+      </div>
+      <div class="opp-layout">
+
+        <!-- ===== FILTERS ===== -->
+        <aside class="filters-panel">
+          <div class="filters-head">
+            <h3 data-i18n="opportunities.filters.title">Filters</h3>
+            <button id="resetFilters" class="reset-btn" data-i18n-title="opportunities.filters.reset" title="Reset filters">⟳</button>
+          </div>
+
+          <div class="filter-group">
+            <h4 data-i18n="opportunities.filters.country">Country</h4>
+            <div class="filter-options" id="countryFilters"></div>
+          </div>
+
+          <div class="filter-group">
+            <h4 data-i18n="opportunities.filters.programType">Program Type</h4>
+            <div class="filter-options" id="programTypeFilters"></div>
+          </div>
+
+          <div class="filter-group">
+            <h4 data-i18n="opportunities.filters.format">Format</h4>
+            <div class="filter-options" id="formatFilters"></div>
+          </div>
+
+          <div class="filter-group">
+            <h4 data-i18n="opportunities.filters.difficulty">Difficulty Level</h4>
+            <div class="filter-options" id="difficultyFilters"></div>
+          </div>
+        </aside>
+
+        <!-- ===== RESULTS ===== -->
+        <div class="results-col">
+
+          <section class="featured-card" id="featuredCard"></section>
+
+          <div class="results-head">
+            <span id="resultsCount">0 opportunities found</span>
+          </div>
+
+          <div class="opp-grid" id="oppGrid"></div>
+
+        </div>
+      </div>
+
+    </main>
+    <!-- ===== DETAILS MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose" data-i18n-aria-label="common.close" aria-label="Close">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- ===== NOTIFICATION SETTINGS PANEL ===== -->
+  <div class="notif-panel-overlay" id="notifPanelOverlay">
+    <div class="notif-panel-box" id="notifPanelBox">
+      <button class="modal-close" id="notifPanelClose" data-i18n-aria-label="common.close" aria-label="Close">✕</button>
+      <div id="notifPanelContent"></div>
+    </div>
+  </div>
+
+  <!-- ===== NEW OPPORTUNITY ANNOUNCEMENT (center variant) ===== -->
+  <div class="announce-overlay" id="announceOverlay">
+    <div class="announce-box" id="announceBox"></div>
+  </div>
+
+  <!-- ===== NEW OPPORTUNITY ANNOUNCEMENT (side variant) ===== -->
+  <div class="announce-side-stack" id="announceSideStack"></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase/base.js"></script>
+<script src="../supabase/session.js"></script>
+<script src="../supabase/theme.js"></script>
+<script src="../supabase/language.js"></script>
+<script>
+  // Carga el nombre, la foto y el plan del usuario logueado
+  // y los pone en el sidebar (#sidebarUserName / #sidebarAvatar /
+  // #planBadge), y activa el estilo dorado del sidebar si es premium.
+  async function loadSidebarUser() {
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !userData?.user) return;
+
+    const { data: usuario, error } = await supabaseClient
+      .from("Usuarios")
+      .select("full_name, avatar_url, plan")
+      .eq("id", userData.user.id)
+      .maybeSingle();
+
+    if (error || !usuario) return;
+
+    const nameEl = document.getElementById("sidebarUserName");
+    const avatarEl = document.getElementById("sidebarAvatar");
+    const planEl = document.getElementById("planBadge");
+    const sidebarEl = document.querySelector(".sidebar");
+
+    if (nameEl && usuario.full_name) nameEl.textContent = usuario.full_name.split(" ")[0];
+    if (avatarEl && usuario.avatar_url) avatarEl.innerHTML = `<img src="${usuario.avatar_url}" alt="">`;
+
+    if (planEl) {
+      const planKeyMap = { free: "sidebar.plan.free", premium: "sidebar.plan.premium", enterprise: "sidebar.plan.enterprise" };
+      planEl.setAttribute("data-i18n", planKeyMap[usuario.plan] || "sidebar.plan.free");
+      translateNode(localStorage.getItem(LANG_CACHE_KEY) || "es");
+    }
+
+    const isPremium = usuario.plan === "premium" || usuario.plan === "enterprise";
+    if (sidebarEl) sidebarEl.classList.toggle("premium", isPremium);
+  }
+
+  loadSidebarUser();
+</script>
+<script src="../supabase/notifications.js"></script>
+<script src="../supabase/opportunities.js"></script>
+<script src="../supabase/FeedbackPrompt.js"></script>
+</body>
+</html>

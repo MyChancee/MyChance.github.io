@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  (function(){
+    try {
+      var t = localStorage.getItem("mychance_theme");
+      if (t) document.documentElement.setAttribute("data-theme", t);
+    } catch(e){}
+  })();
+</script>
+<title>MyChance — Settings</title>
+<link rel="icon" type="image/png" href="../mychance-nav-icon.png">
+<link rel="stylesheet" href="../css/Settings.css">
+<link rel="stylesheet" href="../css/Theme dark.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <a href="index.html" class="sidebar-logo">
+          <img src="../mychance-nav-icon.png" alt="" class="logo-mark icon-light">
+          <img src="../mychance_no_text_efefeb_HD (1).png" alt="" class="logo-mark icon-dark">
+          <span class="logo-text">MyChance</span>
+        </a>
+
+      <div class="user-card">
+        <div class="user-avatar" id="sidebarAvatar">👤</div>
+        <div class="user-info">
+          <span class="user-hello"><span data-i18n="sidebar.hello">Hello,</span> <span id="sidebarUserName">User</span></span>
+          <span class="plan-badge" id="planBadge" data-i18n="sidebar.plan.free">Free plan</span>
+        </div>
+      </div>
+
+  <nav class="nav">
+  <a href="dashboard.html" class="nav-item ">
+    <img src="../casa_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../casa_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.home">Home</span>
+  </a>
+  <a href="opportunities.html" class="nav-item">
+    <img src="../oportunidades_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../oportunidades_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.opportunities">Opportunities</span>
+  </a>
+  <a href="profile.html" class="nav-item">
+    <img src="../perfil_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../perfil_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.profile">Profile</span>
+  </a>
+  <a href="favorites.html" class="nav-item">
+    <img src="../favoritos_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../favoritos_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.favorites">Favorites</span>
+  </a>
+  <a href="Settings.html" class="nav-item active">
+    <img src="../configuracion_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../configuracion_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.settings">Settings</span>
+  </a>
+</nav>
+
+
+      <div class="quote-card">
+        <span class="quote-mark">🏆</span>
+        <p data-i18n="quote.title">We guide, You shine</p>
+        <p class="quote-sub" data-i18n="quote.sub">Find the opportunities that will take you further.</p>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main">
+
+      <a href="dashboard.html" class="back-link" data-i18n="common.back">‹ Back</a>
+
+      <div class="header-top">
+        <div>
+          <h1><span data-i18n="settings.title">Settings</span> <span class="sparkle">⚙️</span></h1>
+          <p class="subtitle" data-i18n="settings.subtitle">Make MyChance look and feel like yours</p>
+        </div>
+      </div>
+
+      <div class="settings-layout">
+
+        <!-- ===== APPEARANCE ===== -->
+        <section class="settings-card">
+          <h3 data-i18n="settings.appearance.title">Appearance</h3>
+          <p class="settings-sub" data-i18n="settings.appearance.sub">Choose how MyChance looks on your screen.</p>
+
+          <div class="theme-switch-row">
+            <div class="theme-option" data-theme-option="light">
+              <div class="theme-preview theme-preview--light">
+                <span class="theme-preview-bar"></span>
+                <span class="theme-preview-card"></span>
+              </div>
+              <span class="theme-option-label" data-i18n="settings.theme.light">☀️ Light</span>
+            </div>
+
+            <label class="theme-toggle">
+              <input type="checkbox" id="darkModeToggle">
+              <span class="theme-toggle-track">
+                <span class="theme-toggle-thumb"></span>
+              </span>
+            </label>
+
+            <div class="theme-option" data-theme-option="dark">
+              <div class="theme-preview theme-preview--dark">
+                <span class="theme-preview-bar"></span>
+                <span class="theme-preview-card"></span>
+              </div>
+              <span class="theme-option-label" data-i18n="settings.theme.dark">🌙 Dark</span>
+            </div>
+          </div>
+
+          <span id="themeSaveStatus" class="save-status"></span>
+        </section>
+
+        <!-- ===== LANGUAGE ===== -->
+        <section class="settings-card">
+          <h3 data-i18n="settings.language.title">Language</h3>
+          <p class="settings-sub" data-i18n="settings.language.sub">Choose the language you'd like to use throughout the app.</p>
+
+          <div class="lang-options" id="langOptions">
+            <label class="lang-option">
+              <input type="radio" name="language" value="es">
+              <span class="lang-flag">🇪🇸</span>
+              <span data-i18n="settings.language.es">Español</span>
+            </label>
+            <label class="lang-option">
+              <input type="radio" name="language" value="en">
+              <span class="lang-flag">🇺🇸</span>
+              <span data-i18n="settings.language.en">English</span>
+            </label>
+          </div>
+
+          <span id="langSaveStatus" class="save-status"></span>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase/base.js"></script>
+<script src="../supabase/session.js"></script>
+<script src="../supabase/theme.js"></script>
+<script src="../supabase/language.js"></script>
+<script>
+  async function loadSidebarUser() {
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !userData?.user) return;
+
+    const { data: usuario, error } = await supabaseClient
+      .from("Usuarios")
+      .select("full_name, avatar_url, plan")
+      .eq("id", userData.user.id)
+      .maybeSingle();
+
+    if (error || !usuario) return;
+
+    const nameEl = document.getElementById("sidebarUserName");
+    const avatarEl = document.getElementById("sidebarAvatar");
+    const planEl = document.getElementById("planBadge");
+    const sidebarEl = document.querySelector(".sidebar");
+
+    if (nameEl && usuario.full_name) nameEl.textContent = usuario.full_name.split(" ")[0];
+    if (avatarEl && usuario.avatar_url) avatarEl.innerHTML = `<img src="${usuario.avatar_url}" alt="">`;
+
+    if (planEl) {
+      const planKeyMap = { free: "sidebar.plan.free", premium: "sidebar.plan.premium", enterprise: "sidebar.plan.enterprise" };
+      planEl.setAttribute("data-i18n", planKeyMap[usuario.plan] || "sidebar.plan.free");
+      // El plan llega después de que language.js ya tradujo la página
+      // una vez, así que lo traducimos de nuevo para este elemento.
+      translateNode(localStorage.getItem(LANG_CACHE_KEY) || "es");
+    }
+
+    const isPremium = usuario.plan === "premium" || usuario.plan === "enterprise";
+    if (sidebarEl) sidebarEl.classList.toggle("premium", isPremium);
+  }
+
+  loadSidebarUser();
+</script>
+<script src="../supabase/Settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,1209 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --maroon: #770937;
+  --maroon-dark: #a8084b;
+  --maroon-light: #8A1F38;
+  --cream: #F5F1E8;
+  --cream-soft: #FFFf;
+  --white: #FFFFFF;
+  --text-main: #2C1B22;
+  --text-muted: #8A7782;
+  --line: #ECE5D8;
+  --pink-soft: #F7E7EA;
+  --green: #2F6B4F;
+  --green-bg: #E4F3EA;
+  --premium-gold: #F3BF43;
+
+  --font-logo: 'Raleway', serif;
+  --font-body: 'Poppins', -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+*{ box-sizing: border-box; margin:0; padding:0; }
+
+body{
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--text-main);
+}
+
+a{ text-decoration:none; color:inherit; }
+button{ font-family: inherit; cursor:pointer; }
+input, select{ font-family: inherit; }
+
+.app{
+  display:grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+/* ===================== SIDEBAR (shared look with dashboard) ===================== */
+.sidebar{
+  background: var(--cream-soft);
+  border-right: 1px solid var(--line);
+  padding: 24px 18px;
+  display:flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sidebar-logo{ display:flex; align-items:center; gap:8px; padding: 0 4px; text-decoration:none; }
+.logo-mark{ width: 28px; height: 28px; object-fit: contain; }
+.logo-text{
+  font-family: var(--font-logo);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--maroon);
+}
+
+.user-card{
+  display:flex; align-items:center; gap:10px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.user-avatar{
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--maroon); color: var(--white);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 15px; flex-shrink:0;
+  overflow: hidden;
+}
+.user-avatar img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.user-info{ display:flex; flex-direction: column; gap: 3px; }
+.user-hello{ font-size: 13px; font-weight: 600; }
+.plan-badge{
+  align-self:flex-start; font-size: 10px; font-weight: 600;
+  color: var(--white); background: var(--maroon);
+  padding: 2px 8px; border-radius: 999px;
+}
+
+.nav{ display:flex; flex-direction: column; gap: 4px; }
+.nav-item{
+  display:flex; align-items:center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 13.5px; font-weight: 500;
+  transition: background .15s ease, color .15s ease, background-color .25s ease, border-color .25s ease;
+}
+.nav-item:hover{ background: var(--pink-soft); }
+.nav-item.active{ background: var(--maroon); color: var(--white); font-weight: 600; }
+
+/* --- premium sidebar styling --- */
+.sidebar.premium .nav-item.active{
+  background: rgba(243,191,67,0.15);
+  color: var(--maroon-dark);
+  box-shadow: inset 0 0 0 2px var(--premium-gold);
+}
+.sidebar.premium .plan-badge{
+  background: var(--premium-gold);
+  color: var(--maroon-dark);
+}
+
+/* .nav-icon ahora se usa sobre <img>, no sobre emojis (<span>).
+   width + height iguales fuerzan un cuadrado fijo sin importar
+   la proporción del PNG original, y object-fit: contain evita
+   que la imagen se deforme si el archivo no viene ya recortado
+   al tamaño del ícono real. */
+.nav-icon{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.quote-card{
+  margin-top: auto;
+  background: var(--pink-soft);
+  border-radius: 16px;
+  padding: 18px 16px 20px;
+  color: var(--maroon);
+}
+.quote-mark{ font-size: 22px; }
+.quote-mark-icon{ width: 24px; height: 24px; object-fit: contain; }
+.quote-card p{ font-size: 13px; font-weight: 700; margin-top: 6px; }
+.quote-sub{ font-size: 11.5px; font-weight: 500 !important; color: #7A5F68; margin-top: 4px !important; line-height: 1.4; }
+
+/* ===================== MAIN ===================== */
+.main{ padding: 22px 28px 60px; }
+
+.back-link{
+  display:inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.back-link:hover{ color: var(--maroon); }
+
+.header-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.header-top h1{
+  font-family: var(--font-logo);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--maroon-dark);
+  display:flex;
+  align-items:center;
+  gap: 6px;
+}
+.sparkle{ font-size: 16px; }
+.sparkle-icon{ width: 18px; height: 18px; object-fit: contain; vertical-align: middle; }
+.subtitle{ font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+.header-actions{ display:flex; align-items:center; gap: 10px; }
+
+.saved-btn{
+  display:flex;
+  align-items:center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--maroon);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 999px;
+}
+.saved-btn:hover{ background: var(--pink-soft); }
+
+.saved-icon{
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.icon-btn{
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-size: 15px;
+  display:flex; align-items:center; justify-content:center;
+}
+.icon-btn:hover{ background: var(--pink-soft); }
+
+.icon-btn-img{
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* --- search row --- */
+.search-row{
+  display:flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-bar-lg{
+  flex: 1;
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display:flex;
+  align-items:center;
+  padding: 0 16px;
+}
+.search-bar-lg .search-icon{ font-size: 14px; color: var(--text-muted); }
+.search-bar-lg input{
+  flex:1;
+  border:none;
+  outline:none;
+  padding: 12px 10px;
+  font-size: 13.5px;
+  background: transparent;
+  color: var(--text-main);
+}
+
+.sort-select-wrap select{
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+/* --- category pills --- */
+.category-pills{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.pill{
+  display:flex;
+  align-items:center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--text-main);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 999px;
+  transition: background .15s ease, color .15s ease, border-color .15s ease, background-color .25s ease;
+}
+.pill:hover{ background: var(--pink-soft); }
+.pill.active{
+  background: var(--maroon);
+  color: var(--white);
+  border-color: var(--maroon);
+}
+
+/* Íconos de las pills (Becas, Intercambio, Competencias, Liderazgo).
+   Vienen ya recortados en círculo (maroon/blanco), por eso no llevan
+   fondo ni padding extra acá — solo el tamaño fijo. */
+.pill-icon{
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* --- layout: filters + results --- */
+.opp-layout{
+  display:grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items:start;
+}
+
+.filters-panel{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  position: sticky;
+  top: 20px;
+}
+
+.filters-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.filters-head h3{ font-size: 14.5px; font-weight: 700; }
+.reset-btn{
+  border:none; background: transparent; color: var(--text-muted);
+  font-size: 14px;
+}
+.reset-btn:hover{ color: var(--maroon); }
+
+.filter-group{ margin-bottom: 18px; }
+.filter-group h4{
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.filter-options{ display:flex; flex-direction: column; gap: 7px; }
+
+.filter-option{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  font-size: 12.5px;
+  gap: 8px;
+}
+.filter-option label{
+  display:flex; align-items:center; gap: 7px;
+  cursor:pointer;
+}
+.filter-option input[type="checkbox"]{
+  accent-color: var(--maroon);
+  width: 14px; height: 14px;
+}
+.filter-count{ color: var(--text-muted); font-size: 11.5px; }
+
+/* --- featured card --- */
+.featured-card{
+  background: linear-gradient(120deg, #E9DDEF 0%, #F0E1E6 55%, #FBEDE4 100%);
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
+  display:grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 22px;
+  align-items:center;
+  position: relative;
+}
+
+.featured-badge{
+  grid-column: 1 / -1;
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--maroon-dark);
+  margin-bottom: -4px;
+}
+
+.featured-logo{
+  width: 88px; height: 88px;
+  border-radius: 14px;
+  background: #0E2E4D;
+  color: var(--white);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 30px;
+  font-weight: 800;
+  flex-shrink:0;
+  overflow: hidden;
+}
+
+.featured-logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 10px;
+  background: var(--white);
+}
+
+.featured-body h2{ font-size: 20px; font-weight: 800; color: var(--maroon-dark); }
+.featured-meta{
+  display:flex; gap: 14px; margin-top: 6px;
+  font-size: 12.5px; color: var(--text-muted);
+}
+.featured-desc{ font-size: 13px; color: #5C4750; margin-top: 8px; max-width: 480px; line-height: 1.5; }
+.featured-tags{ display:flex; gap: 6px; margin-top: 12px; }
+
+.featured-match{
+  display:flex; flex-direction: column; align-items:center; gap: 10px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 16px;
+  padding: 16px 20px;
+}
+.featured-ring{
+  --pct: 95;
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: conic-gradient(var(--green) calc(var(--pct)*1%), #E7E1EA 0);
+  display:flex; align-items:center; justify-content:center;
+  position: relative;
+}
+.featured-ring::before{ content:""; position:absolute; inset: 7px; background: var(--white); border-radius: 50%; }
+.featured-ring span{ position: relative; font-size: 15px; font-weight: 800; color: var(--green); }
+.featured-match-label{ font-size: 11px; font-weight: 600; color: var(--text-muted); }
+
+.btn-learn{
+  border:none;
+  background: var(--maroon);
+  color: var(--white);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 999px;
+}
+.btn-learn:hover{ filter: brightness(1.1); }
+
+/* --- results head --- */
+.results-head{
+  display:flex; align-items:center; justify-content: space-between;
+  font-size: 13px; color: var(--text-muted); font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* --- opportunity grid --- */
+.opp-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.opp-card{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  display:flex;
+  flex-direction: column;
+  /* Entrada escalonada: cada tarjeta aparece con fade + slide-up.
+     El delay real (animation-delay) lo pone renderGrid() inline,
+     por tarjeta, según su posición en la grilla — acá solo se
+     define CÓMO se anima, no CUÁNDO empieza cada una. "both" como
+     fill-mode hace que la tarjeta arranque invisible (el opacity:0
+     del 0%) desde antes de que le toque el turno, en vez de
+     aparecer de golpe y recién ahí animar. */
+  animation: cardEnter .35s ease both;
+}
+
+@keyframes cardEnter{
+  from{
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Si el usuario tiene activado "reducir movimiento" en su sistema,
+   nada de esto debería animarse — la tarjeta aparece directo en su
+   posición final, sin fade ni slide. */
+@media (prefers-reduced-motion: reduce){
+  .opp-card{
+    animation: none;
+  }
+}
+
+.opp-top{
+  display:flex; align-items:flex-start; justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.opp-logo{
+  width: 38px; height: 38px; border-radius: 10px;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--white); font-size: 15px; font-weight: 800;
+  overflow: hidden;
+}
+
+.opp-logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+  background: var(--white);
+}
+
+.fav-btn{
+  border: 2px solid transparent;
+  background: transparent;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display:flex; align-items:center; justify-content:center;
+  padding: 0;
+  line-height: 1;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition: opacity .15s ease, filter .15s ease, border-color .15s ease, background .15s ease, background-color .25s ease;
+}
+.fav-btn.active{
+  filter: none;
+  opacity: 1;
+  border-color: var(--maroon);
+  background: var(--pink-soft);
+}
+.fav-btn:hover{ opacity: 0.85; }
+.fav-btn.active:hover{ opacity: 1; }
+
+.fav-icon{
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.featured-fav-btn{
+  position: absolute;
+  top: 20px;
+  right: 22px;
+}
+.featured-fav-btn .fav-icon{
+  width: 22px;
+  height: 22px;
+}
+
+/* --- fila de íconos del modal de detalles (🔔 · 🎯 · ♥) ---
+   Antes cada botón iba con position:absolute (y la campana ni
+   siquiera tenía regla propia, por eso quedaba suelta arriba a
+   la izquierda). Ahora los tres viven en una fila normal, en
+   flex, arriba del todo del panel — así se mueven juntos y no
+   hay que estar ajustando top/right a mano por cada uno. */
+.modal-icon-row{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-right: 40px; /* deja espacio para no chocar con el botón ✕ */
+}
+
+.modal-fav-btn,
+.modal-goal-btn,
+.modal-bell-btn{
+  position: static;
+}
+
+.modal-fav-btn .fav-icon{
+  width: 22px;
+  height: 22px;
+}
+
+/* --- Ícono de Current Goal (antes 🎯, ahora el pin con estrella) --- */
+.goal-icon{
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+.modal-goal-btn .goal-icon{
+  width: 18px;
+  height: 18px;
+}
+
+/* --- Ícono de campana (header y modal de seguir organización) --- */
+.bell-icon{
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  transform-origin: 50% 6%; /* pivotea desde el aro de arriba, como una campana real */
+}
+.modal-bell-btn .bell-icon{
+  width: 16px;
+  height: 16px;
+}
+
+/* --- botón de Current Goal, justo debajo del corazón --- */
+.goal-btn{
+  border: 2px solid transparent;
+  background: transparent;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 16px; color: #C9B79A;
+  line-height: 1;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition: opacity .15s ease, filter .15s ease, border-color .15s ease, background .15s ease, background-color .25s ease;
+}
+.goal-btn.active{
+  filter: none;
+  opacity: 1;
+  border-color: var(--maroon);
+  background: var(--pink-soft);
+}
+.goal-btn:hover{ opacity: 0.85; }
+
+
+/* Efecto "campana repicando": rotación de lado a lado, pivoteando
+   desde el aro de arriba (--transform-origin ya seteado en .bell-icon).
+   Se dispara al pasar el mouse por encima, o agregando la clase
+   .ringing desde JS (por ejemplo cuando llega una notificación nueva). */
+@keyframes bellSwing{
+  0%, 100%{ transform: rotate(0deg); }
+  20%{ transform: rotate(-16deg); }
+  40%{ transform: rotate(13deg); }
+  60%{ transform: rotate(-8deg); }
+  80%{ transform: rotate(4deg); }
+}
+#notifBellBtn:hover .bell-icon,
+.modal-bell-btn:hover .bell-icon,
+.bell-icon.ringing{
+  animation: bellSwing .6s ease;
+}
+
+/* Efecto "pulso" del corazón: crece un poco y vuelve a su tamaño
+   original. Se dispara al marcar/desmarcar un favorito (clase
+   .animate agregada desde JS en toggleFavorite, misma lógica que
+   .goal-btn.animate). */
+@keyframes favPulse{
+  0%{ transform: scale(1); }
+  45%{ transform: scale(1.35); }
+  100%{ transform: scale(1); }
+}
+.fav-btn.animate .fav-icon{
+  animation: favPulse .4s ease;
+}
+
+
+/* --- toast de aviso (ej: límite del plan free) --- */
+.toast{
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--maroon-dark);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 22px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(44,27,34,0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease, background-color .25s ease;
+  z-index: 2000;
+  max-width: 90vw;
+  text-align: center;
+}
+.toast.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.match-badge{
+  align-self:flex-start;
+  background: var(--green-bg); color: var(--green);
+  font-size: 10.5px; font-weight: 700;
+  padding: 3px 8px; border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.opp-card h4{ font-size: 14px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+
+.opp-meta{ display:flex; gap: 10px; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+
+.opp-desc{ font-size: 11.5px; color: #6E5D65; line-height: 1.45; margin-bottom: 10px; }
+
+.opp-reasons{ list-style:none; display:flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.opp-reasons li{
+  font-size: 11px; color: #4E7A5F;
+  display:flex; align-items:flex-start; gap: 5px;
+}
+.opp-reasons li::before{ content:"✓"; font-weight: 700; }
+
+.opp-tags{ display:flex; gap: 6px; flex-wrap: wrap; margin-top: auto; margin-bottom: 12px; }
+.tag{
+  font-size: 10px; font-weight: 600;
+  padding: 3px 8px; border-radius: 999px;
+  background: #EFEBE2; color: #6E6357;
+}
+.tag-cat{ background: #FBE4E7; color: #A8324A; }
+
+.opp-card .btn-details{
+  border: 1px solid var(--maroon);
+  background: transparent;
+  color: var(--maroon);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 0;
+  border-radius: 999px;
+  width: 100%;
+}
+.opp-card .btn-details:hover{ background: var(--maroon); color: var(--white); }
+
+.no-results{
+  grid-column: 1 / -1;
+  text-align:center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 40px 0;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1200px){
+  .opp-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 1080px){
+  .opp-layout{ grid-template-columns: 1fr; }
+  .filters-panel{ position: static; }
+  .featured-card{ grid-template-columns: auto 1fr; }
+  .featured-match{ grid-column: 1 / -1; flex-direction: row; justify-content: space-between; }
+}
+
+@media (max-width: 760px){
+  .app{ grid-template-columns: 1fr; }
+  .sidebar{ display:none; }
+  .main{ padding: 18px 16px 60px; }
+  .opp-grid{ grid-template-columns: repeat(2, 1fr); }
+  .search-row{ flex-direction: column; }
+}
+
+@media (max-width: 480px){
+  .opp-grid{ grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; }
+}
+
+/* ===================== DETAILS SIDE PANEL (modal) ===================== */
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 27, 34, 0.45);
+  display:flex;
+  justify-content: flex-end; /* el panel sale por la derecha */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+  z-index: 1000;
+}
+
+.modal-overlay.open{
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box{
+  position: relative;
+  width: 440px;
+  max-width: 92vw;
+  height: 100%;
+  background: var(--white);
+  padding: 32px 28px 40px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.25,.8,.25,1), background-color .25s ease;
+  box-shadow: -12px 0 30px rgba(44, 27, 34, 0.18);
+}
+
+.modal-overlay.open .modal-box{
+  transform: translateX(0);
+}
+
+.modal-close{
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--text-muted);
+  font-size: 14px;
+  display:flex; align-items:center; justify-content:center;
+}
+.modal-close:hover{ background: var(--pink-soft); color: var(--maroon); }
+
+.modal-header{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+  margin: 6px 0 18px;
+}
+
+.modal-logo{
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--white);
+  font-size: 22px;
+  font-weight: 800;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.modal-logo img{ width:100%; height:100%; object-fit:contain; padding: 8px; background: var(--white); }
+
+.modal-header h2{
+  font-family: var(--font-logo);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--maroon-dark);
+  line-height: 1.3;
+}
+
+.modal-org{
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.modal-meta{
+  display:flex;
+  gap: 16px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.modal-match{
+  display:inline-block;
+  background: var(--green-bg);
+  color: var(--green);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+/* Badge del progreso de la checklist (My Goals), mismo estilo que
+   .modal-match (misma forma/padding/tipografía), solo que en dorado.
+   Se muestra pegado al badge de match cuando la oportunidad es un
+   goal actual y tiene requirements para tildar. */
+.checklist-badge{
+  display:inline-block;
+  background: rgba(243,191,67,0.22);
+  color: #8A6A16;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  margin-left: 8px;
+}
+.checklist-badge.complete{
+  background: var(--premium-gold);
+  color: var(--maroon-dark);
+}
+
+.modal-tags{
+  display:flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.modal-desc{
+  font-size: 13px;
+  color: #5C4750;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.modal-section{
+  margin-bottom: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.modal-section h4{
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--maroon-dark);
+  margin-bottom: 10px;
+}
+
+.modal-list{
+  list-style: none;
+  display:flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #4E4046;
+  line-height: 1.5;
+}
+.modal-list li{ display:flex; align-items:flex-start; gap: 7px; }
+.modal-list.requirements li::before{ content:"•"; color: var(--maroon); font-weight: 700; }
+.modal-list.benefits li::before{ content:"✓"; color: var(--green); font-weight: 700; }
+
+.modal-empty{
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.modal-actions{ margin-top: 8px; }
+
+.btn-official{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: var(--maroon);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 13px 20px;
+  border-radius: 999px;
+  text-align:center;
+  transition: filter .15s ease, background-color .25s ease;
+}
+.btn-official:hover{ filter: brightness(1.12); }
+.btn-official.disabled{
+  background: var(--line);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+/* Móvil: panel a pantalla completa */
+@media (max-width: 600px){
+  .modal-box{ width: 100%; padding: 26px 20px 36px; }
+}
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* ===================== NOTIFICATION SETTINGS PANEL ===================== */
+.notif-panel-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 27, 34, 0.45);
+  display:flex;
+  justify-content: flex-end;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+  z-index: 1500;
+}
+.notif-panel-overlay.open{
+  opacity: 1;
+  visibility: visible;
+}
+.notif-panel-box{
+  position: relative;
+  width: 380px;
+  max-width: 92vw;
+  height: 100%;
+  background: var(--white);
+  padding: 32px 28px 40px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.25,.8,.25,1), background-color .25s ease;
+  box-shadow: -12px 0 30px rgba(44, 27, 34, 0.18);
+}
+.notif-panel-overlay.open .notif-panel-box{
+  transform: translateX(0);
+}
+
+#notifPanelContent h3{
+  font-family: var(--font-logo);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--maroon-dark);
+  margin-bottom: 6px;
+}
+.notif-panel-sub{
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.notif-toggle-row{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 18px;
+  cursor:pointer;
+}
+.notif-toggle-row input[type="checkbox"]{
+  width: 38px;
+  height: 22px;
+  accent-color: var(--maroon);
+  cursor:pointer;
+}
+
+.notif-display-group{ margin-bottom: 22px; }
+.notif-group-label{
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.notif-radio-row{
+  display:flex;
+  align-items:center;
+  gap: 9px;
+  font-size: 13px;
+  padding: 8px 0;
+  cursor:pointer;
+}
+.notif-radio-row input[type="radio"]{
+  accent-color: var(--maroon);
+  width: 15px;
+  height: 15px;
+  cursor:pointer;
+}
+
+.notif-followed-list{
+  display:flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.notif-followed-item{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  background: var(--cream-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.notif-unfollow-btn{
+  border:none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+}
+.notif-unfollow-btn:hover{ background: var(--pink-soft); color: #B3261E; }
+
+.notif-empty{
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  text-align:center;
+  padding: 10px 4px;
+}
+
+.notif-locked{
+  text-align:center;
+  padding: 20px 6px;
+}
+.notif-locked-icon{ font-size: 28px; display:block; margin-bottom: 10px; }
+.notif-locked-title{ font-size: 14px; font-weight: 700; color: var(--maroon-dark); margin-bottom: 8px; }
+.notif-locked-sub{ font-size: 12.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 18px; }
+.notif-upgrade-btn{
+  display:inline-block;
+  background: var(--premium-gold);
+  color: var(--maroon-dark);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 999px;
+}
+.notif-upgrade-btn:hover{ filter: brightness(0.97); }
+
+/* ===================== NEW OPPORTUNITY ANNOUNCEMENTS ===================== */
+.announce-badge{
+  display:inline-block;
+  background: var(--green-bg);
+  color: var(--green);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.announce-header{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.announce-logo{
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--white); font-size: 18px; font-weight: 800;
+  flex-shrink:0;
+  overflow:hidden;
+}
+.announce-logo img{ width:100%; height:100%; object-fit:contain; padding:5px; background:var(--white); }
+.announce-org{ font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+.announce-header h3{ font-size: 15px; font-weight: 700; color: var(--text-main); line-height: 1.3; margin-top: 2px; }
+
+.announce-view-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: var(--maroon);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 11px 0;
+  border-radius: 999px;
+}
+.announce-view-btn:hover{ filter: brightness(1.1); }
+
+/* --- centro de la pantalla --- */
+.announce-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 27, 34, 0.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s ease;
+  z-index: 2500;
+  padding: 24px;
+}
+.announce-overlay.open{
+  opacity: 1;
+  visibility: visible;
+}
+.announce-box{
+  position: relative;
+  width: 380px;
+  max-width: 100%;
+  height: auto;
+  background: var(--white);
+  padding: 28px 26px;
+  border-radius: 22px;
+  transform: translateY(10px);
+  transition: transform .3s ease, background-color .25s ease;
+  box-shadow: 0 20px 50px rgba(44,27,34,0.3);
+}
+.announce-overlay.open .announce-box{ transform: translateY(0); }
+
+/* --- al costado de la pantalla --- */
+.announce-side-stack{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 2500;
+  width: 320px;
+  max-width: 90vw;
+}
+.announce-side-card{
+  position: relative;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 20px 20px 20px;
+  box-shadow: 0 12px 30px rgba(44,27,34,0.22);
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(.25,.8,.25,1), opacity .35s ease, background-color .25s ease;
+}
+.announce-side-card.show{
+  transform: translateX(0);
+  opacity: 1;
+}
+.announce-side-close{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+@media (max-width: 480px){
+  .announce-side-stack{ right: 10px; left: 10px; width: auto; }
+}
+
+/* ============================================================
+   MODO OSCURO (solo overrides puntuales de esta página)
+   Las variables de color (--cream, --white, --text-muted, etc.)
+   ya se definen una sola vez en Theme dark.css — acá SOLO van
+   los ajustes que son específicos de opportunities/favorites y
+   no existen en ningún otro lado.
+   ============================================================ */
+
+/* El título del panel de detalles y los headings de sección
+   ("Requirements" / "What it offers") usaban --maroon-dark,
+   que se lee bien en fondo claro pero es casi invisible en
+   negro. En dark mode pasan a texto blanco normal. */
+[data-theme="dark"] .modal-header h2,
+[data-theme="dark"] .modal-section h4{
+  color: var(--text-main);
+}
+
+/* El texto de cada requirement/benefit (no el puntito de
+   color antes de cada línea, que queda igual) también pasa
+   a blanco normal para que se pueda leer. */
+[data-theme="dark"] .modal-list{
+  color: var(--text-main);
+}

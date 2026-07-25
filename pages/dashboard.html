@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  (function(){
+    try {
+      var t = localStorage.getItem("mychance_theme");
+      if (t) document.documentElement.setAttribute("data-theme", t);
+    } catch(e){}
+  })();
+</script>
+<title>MyChance — Dashboard</title>
+<link rel="icon" type="image/png" href="../mychance-nav-icon.png">
+<link rel="stylesheet" href="../css/dashboard.css">
+<link rel="stylesheet" href="../css/Theme dark.css">
+<link rel="stylesheet" href="../css/FeedbackPrompt.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+   <a href="index.html" class="sidebar-logo">
+          <img src="../mychance-nav-icon.png" alt="" class="logo-mark icon-light">
+          <img src="../mychance_no_text_efefeb_HD (1).png" alt="" class="logo-mark icon-dark">
+          <span class="logo-text">MyChance</span>
+        </a>
+
+     <div class="user-card">
+  <div class="user-avatar" id="sidebarAvatar">👤</div>
+  <div class="user-info">
+    <span class="user-hello"><span data-i18n="sidebar.hello">Hello,</span> <span id="sidebarUserName">User</span></span>
+    <span class="plan-badge" id="planBadge" data-i18n="sidebar.plan.free">Free plan</span>
+  </div>
+</div>
+
+     <nav class="nav">
+  <a href="dashboard.html" class="nav-item active">
+    <img src="../casa_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../casa_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.home">Home</span>
+  </a>
+  <a href="opportunities.html" class="nav-item">
+    <img src="../oportunidades_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../oportunidades_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.opportunities">Opportunities</span>
+  </a>
+  <a href="profile.html" class="nav-item">
+    <img src="../perfil_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../perfil_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.profile">Profile</span>
+  </a>
+  <a href="favorites.html" class="nav-item">
+    <img src="../favoritos_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../favoritos_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.favorites">Favorites</span>
+  </a>
+  <a href="Settings.html" class="nav-item">
+    <img src="../configuracion_icon.png" alt="" class="nav-icon icon-dark">
+    <img src="../configuracion_icon-white.png" alt="" class="nav-icon icon-light">
+    <span data-i18n="nav.settings">Settings</span>
+  </a>
+</nav>
+
+      <div class="quote-card">
+        <span class="quote-mark">"</span>
+        <p data-i18n="dashboard.quote">Great opportunities don't happen, you find them.</p>
+        <span class="quote-rocket">🚀</span>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main">
+
+      <div class="top-row">
+
+        <!-- Welcome banner -->
+        <section class="welcome-card">
+          <div class="welcome-text">
+            <h1><span data-i18n="dashboard.welcome.greeting">Welcome,</span> <span id="welcomeUserName">User</span></h1>
+            <p><span data-i18n="dashboard.welcome.line1">Your future starts with</span><br><strong data-i18n="dashboard.welcome.line2">one opportunity.</strong></p>
+          </div>
+          <div class="welcome-art" aria-hidden="true"><img src="../brujula_icon.png"></div>
+        </section>
+
+        <!-- Current goal -->
+        <section class="goal-card">
+  <h3><span class="goal-icon">🎯</span> <span data-i18n="dashboard.goal.title">Current Goal</span></h3>
+  <div class="goal-body" id="goalBody">
+    <div class="no-results" data-i18n="dashboard.goal.loading">Loading…</div>
+  </div>
+</section>
+
+      </div>
+
+      <!-- Recommended opportunities -->
+      <section class="recommended">
+        <div class="section-head">
+          <h2><span class="star">☆</span> <span data-i18n="dashboard.recommended.title">Recommended Opportunities for You</span></h2>
+          <a href="opportunities.html" class="see-all" data-i18n="dashboard.seeAll">See all ›</a>
+        </div>
+
+        <div class="cards-row" id="cardsRow">
+          <div class="no-results" data-i18n="dashboard.recommended.loading">Loading recommended opportunities…</div>
+        </div>
+      </section>
+
+      <div class="bottom-row">
+
+        <!-- Explore opportunities -->
+      <!-- Plans -->
+<section class="plans-card">
+  <div class="plans-head">
+    <h2><span data-i18n="dashboard.plans.title">Plans</span> <span class="sparkle">✨</span></h2>
+    <p class="plans-sub" data-i18n="dashboard.plans.sub">Choose the plan that fits your goals.</p>
+  </div>
+  <div class="plans-grid" id="plansGrid">
+    <div class="no-results" data-i18n="dashboard.plans.loading">Loading plans…</div>
+  </div>
+</section>
+<div class="bottom-row">
+  <!-- New opportunities banner -->
+  <section class="notify-card">
+    <span class="notify-icon">🔔</span>
+    <h3 id="notifyCount" data-i18n="dashboard.notify.loading">Loading opportunities…</h3>
+    <a href="opportunities.html" class="btn btn-cream" data-i18n="dashboard.exploreNow">Explore now ›</a>
+    <span class="notify-plane">✈</span>
+  </section>
+</div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ===== MOBILE BOTTOM NAV ===== -->
+
+
+<!-- ===== UPGRADE TO PREMIUM MODAL ===== -->
+<div class="upgrade-modal-overlay" id="upgradeModalOverlay">
+  <div class="upgrade-modal-box">
+    <div class="upgrade-modal-header">
+      <button class="upgrade-back-btn" id="upgradeModalClose" data-i18n-aria-label="common.close" aria-label="Close">‹</button>
+      <span class="upgrade-crown">👑</span>
+      <h2 data-i18n="upgrade.title">Upgrade to Premium</h2>
+      <p data-i18n="upgrade.subtitle">Unlock everything MyChance has to offer</p>
+      <div class="upgrade-price-badge">
+        <span class="upgrade-price">$8.99</span>
+        <span class="upgrade-price-note" data-i18n="upgrade.priceNote">/month</span>
+      </div>
+    </div>
+
+    <div class="upgrade-modal-body">
+      <h4 data-i18n="upgrade.included">What's included</h4>
+      <ul class="upgrade-features">
+        <li data-i18n="upgrade.feature1">Personalized notifications for new opportunities</li>
+        <li data-i18n="upgrade.feature2">Save unlimited favorites</li>
+        <li data-i18n="upgrade.feature3">Advanced search & filters</li>
+      </ul>
+
+      <h4 data-i18n="upgrade.paymentDetails">Payment details</h4>
+      <form id="upgradeForm">
+        <label data-i18n="upgrade.cardholderName">Cardholder name</label>
+        <input type="text" id="upgradeCardName" data-i18n-placeholder="upgrade.ph.cardName" placeholder="Full name on card" required>
+
+        <label data-i18n="upgrade.cardNumber">Card number</label>
+        <input type="text" id="upgradeCardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+
+        <div class="upgrade-form-row">
+          <div>
+            <label data-i18n="upgrade.expiry">Expiry date</label>
+            <input type="text" id="upgradeExpiry" placeholder="MM / YY" maxlength="7" required>
+          </div>
+          <div>
+            <label data-i18n="upgrade.cvc">CVC</label>
+            <input type="text" id="upgradeCvc" placeholder="123" maxlength="4" required>
+          </div>
+        </div>
+
+        <label data-i18n="upgrade.billingEmail">Billing email</label>
+        <input type="email" id="upgradeEmail" data-i18n-placeholder="upgrade.ph.email" placeholder="you@example.com" required>
+
+        <button type="submit" class="upgrade-confirm-btn" id="upgradeConfirmBtn" data-i18n="upgrade.confirmBtn">
+          Confirm &amp; Upgrade — $8.99/mo
+        </button>
+
+        <p class="upgrade-disclaimer" data-i18n="upgrade.disclaimer">This is a simulated checkout — no real charge is made. Cancel anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NOTIFICATION SETTINGS PANEL ===== -->
+<div class="notif-panel-overlay" id="notifPanelOverlay">
+  <div class="notif-panel-box" id="notifPanelBox">
+    <button class="modal-close" id="notifPanelClose" data-i18n-aria-label="common.close" aria-label="Close">✕</button>
+    <div id="notifPanelContent"></div>
+  </div>
+</div>
+
+<!-- ===== NEW OPPORTUNITY ANNOUNCEMENT (center variant) ===== -->
+<div class="announce-overlay" id="announceOverlay">
+  <div class="announce-box" id="announceBox"></div>
+</div>
+
+<!-- ===== NEW OPPORTUNITY ANNOUNCEMENT (side variant) ===== -->
+<div class="announce-side-stack" id="announceSideStack"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase/base.js"></script>
+<script src="../supabase/session.js"></script>
+<script src="../supabase/theme.js"></script>
+<script src="../supabase/language.js"></script>
+<script>
+  // Carga el nombre, la foto y el plan del usuario logueado
+  // y los pone en el sidebar (#sidebarUserName / #sidebarAvatar /
+  // #planBadge), en el saludo grande (#welcomeUserName), y activa
+  // el estilo dorado del sidebar (.sidebar.premium) si corresponde.
+async function loadSidebarUser() {
+  const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+  if (userError || !userData?.user) return;
+
+  const { data: usuario, error } = await supabaseClient
+    .from("Usuarios")
+    .select("full_name, avatar_url, plan")
+    .eq("id", userData.user.id)
+    .maybeSingle();
+
+  if (error || !usuario) return;
+
+  const nameEl = document.getElementById("sidebarUserName");
+  const avatarEl = document.getElementById("sidebarAvatar");
+  const welcomeEl = document.getElementById("welcomeUserName");
+  const planEl = document.getElementById("planBadge");
+  const sidebarEl = document.querySelector(".sidebar");
+
+  if (nameEl && usuario.full_name) nameEl.textContent = usuario.full_name.split(" ")[0];
+  if (welcomeEl && usuario.full_name) welcomeEl.textContent = usuario.full_name.split(" ")[0];
+  if (avatarEl && usuario.avatar_url) avatarEl.innerHTML = `<img src="${usuario.avatar_url}" alt="">`;
+
+  if (planEl) {
+    const planKeyMap = { free: "sidebar.plan.free", premium: "sidebar.plan.premium", enterprise: "sidebar.plan.enterprise" };
+    planEl.setAttribute("data-i18n", planKeyMap[usuario.plan] || "sidebar.plan.free");
+    translateNode(localStorage.getItem(LANG_CACHE_KEY) || "es");
+  }
+
+  const isPremium = usuario.plan === "premium" || usuario.plan === "enterprise";
+  if (sidebarEl) sidebarEl.classList.toggle("premium", isPremium);
+}
+  loadSidebarUser();
+</script>
+<script src="../supabase/notifications.js"></script>
+<script src="../supabase/dashboard.js"></script>
+<script src="../supabase/FeedbackPrompt.js"></script>
+</body>
+</html>

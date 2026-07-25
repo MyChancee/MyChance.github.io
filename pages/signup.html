@@ -1,0 +1,630 @@
+<!-- MyChance 2026/pages/signup.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign up | MyChance</title>
+  <link rel="icon" type="image/png" href="../mychance-nav-icon.png">
+  <link rel="stylesheet" href="../css/signup.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,0,0&icon_names=menu" />
+
+<style>
+/* ===== COMBOBOX / SEARCHABLE SELECT (inline, sin depender de archivo externo) ===== */
+.ms-select{ position:relative; font-family:'Poppins',sans-serif; }
+
+.ms-control{
+  width:100%;
+  min-height:48px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  padding:8px 16px;
+  border:1px solid transparent;
+  border-radius:999px;
+  background:var(--input-bg, #F4F1E8);
+  color:var(--input-text, #3B2530);
+  cursor:text;
+  transition:border-color .15s ease;
+}
+
+.ms-control:focus-within{ border-color:var(--wine-600, #8A1F38); }
+
+.ms-tags{ display:flex; flex-wrap:wrap; gap:6px; }
+
+.ms-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:var(--wine-900, #670e27);
+  color:var(--cream-50, #FAF8F2);
+  font-size:.78rem;
+  white-space:nowrap;
+}
+
+.ms-tag button{
+  background:none;
+  border:none;
+  cursor:pointer;
+  color:var(--cream-50, #FAF8F2);
+  font-size:1rem;
+  line-height:1;
+  padding:0;
+  opacity:.75;
+}
+
+.ms-tag button:hover{ opacity:1; }
+
+.ms-search{
+  flex:1;
+  min-width:120px;
+  border:none;
+  outline:none;
+  background:transparent;
+  font-family:'Poppins',sans-serif;
+  font-size:14px;
+  color:var(--input-text, #3B2530);
+  padding:4px;
+}
+
+.ms-search::placeholder{ color:var(--muted, #8A7782); }
+
+.ms-panel{
+  display:none;
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;
+  right:0;
+  max-height:220px;
+  overflow-y:auto;
+  background:var(--cream-50, #FAF8F2);
+  border:1px solid var(--line, #E2DCCD);
+  border-radius:16px;
+  box-shadow:0 16px 34px rgba(91,17,38,.2);
+  padding:6px;
+  z-index:30;
+}
+
+.ms-panel.open{ display:block; }
+
+.ms-option{
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:.85rem;
+  color:var(--ink, #2C1B22);
+}
+
+.ms-option:hover{ background:rgba(103,14,39,.08); }
+
+.ms-empty{ padding:10px 14px; color:var(--muted, #8A7782); font-size:.8rem; }
+</style>
+
+</head>
+
+
+<body>
+
+    <div class="top-accent"></div>
+
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+    <img src="../mychance_no_text_efefeb_HD (1).png" alt="" height="45px">
+    <div class="logo-text">
+        <span class="name">MyChance</span>
+    </div>
+    </a>
+        <div class="nav-menu">
+            <button class="hamburger" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" data-menu-toggle="siteMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-dropdown" id="siteMenu">
+                <a href="about_us.html">About us</a>
+                <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer">Contact us</a>
+            </div>
+        </div>
+
+    </header>
+
+    <main class="hero">
+
+        <div class="auth-card">
+
+            <!-- IZQUIERDA -->
+
+            <section class="panel-signup">
+        
+      <a href="login.html" class="back-arrow" aria-label="Volver" onclick="goBack(event)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+         <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        </a>    
+
+    <h1>Create Account</h1>
+                
+
+                <p class="sub">
+                    Build your profile and discover opportunities that match your goals.
+                </p>
+
+                <!-- Aquí envolvemos TODOS los steps en un solo <form> -->
+                <form id="formSignup">
+
+                <!-- STEP 1 -->
+
+                <div class="step active">
+
+<h2 class="step-title">Step 1: Account</h2>
+
+<div class="field">
+<label>Full Name</label>
+<input type="text" id="full_name" placeholder="Your full name">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input type="email" id="email" placeholder="your@email.com">
+</div>
+
+<div class="field">
+<label>Password</label>
+<input type="password" id="password" placeholder="Password min 6 characters" minlength="6">
+</div>
+
+<div class="btn-row">
+<button type="button" class="btn-next" onclick="nextStep()">
+Next
+</button>
+</div>
+
+</div>
+
+<!-- ================= STEP 2 ================= -->
+
+<div class="step">
+
+<h2 class="step-title">Step 2: Personal Information</h2>
+
+<div class="field">
+<label>Age</label>
+<input type="number" id="age" placeholder="18">
+</div>
+
+<div class="field">
+<label>Nationality</label>
+<div class="ms-select" id="nationality_select">
+  <div class="ms-control">
+    <div class="ms-tags"></div>
+    <input type="text" class="ms-search" placeholder="Search your nationality...">
+  </div>
+  <div class="ms-panel"></div>
+</div>
+<input type="hidden" id="nationality">
+</div>
+
+<div class="field">
+<label>Gender</label>
+
+<select id="gender">
+
+<option selected disabled value="">Select gender</option>
+
+<option>Female</option>
+
+<option>Male</option>
+
+<option>Non-binary</option>
+
+<option>Prefer not to say</option>
+
+</select>
+
+</div>
+
+<div class="btn-row">
+
+<button type="button" class="btn-back" onclick="prevStep()">
+Back
+</button>
+
+<button type="button" class="btn-next" onclick="nextStep()">
+Next
+</button>
+
+</div>
+
+</div>
+<!-- ================= STEP 3 ================= -->
+
+<div class="step">
+
+<h2 class="step-title">Step 3: Academic Profile</h2>
+
+<div class="field">
+<label>Academic Level</label>
+
+<select id="academic_level">
+<option selected disabled value="">Select academic level</option>
+<option>High School</option>
+<option>Technical Degree</option>
+<option>Undergraduate</option>
+<option>Master's Degree</option>
+<option>Doctorate (PhD)</option>
+</select>
+
+</div>
+
+<div class="field">
+<label>GPA</label>
+<input type="number" id="gpa" step="0.01" min="0" max="4.0" placeholder="3.80">
+</div>
+
+<div class="btn-row">
+
+<button type="button" class="btn-back" onclick="prevStep()">
+Back
+</button>
+
+<button type="button" class="btn-next" onclick="nextStep()">
+Next
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= STEP 4 ================= -->
+
+<div class="step">
+
+    <h2 class="step-title">Step 4: Preferences</h2>
+
+    <div class="field">
+        <label>Countries of Interest</label>
+        <div class="ms-select" id="countries_interest_select">
+          <div class="ms-control">
+            <div class="ms-tags"></div>
+            <input type="text" class="ms-search" placeholder="Search and add countries...">
+          </div>
+          <div class="ms-panel"></div>
+        </div>
+        <input type="hidden" id="countries_interest">
+    </div>
+
+    <div class="field">
+        <label>Professional Interests</label>
+        <div class="ms-select" id="professional_interest_select">
+          <div class="ms-control">
+            <div class="ms-tags"></div>
+            <input type="text" class="ms-search" placeholder="Search and add fields...">
+          </div>
+          <div class="ms-panel"></div>
+        </div>
+        <input type="hidden" id="professional_interest">
+    </div>
+
+    <div class="field">
+        <label>Preferred Modality</label>
+
+        <select id="modality">
+            <option selected disabled value="">Select modality</option>
+            <option>Online</option>
+            <option>In-person</option>
+            <option>Hybrid</option>
+        </select>
+    </div>
+
+    <div class="btn-row">
+        <button type="button" class="btn-back" onclick="prevStep()">
+            Back
+        </button>
+
+        <button type="submit" class="btn-next">
+            Create Account
+        </button>
+    </div>
+
+    <p id="mensaje"></p>
+
+</div>
+<!-- FIN STEP 4 -->
+
+</form>
+<!-- FIN FORM -->
+
+</section>
+<!-- FIN PANEL SIGNUP -->
+
+
+<!-- ================= RIGHT PANEL ================= -->
+
+<section class="panel-welcome">
+
+    <h2>Welcome to MyChance</h2>
+
+    <p class="intro">
+        Discover scholarships, internships, exchange programs,
+        competitions and opportunities tailored to your profile.
+    </p>
+
+    <img
+        src="../mychance-nav-icon.png"
+        alt="MyChance Logo"
+        class="logo-large">
+
+</section>
+
+</div>
+<!-- FIN AUTH-CARD -->
+
+</main>
+
+    <script>
+
+        let currentStep = 0;
+
+        const steps = document.querySelectorAll(".step");
+
+        function showStep(index) {
+    steps.forEach(step => {
+        step.classList.remove("active");
+    });
+    steps[index].classList.add("active");
+
+    const mensaje = document.getElementById("mensaje");
+    if (mensaje) {
+        mensaje.textContent = "";
+    }
+}
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function goBack(event) {
+            event.preventDefault();
+
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+
+    </script>
+
+   <script src="../supabase/Menu.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase/base.js"></script>
+    <script>
+    // ===== COMBOBOX / SEARCHABLE SELECT (inline, sin depender de archivo externo) =====
+    const COUNTRIES = [
+      "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia",
+      "Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium",
+      "Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei",
+      "Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada",
+      "Central African Republic","Chad","Chile","China","Colombia","Comoros","Costa Rica",
+      "Croatia","Cuba","Cyprus","Czech Republic","Democratic Republic of the Congo","Denmark",
+      "Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador",
+      "Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
+      "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea",
+      "Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia",
+      "Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan",
+      "Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon",
+      "Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar",
+      "Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania",
+      "Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco",
+      "Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua",
+      "Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine",
+      "Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar",
+      "Republic of the Congo","Romania","Russia","Rwanda","Saint Kitts and Nevis",
+      "Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino",
+      "Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone",
+      "Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa",
+      "South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden",
+      "Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo",
+      "Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda",
+      "Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay",
+      "Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
+    ];
+
+    // Gentilicios en el MISMO ORDEN que COUNTRIES, para usarse en el campo Nationality
+    const NATIONALITIES = [
+      "Afghan","Albanian","Algerian","Andorran","Angolan","Antiguan","Argentine","Armenian",
+      "Australian","Austrian","Azerbaijani","Bahamian","Bahraini","Bangladeshi","Barbadian",
+      "Belarusian","Belgian","Belizean","Beninese","Bhutanese","Bolivian","Bosnian",
+      "Motswana","Brazilian","Bruneian","Bulgarian","Burkinabe","Burundian","Cape Verdean",
+      "Cambodian","Cameroonian","Canadian","Central African","Chadian","Chilean","Chinese",
+      "Colombian","Comoran","Costa Rican","Croatian","Cuban","Cypriot","Czech","Congolese (DRC)",
+      "Danish","Djiboutian","Dominican (Commonwealth)","Dominican","Ecuadorian","Egyptian",
+      "Salvadoran","Equatorial Guinean","Eritrean","Estonian","Swazi","Ethiopian","Fijian",
+      "Finnish","French","Gabonese","Gambian","Georgian","German","Ghanaian","Greek",
+      "Grenadian","Guatemalan","Guinean","Bissau-Guinean","Guyanese","Haitian","Honduran",
+      "Hungarian","Icelandic","Indian","Indonesian","Iranian","Iraqi","Irish","Israeli",
+      "Italian","Ivorian","Jamaican","Japanese","Jordanian","Kazakhstani","Kenyan",
+      "I-Kiribati","Kosovar","Kuwaiti","Kyrgyzstani","Laotian","Latvian","Lebanese",
+      "Basotho","Liberian","Libyan","Liechtensteiner","Lithuanian","Luxembourgish",
+      "Malagasy","Malawian","Malaysian","Maldivian","Malian","Maltese","Marshallese",
+      "Mauritanian","Mauritian","Mexican","Micronesian","Moldovan","Monegasque","Mongolian",
+      "Montenegrin","Moroccan","Mozambican","Burmese","Namibian","Nauruan","Nepali","Dutch",
+      "New Zealander","Nicaraguan","Nigerien","Nigerian","North Korean","Macedonian",
+      "Norwegian","Omani","Pakistani","Palauan","Palestinian","Panamanian",
+      "Papua New Guinean","Paraguayan","Peruvian","Filipino","Polish","Portuguese","Qatari",
+      "Congolese","Romanian","Russian","Rwandan","Kittitian","Saint Lucian","Vincentian",
+      "Samoan","Sammarinese","Sao Tomean","Saudi","Senegalese","Serbian","Seychellois",
+      "Sierra Leonean","Singaporean","Slovak","Slovenian","Solomon Islander","Somali",
+      "South African","South Korean","South Sudanese","Spanish","Sri Lankan","Sudanese",
+      "Surinamese","Swedish","Swiss","Syrian","Taiwanese","Tajik","Tanzanian","Thai",
+      "Timorese","Togolese","Tongan","Trinidadian","Tunisian","Turkish","Turkmen","Tuvaluan",
+      "Ugandan","Ukrainian","Emirati","British","American","Uruguayan","Uzbek","Ni-Vanuatu",
+      "Vatican","Venezuelan","Vietnamese","Yemeni","Zambian","Zimbabwean"
+    ];
+
+    const PROFESSIONAL_FIELDS = [
+      "Engineering","Medicine","Nursing","Business Administration","Economics","Finance",
+      "Accounting","Marketing","Law","Political Science","International Relations",
+      "Computer Science","Software Engineering","Data Science","Artificial Intelligence",
+      "Cybersecurity","Mathematics","Physics","Chemistry","Biology","Biotechnology",
+      "Environmental Science","Architecture","Civil Engineering","Mechanical Engineering",
+      "Electrical Engineering","Industrial Engineering","Chemical Engineering",
+      "Psychology","Sociology","Education","Journalism","Communications",
+      "Graphic Design","Fine Arts","Music","Film and Media","Philosophy","History",
+      "Anthropology","Agriculture","Veterinary Medicine","Public Health","Dentistry",
+      "Pharmacy","Nutrition","Sports Science","Hospitality Management","Tourism",
+      "Culinary Arts","Fashion Design","Linguistics","Translation and Interpretation",
+      "Urban Planning","Renewable Energy","Robotics","Aerospace Engineering",
+      "Human Resources","Supply Chain Management","Entrepreneurship"
+    ];
+
+    class MultiSelect {
+      constructor(containerId, options, { mode = "multi", hiddenInputId }) {
+        this.container = document.getElementById(containerId);
+        this.hiddenInput = document.getElementById(hiddenInputId);
+
+        if (!this.container || !this.hiddenInput) {
+          console.error("MultiSelect: no se encontró el contenedor o el input hidden para", containerId);
+          return;
+        }
+
+        this.options = options;
+        this.mode = mode;
+        this.selected = [];
+
+        this.tagsBox = this.container.querySelector(".ms-tags");
+        this.search = this.container.querySelector(".ms-search");
+        this.panel = this.container.querySelector(".ms-panel");
+
+        this.init();
+      }
+
+      init() {
+        this.search.addEventListener("input", () => this.handleFilter());
+        this.search.addEventListener("focus", () => this.handleFilter());
+
+        document.addEventListener("click", (e) => {
+          if (!this.container.contains(e.target)) this.closePanel();
+        });
+      }
+
+      handleFilter() {
+        const q = this.search.value.trim().toLowerCase();
+        const available = this.options.filter(o => !this.selected.includes(o));
+        const filtered = q
+          ? available.filter(o => o.toLowerCase().includes(q))
+          : available;
+        this.renderPanel(filtered);
+        this.openPanel();
+      }
+
+      openPanel() { this.panel.classList.add("open"); }
+      closePanel() { this.panel.classList.remove("open"); }
+
+      renderPanel(list) {
+        this.panel.innerHTML = "";
+
+        if (list.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "ms-empty";
+          empty.textContent = "No results";
+          this.panel.appendChild(empty);
+          return;
+        }
+
+        list.forEach(option => {
+          const item = document.createElement("div");
+          item.className = "ms-option";
+          item.textContent = option;
+          item.addEventListener("click", () => this.select(option));
+          this.panel.appendChild(item);
+        });
+      }
+
+      select(option) {
+        if (this.mode === "single") {
+          this.selected = [option];
+          this.closePanel();
+        } else if (!this.selected.includes(option)) {
+          this.selected.push(option);
+        }
+
+        this.search.value = "";
+        this.renderTags();
+        this.updateHidden();
+
+        if (this.mode === "multi") this.handleFilter();
+      }
+
+      remove(option) {
+        this.selected = this.selected.filter(o => o !== option);
+        this.renderTags();
+        this.updateHidden();
+      }
+
+      renderTags() {
+        this.tagsBox.innerHTML = "";
+        this.selected.forEach(option => {
+          const tag = document.createElement("span");
+          tag.className = "ms-tag";
+
+          const label = document.createElement("span");
+          label.textContent = option;
+
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.setAttribute("aria-label", `Remove ${option}`);
+          removeBtn.textContent = "×";
+          removeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            this.remove(option);
+          });
+
+          tag.appendChild(label);
+          tag.appendChild(removeBtn);
+          this.tagsBox.appendChild(tag);
+        });
+      }
+
+      updateHidden() {
+        this.hiddenInput.value = this.selected.join(", ");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      new MultiSelect("nationality_select", NATIONALITIES, {
+        mode: "single",
+        hiddenInputId: "nationality"
+      });
+
+      new MultiSelect("countries_interest_select", COUNTRIES, {
+        mode: "multi",
+        hiddenInputId: "countries_interest"
+      });
+
+      new MultiSelect("professional_interest_select", PROFESSIONAL_FIELDS, {
+        mode: "multi",
+        hiddenInputId: "professional_interest"
+      });
+    });
+    </script>
+    <script src="../supabase/signup.js"></script>
+</body>
+
+</html>

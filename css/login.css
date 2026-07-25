@@ -1,0 +1,393 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+    --wine-900: #5b1126;
+    --wine-700: #74182F;
+    --wine-600: #8A1F38;
+    --green-deep: #1E3A2C;
+    --cream-50: #FAF8F2;
+    --cream-100: #F1EEE4;
+    --ink: #2C1B22;
+    --muted: #8A7782;
+    --input-bg: #F4F1E8;
+    --input-text: #3B2530;
+    --line: #E2DCCD;
+  }
+ 
+  *{ box-sizing: border-box; margin:0; padding:0; }
+ 
+  body{
+    font-family: 'Poppins', sans-serif;
+    background: var(--cream-50) url("../fondo_sin.png") center center / cover no-repeat fixed;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+ 
+  /* ---------- NAVBAR ---------- */
+  .top-accent{
+    display: none;
+  }
+ 
+  .navbar{
+    background: var(--wine-900);
+    padding: 14px 32px;
+    display:flex;
+    align-items:center;
+  }
+ 
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+ 
+  .logo svg{ width: 30px; height: 30px; flex-shrink:0; }
+ 
+  .logo-text{
+    display:flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+ 
+  .logo-text .name{
+    font-family: 'Raleway', serif;
+    font-size: 30px;
+    letter-spacing: 0.04em;
+    color: var(--cream-50);
+  }
+
+  .logo-text .tag{
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(250,248,242,0.55);
+    margin-top: 2px;
+  }
+
+  .navbar {
+  display: flex;
+  align-items: center;
+  background-color: #81274a; /* tu color vino */
+  padding: 35px;
+  height: 48px;
+}
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+  }
+
+  /* Esto es la clave: empuja el botón al extremo derecho */
+  .nav-menu {
+    margin-left: auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .hamburger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: white;
+    border-radius: 2px;
+  }
+
+  .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 190px;
+    background: var(--cream-50);
+    border-radius: 14px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 34px rgba(91, 17, 38, 0.28);
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    z-index: 30;
+  }
+
+  .nav-dropdown.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .nav-dropdown a {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--wine-900);
+    text-decoration: none;
+  }
+
+  .nav-dropdown a:hover,
+  .nav-dropdown a:focus-visible {
+    background: rgba(91, 17, 38, 0.08);
+  }
+  /* ---------- HERO / LAYOUT ---------- */
+  .hero{
+    display:flex;
+    justify-content:center;
+    padding: 64px 24px 40px;
+  }
+ 
+  .auth-card{
+    width: 100%;
+    max-width: 880px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -24px rgba(91,17,38,0.35);
+  }
+ 
+  /* ---------- LEFT PANEL: login form ---------- */
+  .panel-login{
+    background: var(--wine-900);
+    color: var(--cream-50);
+    padding: 48px 44px;
+    display:flex;
+    flex-direction: column;
+  }
+ 
+  .panel-login h1{
+    font-family: 'Poppins', serif;
+    font-weight: 600;
+    font-size: 28px;
+  }
+ 
+  .panel-login .sub{
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: rgba(250,248,242,0.65);
+    line-height: 1.5;
+  }
+ 
+  form{
+    margin-top: 30px;
+    display:flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+ 
+  .field label{
+    display:block;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: rgba(250,248,242,0.8);
+    margin-bottom: 6px;
+  }
+ 
+  .field input{
+    width: 100%;
+    padding: 13px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--input-text);
+    background: var(--input-bg);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: box-shadow .15s ease;
+  }
+ 
+  .field input::placeholder{ color: var(--muted); }
+ 
+  .field input:focus{
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(250,248,242,0.5);
+  }
+ 
+  .row-between{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size: 12.5px;
+    margin-top: -2px;
+  }
+ 
+  .remember{
+    display:flex;
+    align-items:center;
+    gap: 7px;
+    color: rgba(250,248,242,0.75);
+  }
+ 
+  .remember input{ accent-color: var(--cream-50); }
+ 
+  .forgot{
+    color: rgba(250,248,242,0.75);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+ 
+  .forgot:hover{
+    color: var(--cream-50);
+    border-bottom-color: var(--cream-50);
+  }
+ 
+  .btn-cream{
+    margin-top: 6px;
+    padding: 13px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--wine-900);
+    background: var(--cream-50);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: filter .15s ease, transform .15s ease;
+  }
+ 
+  .btn-cream:hover{ filter: brightness(0.97); }
+  .btn-cream:active{ transform: translateY(1px); }
+ 
+  .btn-cream:focus-visible{
+    outline: 2px solid var(--cream-50);
+    outline-offset: 3px;
+  }
+ 
+  .help-link{
+    margin-top: auto;
+    padding-top: 28px;
+    font-size: 12px;
+    color: rgba(250,248,242,0.55);
+  }
+ 
+  .help-link a{
+    color: rgba(250,248,242,0.85);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(250,248,242,0.4);
+  }
+ 
+  /* ---------- RIGHT PANEL: welcome ---------- */
+  .panel-welcome{
+    background: var(--cream-100);
+    color: var(--wine-900);
+    padding: 48px 44px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+ 
+  .panel-welcome h2{
+    font-family: 'Poppins', serif;
+    font-weight: 600;
+    font-size: 26px;
+  }
+ 
+  .panel-welcome .intro{
+    margin-top: 10px;
+    font-size: 13.5px;
+    color: #6E5560;
+    line-height: 1.55;
+    max-width: 320px;
+  }
+ 
+  .features{
+    list-style: none;
+    margin-top: 26px;
+    display:flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 280px;
+  }
+ 
+  .features li{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: #5C4750;
+    text-align: left;
+  }
+ 
+  .features svg{
+    flex-shrink: 0;
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+  }
+ 
+  .ask{
+    margin-top: 30px;
+    font-family: 'Poppins', serif;
+    font-weight: 600;
+    font-size: 17px;
+  }
+ 
+  .btn-wine{
+    margin-top: 16px;
+    padding: 13px 30px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cream-50);
+    background: var(--wine-900);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: filter .15s ease, transform .15s ease;
+  }
+ 
+  .btn-wine:hover{ filter: brightness(1.12); }
+  .btn-wine:active{ transform: translateY(1px); }
+ 
+  .btn-wine:focus-visible{
+    outline: 2px solid var(--wine-900);
+    outline-offset: 3px;
+  }
+ 
+  /* ---------- FOOTER ---------- */
+  .page-footer{
+    text-align:center;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 0 24px 40px;
+  }
+ 
+  .page-footer a{
+    color: #6E5560;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+ 
+  /* ---------- responsive ---------- */
+  @media (max-width: 760px){
+    .auth-card{ grid-template-columns: 1fr; }
+    .navbar{ padding: 12px 20px; }
+    .hero{ padding: 40px 16px 32px; }
+    .panel-login, .panel-welcome{ padding: 36px 28px; }
+    .help-link{ padding-top: 22px; }
+  }
+ 
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+  a.logo {
+  text-decoration: none;
+  color: inherit;
+}

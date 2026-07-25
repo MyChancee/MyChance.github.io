@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
+
+:root{
+    --wine-900:#670e27;
+    --wine-700:#74182F;
+    --wine-600:#8A1F38;
+    --green-deep:#1E3A2C;
+    --cream-50:#FAF8F2;
+    --cream-100:#F1EEE4;
+    --ink:#2C1B22;
+    --muted:#8A7782;
+    --line:#E2DCCD;
+    --sinup-border: #81274a;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:var(--cream-50) url("../Fondo_aboutus.png") center center / cover no-repeat fixed;
+    color:var(--ink);
+    min-height:100vh;
+}
+
+/* TOP BAR */
+
+.top-accent{
+    display:none;
+}
+
+/* NAVBAR */
+
+.navbar{
+    background:var(--sinup-border);
+    padding:14px 32px;
+    display:flex;
+    align-items:center;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:inherit;
+}
+
+.logo-text .name{
+    color:var(--cream-50);
+    font-size:30px;
+    font-family:'Raleway',sans-serif;
+}
+
+.nav-menu{
+    margin-left:auto;
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
+.hamburger{
+    background:none;
+    border:none;
+    cursor:pointer;
+
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.hamburger span{
+    width:22px;
+    height:2px;
+    background:white;
+    border-radius:2px;
+}
+
+.nav-dropdown{
+    position:absolute;
+    top:calc(100% + 10px);
+    right:0;
+    min-width:190px;
+    background:var(--cream-50);
+    border-radius:14px;
+    padding:8px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 16px 34px rgba(91,17,38,0.28);
+    opacity:0;
+    transform:translateY(-8px);
+    pointer-events:none;
+    transition:opacity 0.16s ease, transform 0.16s ease;
+    z-index:30;
+}
+
+.nav-dropdown.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.nav-dropdown a{
+    padding:10px 14px;
+    border-radius:10px;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    color:var(--wine-900);
+    text-decoration:none;
+}
+
+.nav-dropdown a:hover,
+.nav-dropdown a:focus-visible{
+    background:rgba(91,17,38,0.08);
+}
+
+/* MAIN */
+
+.about{
+    max-width:1000px;
+    margin:0 auto;
+    padding:72px 24px 96px;
+}
+
+.intro{
+    max-width:720px;
+    margin:0 auto 72px;
+    text-align:center;
+}
+
+.intro h1{
+    font-family:'Popins',sans-serif;
+    font-weight:700;
+    font-size:clamp(2rem, 4.5vw, 2.75rem);
+    color:var(--wine-900);
+    margin-bottom:18px;
+}
+
+.intro p{
+    font-size:15.5px;
+    line-height:1.7;
+    color:#5C4750;
+}
+
+.offer h2{
+    text-align:center;
+    font-family:'Popins',sans-serif;
+    font-weight:700;
+    font-size:clamp(1.6rem, 3.5vw, 2.1rem);
+    color:var(--wine-900);
+    margin-bottom:36px;
+}
+
+.offer-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+}
+
+.offer-card{
+    background:var(--cream-100);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.offer-icon{
+    display:inline-flex;
+    width:44px;
+    height:44px;
+    color:var(--wine-900);
+}
+
+.offer-icon svg{
+    width:100%;
+    height:100%;
+}
+
+.offer-card h3{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:17px;
+    color:var(--wine-900);
+}
+
+.offer-card p{
+    font-size:14px;
+    line-height:1.65;
+    color:#5C4750;
+}
+
+/* FOOTER */
+
+.page-footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    padding:0 24px 40px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:900px){
+    .offer-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media (max-width:640px){
+    .about{
+        padding:48px 20px 64px;
+    }
+    .intro{
+        margin-bottom:48px;
+    }
+}

@@ -1,0 +1,175 @@
+/* ===================== SECCIÓN: IMPACTO + TESTIMONIOS ===================== */
+.impact-section{
+  position:relative;
+  padding:60px 20px 90px;
+  overflow:hidden;
+  font-family: var(--font-body, "Poppins", sans-serif);
+}
+.impact-header{
+  text-align:center;
+  margin-bottom:40px;
+}
+.impact-header h2{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin:0;
+  flex-wrap:wrap;
+  line-height:1;
+}
+.impact-title-img{
+  display:block;
+  height:clamp(1.8rem, 5vw, 2.6rem);
+  width:auto;
+}
+.impact-header #userCount{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:clamp(1.8rem, 5vw, 2.6rem); /* misma altura que las imágenes */
+  line-height:1;
+  font-size:clamp(1.6rem,3.6vw,2.3rem);
+  font-weight:800;
+  color:var(--wine-900, #670e27);
+  font-family: var(--font-display, "Raleway", sans-serif);
+}
+
+.testimonial-track{
+  position:relative;
+  height:360px;
+  width:100%;
+  overflow:hidden;
+}
+.bubble{
+  position:absolute;
+  max-width:420px;
+  padding:20px 30px;
+  border-radius: var(--radius-pill, 999px);
+  font-weight:600;
+  font-size:1.05rem;
+  color:var(--cream-50, #FAF8F2);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  cursor:pointer;
+  will-change:transform;
+  animation-name:floatLeft;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+  box-shadow:0 6px 14px rgba(103,14,39,0.25);
+  transition:box-shadow .2s;
+}
+.bubble:hover{ box-shadow:0 8px 20px rgba(103,14,39,0.35); }
+.bubble.solid{ background:var(--wine-900, #670e27); }
+.bubble.glass{
+  background:rgba(103,14,39,0.45); /* wine-900 con transparencia */
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(250,248,242,0.35); /* cream-50 con transparencia */
+}
+.bubble.paused{ animation-play-state:paused; }
+
+@keyframes floatLeft{
+  from{ transform:translateX(110vw); }
+  to{ transform:translateX(-130%); }
+}
+
+.comment-modal-overlay{
+  position:fixed; inset:0;
+  background:rgba(44,27,34,0.5); /* --ink con transparencia */
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  padding:20px;
+}
+.comment-modal-overlay.open{ display:flex; }
+.comment-modal{
+  background:var(--cream-50, #FAF8F2);
+  border-radius: var(--radius-shape, 24px);
+  max-width:480px;
+  width:100%;
+  padding:28px;
+  box-shadow:0 20px 40px rgba(44,27,34,0.3);
+  position:relative;
+  font-family: var(--font-body, "Poppins", sans-serif);
+}
+.comment-modal h3{
+  margin:0 0 8px;
+  font-size:1.1rem;
+  color:var(--wine-900, #670e27);
+  font-family: var(--font-display, "Raleway", sans-serif);
+}
+.comment-modal p{ margin:0; line-height:1.5; color:var(--ink, #2C1B22); font-weight:500; }
+.comment-modal .close-btn{
+  position:absolute; top:12px; right:16px;
+  background:none; border:none; font-size:1.4rem;
+  cursor:pointer; color:var(--wine-900, #670e27); font-weight:700;
+}
+
+/* ===================== SECCIÓN: QUÉ OFRECEMOS ===================== */
+.offer-section{
+  padding:70px 20px 90px;
+  text-align:center;
+  font-family: var(--font-body, "Poppins", sans-serif);
+}
+.offer-title{
+  margin:0 0 40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.offer-title-img{
+  display:block;
+  height:clamp(2.2rem, 6vw, 3.4rem);
+  width:auto;
+  max-width:100%;
+}
+.offer-stage{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(210px, 320px));
+  gap:18px 24px;
+  justify-content:center;
+  align-items:center;
+  max-width:760px;
+  margin:0 auto;
+  min-height:280px;
+}
+.offer-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--wine-900, #670e27);
+  color:var(--cream-50, #FAF8F2);
+  font-weight:700;
+  font-size:1.1rem;
+  padding:16px 28px;
+  border-radius: var(--radius-pill, 999px);
+  opacity:0;
+  box-shadow:0 6px 14px rgba(103,14,39,0.25);
+  white-space:nowrap;
+}
+.offer-item img{ height:28px; width:28px; object-fit:contain; }
+.offer-item.show-left{ animation:slideInLeft .6s ease forwards; }
+.offer-item.show-right{ animation:slideInRight .6s ease forwards; }
+
+@keyframes slideInLeft{
+  from{ opacity:0; transform:translateX(-60px); }
+  to{ opacity:1; transform:translateX(0); }
+}
+@keyframes slideInRight{
+  from{ opacity:0; transform:translateX(60px); }
+  to{ opacity:1; transform:translateX(0); }
+}
+
+.offer-item.signup-btn{
+  grid-column: 1 / span 2;
+  justify-self:center;
+  background:var(--wine-700, #74182F);
+  cursor:pointer;
+  font-size:1.15rem;
+}
+.offer-item.signup-btn:hover{
+  background:var(--wine-600, #8A1F38);
+}

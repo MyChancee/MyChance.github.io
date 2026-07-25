@@ -1,0 +1,86 @@
+/* ============================================================
+   theme-dark.css
+   Paleta de modo oscuro, compartida por todas las páginas.
+   Se activa poniendo data-theme="dark" en <html> (lo hace
+   theme.js automáticamente según la preferencia guardada).
+
+   Solo se re-definen los tokens de FONDO / TEXTO / BORDE:
+   --cream, --cream-soft, --white, --text-main, --text-muted,
+   --line, --pink-soft. Van variando en tonos de negro/gris
+   para separar sidebar / tarjetas / inputs, igual que pediste.
+
+   A PROPÓSITO no se tocan estos, para que se sigan viendo
+   siempre igual sin importar el tema:
+   --maroon / --maroon-dark / --maroon-light  (marca)
+   --premium-gold                              (Premium)
+   --on-brand                                  (texto/superficie
+                                                 sobre fondos de marca)
+   --green / --green-bg / --green-tag / --green-tag-bg (match %, checklist)
+   --purple-tag / --purple-tag-bg              (tag "Academic")
+   .tag-scholarship / .tag-neutral / .tag-cat  (colores de categoría, hardcoded)
+   ============================================================ */
+
+/* Transición global de tema — anima fondo/texto/borde en toda
+   página que cargue este archivo, tanto al entrar a dark como
+   al volver a light. Va antes que todo lo demás para que las
+   reglas más específicas de abajo puedan pisarla si necesitan
+   otro timing. */
+*, *::before, *::after{
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+
+[data-theme="dark"]{
+  --cream: #0D0B0C;        /* fondo general de la página */
+  --cream-soft: #171416;   /* sidebar / tarjetas de fondo suave */
+  --white: #221D20;        /* tarjetas, inputs, modal, superficie "blanca" */
+  --text-main: #F2ECEE;    /* texto principal */
+  --text-muted: #ffffff;   /* texto secundario */
+  --line: #352E31;         /* bordes */
+  --pink-soft: #2B1B22;    /* hover / fondo de acento suave (antes rosado claro) */
+}
+
+/* Ajustes puntuales donde un color fijo (no variable) asumía
+   fondo claro y necesita un retoque en oscuro */
+[data-theme="dark"] body{
+  background: var(--cream);
+}
+
+/* Inputs/selects deshabilitados (modo lectura en Profile) usaban
+   un color de texto fijo pensado para fondo claro */
+[data-theme="dark"] .form-field input:disabled,
+[data-theme="dark"] .form-field select:disabled{
+  -webkit-text-fill-color: var(--text-main);
+}
+
+/* Sombras de modales/paneles: un poco más marcadas en fondo oscuro */
+[data-theme="dark"] .modal-box,
+[data-theme="dark"] .notif-panel-box{
+  box-shadow: -12px 0 30px rgba(0,0,0,0.55);
+}
+[data-theme="dark"] .announce-box,
+[data-theme="dark"] .upgrade-modal-box{
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+/* El texto "MyChance" del logo del sidebar usaba var(--maroon)
+   fijo, que casi no se ve sobre fondo oscuro. En dark mode pasa
+   a var(--text-main) (casi blanco) para que sea legible. */
+[data-theme="dark"] .logo-text{
+  color: var(--text-main);
+}
+
+/* El "checklist-badge" dorado usa un texto oscuro fijo (#8A6A16)
+   pensado para fondo claro con transparencia — en dark queda bien
+   igual porque el dorado resalta solo, no hace falta tocarlo. */
+
+/* Por defecto (modo claro): mostrar el ícono normal, ocultar el blanco */
+.icon-dark{ display: none; }
+.icon-light{ display: inline-block; }
+
+/* En modo oscuro: al revés */
+[data-theme="dark"] .icon-dark{ display: inline-block; }
+[data-theme="dark"] .icon-light{ display: none; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; }
+}
