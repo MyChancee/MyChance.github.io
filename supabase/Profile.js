@@ -139,6 +139,18 @@ function setEditing(editing) {
 // ------------------------------------------------------------
 // LC
 // ------------------------------------------------------------
+
+// Los campos de LC que son <textarea> (idiomas, experiencia laboral,
+// voluntariado, liderazgo, certificaciones) necesitan crecer solos
+// según el contenido, en vez de quedar con scroll interno o cortar
+// el texto como haría un <input>.
+function autoResizeTextareas() {
+  document.querySelectorAll(".lc-form textarea").forEach(t => {
+    t.style.height = "auto";
+    t.style.height = t.scrollHeight + "px";
+  });
+}
+
 function fillLcForm(usuario) {
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
 
@@ -156,13 +168,6 @@ function setLcEditing(editing) {
   isLcEditing = editing;
   lcEditableFields.forEach(field => { if (field) field.disabled = !editing; });
   lcEditToggleBtn.textContent = editing ? "Save LC" : "Edit LC";
-}
-
-function autoResizeTextareas() {
-  document.querySelectorAll(".lc-form textarea").forEach(t => {
-    t.style.height = "auto";
-    t.style.height = t.scrollHeight + "px";
-  });
 }
 
 function setupLc(usuario) {
@@ -183,6 +188,7 @@ lcEditToggleBtn?.addEventListener("click", async () => {
   if (!isLcEditing) {
     setLcEditing(true);
     document.getElementById("lcToefl")?.focus();
+    autoResizeTextareas();
     return;
   }
 
@@ -215,6 +221,16 @@ lcEditToggleBtn?.addEventListener("click", async () => {
 
   setLcEditing(false);
   setLcStatus("Saved ✓");
+  autoResizeTextareas();
+});
+
+// Mientras el usuario escribe en un textarea del LC, que crezca
+// en tiempo real en vez de esperar a guardar.
+document.querySelectorAll(".lc-form textarea").forEach(t => {
+  t.addEventListener("input", () => {
+    t.style.height = "auto";
+    t.style.height = t.scrollHeight + "px";
+  });
 });
 
 // ------------------------------------------------------------
