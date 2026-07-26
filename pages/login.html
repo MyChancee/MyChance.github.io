@@ -40,7 +40,7 @@
   <main class="hero">
     <div class="auth-card">
  
-      <!-- LEFT: login -->
+      <!-- LEFT: login -->  
       <section class="panel-login">
         <h1>Log In</h1>
         <p class="sub">Enter your details to access your account.</p>
@@ -61,7 +61,7 @@
               <input type="checkbox" id="remember" name="remember">
               Remember me
             </label>
-            <a href="#" class="forgot">¿Forgot your password?</a>
+            <a href="#" class="forgot" id="btnForgot">¿Forgot your password?</a>
           </div>
  
           <button type="submit" class="btn-cream">Log In</button>
@@ -69,11 +69,10 @@
           <p id="mensajeLogin"></p>
         </form>
  
-        <p class="help-link">¿Need help? <a href="#">Contact Us</a></p>
-      </section>
- 
+        <p class="help-link">¿Need help? <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer">Contact Us</a></p>
+          </section>
       <!-- RIGHT: welcome / sign up -->
-      <section class="panel-welcome">
+        <section class="panel-welcome">
         <h2>Welcome!</h2>
         <p class="intro">MyChance connects you with opportunities that align with your profile.</p>
  
@@ -98,7 +97,20 @@
  
     </div>
   </main>
- 
+ <div class="modal-overlay" id="modalForgot" hidden>
+  <div class="modal-card">
+    <button class="modal-close" id="btnCloseForgot" aria-label="Cerrar">&times;</button>
+
+    <h3>Recuperar contraseña</h3>
+    <p class="sub">Ingresa tu correo y te enviaremos un link para restablecerla.</p>
+    <div class="field">
+      <label for="forgotEmail">E-mail</label>
+      <input type="email" id="forgotEmail" placeholder="youremail@example.com">
+    </div>
+    <button type="button" class="btn-cream" id="btnSendCode">Enviar link</button>
+    <p id="mensajeForgotEmail"></p>
+  </div>
+</div>
   <footer class="page-footer">
     
   </footer>
