@@ -193,12 +193,12 @@ function initTestimonials(list) {
 // row/col definen la posición FINAL fija en la cuadrícula (como tu imagen de referencia);
 // dir solo controla desde qué lado entra al aparecer.
 const OFFER_ITEMS = [
-  { label: 'internships', icon: '../interships.png', dir: 'left',  row: 2, col: 1 },
-  { label: 'courses',     icon: '../courses.png',    dir: 'right', row: 1, col: 2 },
-  { label: 'scholarships',icon: '../scholarships.png',dir: 'left', row: 1, col: 1 },
-  { label: 'volunteers',  icon: '../volunteers.png', dir: 'right', row: 2, col: 2 },
-  { label: 'competitions',  icon: '../competitions.png',                          dir: 'left', row: 3, col: 1 },
-  { label: 'And more',icon: '../more.png',dir: 'right', row: 3, col: 2 },
+  { label: 'internships', icon: '/interships.png', dir: 'left',  row: 2, col: 1 },
+  { label: 'courses',     icon: '/courses.png',    dir: 'right', row: 1, col: 2 },
+  { label: 'scholarships',icon: '/scholarships.png',dir: 'left', row: 1, col: 1 },
+  { label: 'volunteers',  icon: '/volunteers.png', dir: 'right', row: 2, col: 2 },
+  { label: 'competitions',  icon: '/competitions.png',                          dir: 'left', row: 3, col: 1 },
+  { label: 'And more',icon: '/more.png',dir: 'right', row: 3, col: 2 },
 ];
 
 function runOfferSequence() {
