@@ -104,6 +104,153 @@
 .ms-option:hover{ background:rgba(103,14,39,.08); }
 
 .ms-empty{ padding:10px 14px; color:var(--muted, #8A7782); font-size:.8rem; }
+
+/* ===== GPA CONVERTER (inline dentro del Step 3) ===== */
+.gpa-help{
+  margin-top: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(250,248,242,0.75);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.gpa-help:hover{ color: var(--cream-50); }
+
+.gpa-convert-box{
+  display:none;
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(250,248,242,0.07);
+  border: 1px solid rgba(250,248,242,0.16);
+}
+
+.gpa-convert-box.open{ display:block; }
+
+.gpa-convert-tabs{
+  display:flex;
+  gap:5px;
+  background: rgba(250,248,242,0.08);
+  padding: 4px;
+  border-radius: 999px;
+}
+
+.gpa-convert-tab{
+  flex:1;
+  border:none;
+  background:transparent;
+  color: rgba(250,248,242,0.6);
+  font-family:'Poppins', sans-serif;
+  font-weight:600;
+  font-size: 11px;
+  padding: 8px 4px;
+  border-radius: 999px;
+  cursor:pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+.gpa-convert-tab.active{
+  background: var(--cream-50);
+  color: var(--wine-900);
+}
+
+.gpa-convert-panel{ display:none; margin-top: 14px; }
+.gpa-convert-panel.active{ display:block; }
+
+.gpa-grade-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:6px;
+}
+
+.gpa-grade-btn{
+  padding:9px 0;
+  border-radius: 999px;
+  border:1px solid rgba(250,248,242,0.25);
+  background: transparent;
+  font-family:'Poppins', sans-serif;
+  font-weight:600;
+  font-size:12.5px;
+  color: var(--cream-50);
+  cursor:pointer;
+  transition: all .12s ease;
+}
+
+.gpa-grade-btn:hover{ border-color: var(--cream-50); }
+
+.gpa-grade-btn.selected{
+  background: var(--cream-50);
+  border-color: var(--cream-50);
+  color: var(--wine-900);
+}
+
+.gpa-convert-panel input[type="number"]{
+  width: 100%;
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--input-text);
+  background: var(--input-bg);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  outline: none;
+}
+
+.gpa-convert-result{
+  display:none;
+  margin-top: 12px;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(250,248,242,0.1);
+}
+
+.gpa-convert-result.show{ display:flex; }
+
+.gpa-convert-result span{
+  font-size: 11px;
+  color: rgba(250,248,242,0.6);
+}
+
+.gpa-convert-result b{
+  font-family:'Lora', serif;
+  font-size: 20px;
+  color: var(--cream-50);
+  margin-left: 6px;
+}
+
+.gpa-use-btn{
+  border:none;
+  background: var(--cream-50);
+  color: var(--wine-900);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor:pointer;
+  white-space: nowrap;
+}
+
+.gpa-use-btn:hover{ filter: brightness(0.97); }
+
+.gpa-applied-note{
+  margin-top: 6px;
+  font-size: 11px;
+  color: #BFE3CE;
+  display:none;
+}
+
+.gpa-applied-note.show{ display:block; }
 </style>
 
 </head>
@@ -266,6 +413,41 @@ Next
 <div class="field">
 <label>GPA</label>
 <input type="number" id="gpa" step="0.01" min="0" max="4.0" placeholder="3.80">
+
+<!-- Enlace para abrir el conversor -->
+<button type="button" class="gpa-help" id="gpaHelpToggle">
+  Don't know your GPA? Convert it here
+</button>
+
+<!-- Caja del conversor, oculta por defecto -->
+<div class="gpa-convert-box" id="gpaConvertBox">
+
+  <div class="gpa-convert-tabs">
+    <button type="button" class="gpa-convert-tab active" data-tab="letra">Letters</button>
+    <button type="button" class="gpa-convert-tab" data-tab="uno5">1.0–5.0</button>
+    <button type="button" class="gpa-convert-tab" data-tab="cien">0–100</button>
+  </div>
+
+  <div class="gpa-convert-panel active" id="gpa-panel-letra">
+    <div class="gpa-grade-grid" id="gpa-grade-grid"></div>
+  </div>
+
+  <div class="gpa-convert-panel" id="gpa-panel-uno5">
+    <input type="number" id="gpa-input-uno5" min="1" max="5" step="0.1" placeholder="e.g. 4.2">
+  </div>
+
+  <div class="gpa-convert-panel" id="gpa-panel-cien">
+    <input type="number" id="gpa-input-cien" min="0" max="100" step="1" placeholder="e.g. 91">
+  </div>
+
+  <div class="gpa-convert-result" id="gpaConvertResult">
+    <span>GPA ≈ <b id="gpaConvertValue">—</b></span>
+    <button type="button" class="gpa-use-btn" id="gpaUseBtn">Use this</button>
+  </div>
+
+  <div class="gpa-applied-note" id="gpaAppliedNote">✓ GPA field updated</div>
+
+</div>
 </div>
 
 <div class="btn-row">
@@ -409,6 +591,103 @@ Next
             }
         }
 
+    </script>
+
+    <!-- ===== GPA CONVERTER LOGIC ===== -->
+    <script>
+    (function(){
+      const letterScale = [
+        {g:"A+", v:4.0},{g:"A", v:4.0},{g:"A-", v:3.7},
+        {g:"B+", v:3.3},{g:"B", v:3.0},{g:"B-", v:2.7},
+        {g:"C+", v:2.3},{g:"C", v:2.0},{g:"C-", v:1.7},
+        {g:"D+", v:1.3},{g:"D", v:1.0},{g:"F", v:0.0}
+      ];
+
+      const percentScale = [
+        {g:"A+", v:4.0, min:97},{g:"A", v:4.0, min:93},{g:"A-", v:3.7, min:90},
+        {g:"B+", v:3.3, min:87},{g:"B", v:3.0, min:83},{g:"B-", v:2.7, min:80},
+        {g:"C+", v:2.3, min:77},{g:"C", v:2.0, min:73},{g:"C-", v:1.7, min:70},
+        {g:"D+", v:1.3, min:67},{g:"D", v:1.0, min:63},{g:"D-", v:0.7, min:60},
+        {g:"F", v:0.0, min:0}
+      ];
+
+      const toggleBtn = document.getElementById('gpaHelpToggle');
+      const box = document.getElementById('gpaConvertBox');
+      const resultBox = document.getElementById('gpaConvertResult');
+      const resultValue = document.getElementById('gpaConvertValue');
+      const useBtn = document.getElementById('gpaUseBtn');
+      const appliedNote = document.getElementById('gpaAppliedNote');
+      const gpaInput = document.getElementById('gpa');
+
+      let currentGpa = null;
+
+      toggleBtn.addEventListener('click', ()=>{
+        box.classList.toggle('open');
+        toggleBtn.textContent = box.classList.contains('open')
+          ? 'Hide converter'
+          : "Don't know your GPA? Convert it here";
+      });
+
+      function setResult(gpa, note){
+        currentGpa = gpa;
+        resultValue.textContent = gpa.toFixed(2);
+        resultBox.classList.add('show');
+        appliedNote.classList.remove('show');
+      }
+
+      function clearResult(){
+        currentGpa = null;
+        resultBox.classList.remove('show');
+      }
+
+      // Tabs
+      document.querySelectorAll('.gpa-convert-tab').forEach(tab=>{
+        tab.addEventListener('click', ()=>{
+          document.querySelectorAll('.gpa-convert-tab').forEach(t=>t.classList.remove('active'));
+          document.querySelectorAll('.gpa-convert-panel').forEach(p=>p.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById('gpa-panel-' + tab.dataset.tab).classList.add('active');
+          clearResult();
+        });
+      });
+
+      // Letras
+      const grid = document.getElementById('gpa-grade-grid');
+      letterScale.forEach(item=>{
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'gpa-grade-btn';
+        btn.textContent = item.g;
+        btn.addEventListener('click', ()=>{
+          document.querySelectorAll('.gpa-grade-btn').forEach(b=>b.classList.remove('selected'));
+          btn.classList.add('selected');
+          setResult(item.v);
+        });
+        grid.appendChild(btn);
+      });
+
+      // 1.0 a 5.0
+      document.getElementById('gpa-input-uno5').addEventListener('input', (e)=>{
+        const val = parseFloat(e.target.value);
+        if(isNaN(val) || val < 1 || val > 5){ clearResult(); return; }
+        setResult(Math.max(0, Math.min(4, val - 1)));
+      });
+
+      // 0 a 100
+      document.getElementById('gpa-input-cien').addEventListener('input', (e)=>{
+        const val = parseFloat(e.target.value);
+        if(isNaN(val) || val < 0 || val > 100){ clearResult(); return; }
+        const match = percentScale.find(row => val >= row.min);
+        setResult(match.v);
+      });
+
+      // Aplicar al campo GPA real
+      useBtn.addEventListener('click', ()=>{
+        if(currentGpa === null) return;
+        gpaInput.value = currentGpa.toFixed(2);
+        appliedNote.classList.add('show');
+      });
+    })();
     </script>
 
    <script src="../supabase/Menu.js"></script>
