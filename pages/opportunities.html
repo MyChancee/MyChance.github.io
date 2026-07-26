@@ -18,6 +18,8 @@
 <link rel="stylesheet" href="../css/opportunities.css">
 <link rel="stylesheet" href="../css/Theme dark.css">
 <link rel="stylesheet" href="../css/Feedbackprompt.css">
+<link rel="stylesheet" href="../css/mobile-nav.css">
+<link rel="stylesheet" href="../css/Opportunities mobile.css">
 </head>
 <body>
 
@@ -102,56 +104,75 @@
           </a>
         </div>
       </div>
+<div class="search-row">
+  <div class="search-bar-lg">
+    <span class="search-icon">🔍</span>
+    <input id="searchInput" type="text" data-i18n-placeholder="opportunities.searchPlaceholder" placeholder="Search opportunities...">
+  </div>
 
-      <div class="search-row">
-        <div class="search-bar-lg">
-          <span class="search-icon">🔍</span>
-          <input id="searchInput" type="text" data-i18n-placeholder="opportunities.searchPlaceholder" placeholder="Search opportunities...">
-        </div>
-        <div class="sort-select-wrap">
-          <select id="sortSelect">
-            <option value="match" data-i18n="opportunities.sort.match">Sort by: Best match</option>
-            <option value="newest" data-i18n="opportunities.sort.newest">Sort by: Newest</option>
-            <option value="az" data-i18n="opportunities.sort.az">Sort by: A–Z</option>
-          </select>
+  <!-- NUEVO wrapper: agrupa Sort by + Filters para que siempre queden juntos -->
+  <div class="search-row-bottom">
+    <div class="sort-select-wrap">
+      <select id="sortSelect">
+        <option value="match" data-i18n="opportunities.sort.match">Sort by: Best match</option>
+        <option value="newest" data-i18n="opportunities.sort.newest">Sort by: Newest</option>
+        <option value="az" data-i18n="opportunities.sort.az">Sort by: A–Z</option>
+      </select>
+    </div>
+
+    <!-- Solo visible en mobile: al lado de Sort by. Abre el panel
+         de filtros específicos como un drawer (ver Opportunities mobile.css). -->
+    <div class="mobile-filters-row">
+      <button class="mobile-filters-btn" id="mobileFiltersBtn" data-i18n-aria-label="opportunities.filters.title" aria-label="Filters">
+        <img src="../filtro.png" alt="" class="mobile-filters-icon icon-light">
+        <img src="../filtro-white.png" alt="" class="mobile-filters-icon icon-dark">
+      </button>
+    </div>
+  </div>
+</div>
+
+      <!-- Wrapper para permitir las flechas de scroll en mobile -->
+      <div class="pills-scroll-wrap">
+        <div class="category-pills" id="categoryPills">
+          <button class="pill active" data-category="all" data-i18n="opportunities.pill.all">▦ All</button>
+          <button class="pill" data-category="scholarship">
+            <img src="../becas_icon.png" alt="" class="pill-icon icon-light">
+            <img src="../becas_icon-white.png" alt="" class="pill-icon icon-dark">
+            <span data-i18n="opportunities.pill.scholarship">Scholarships</span>
+          </button>
+          <button class="pill" data-category="exchange">
+            <img src="../intercambio_icon.png" alt="" class="pill-icon icon-light">
+            <img src="../intercambio_icon-white.png" alt="" class="pill-icon icon-dark">
+            <span data-i18n="opportunities.pill.exchange">Exchange</span>
+          </button>
+          <button class="pill" data-category="competition">
+            <img src="../competencias_icon.png" alt="" class="pill-icon icon-light">
+            <img src="../competencias_icon-white.png" alt="" class="pill-icon icon-dark">
+            <span data-i18n="opportunities.pill.competition">Competitions</span>
+          </button>
+          <button class="pill" data-category="leadership">
+            <img src="../liderazgo_icon.png" alt="" class="pill-icon icon-light">
+            <img src="../liderazgo_icon-white.png" alt="" class="pill-icon icon-dark">
+            <span data-i18n="opportunities.pill.leadership">Leadership</span>
+          </button>
+          <button class="pill" data-category="volunteering">
+            <img src="../voluntering_icon.png" alt="" class="pill-icon icon-light">
+            <img src="../voluntering_icon-white.png" alt="" class="pill-icon icon-dark">
+            <span data-i18n="opportunities.pill.volunteering">Volunteering</span>
+          </button>
         </div>
       </div>
 
-      <div class="category-pills" id="categoryPills">
-        <button class="pill active" data-category="all" data-i18n="opportunities.pill.all">▦ All</button>
-        <button class="pill" data-category="scholarship">
-          <img src="../becas_icon.png" alt="" class="pill-icon icon-light">
-          <img src="../becas_icon-white.png" alt="" class="pill-icon icon-dark">
-          <span data-i18n="opportunities.pill.scholarship">Scholarships</span>
-        </button>
-        <button class="pill" data-category="exchange">
-          <img src="../intercambio_icon.png" alt="" class="pill-icon icon-light">
-          <img src="../intercambio_icon-white.png" alt="" class="pill-icon icon-dark">
-          <span data-i18n="opportunities.pill.exchange">Exchange</span>
-        </button>
-        <button class="pill" data-category="competition">
-          <img src="../competencias_icon.png" alt="" class="pill-icon icon-light">
-          <img src="../competencias_icon-white.png" alt="" class="pill-icon icon-dark">
-          <span data-i18n="opportunities.pill.competition">Competitions</span>
-        </button>
-        <button class="pill" data-category="leadership">
-          <img src="../liderazgo_icon.png" alt="" class="pill-icon icon-light">
-          <img src="../liderazgo_icon-white.png" alt="" class="pill-icon icon-dark">
-          <span data-i18n="opportunities.pill.leadership">Leadership</span>
-        </button>
-        <button class="pill" data-category="volunteering">
-          <img src="../voluntering_icon.png" alt="" class="pill-icon icon-light">
-          <img src="../voluntering_icon-white.png" alt="" class="pill-icon icon-dark">
-          <span data-i18n="opportunities.pill.volunteering">Volunteering</span>
-        </button>
-      </div>
       <div class="opp-layout">
 
         <!-- ===== FILTERS ===== -->
         <aside class="filters-panel">
           <div class="filters-head">
             <h3 data-i18n="opportunities.filters.title">Filters</h3>
-            <button id="resetFilters" class="reset-btn" data-i18n-title="opportunities.filters.reset" title="Reset filters">⟳</button>
+            <div class="filters-head-actions">
+              <button id="resetFilters" class="reset-btn" data-i18n-title="opportunities.filters.reset" title="Reset filters">⟳</button>
+              <button id="filtersCloseBtn" class="filters-close-btn" data-i18n-aria-label="common.close" aria-label="Close">✕</button>
+            </div>
           </div>
 
           <div class="filter-group">
@@ -174,6 +195,9 @@
             <div class="filter-options" id="difficultyFilters"></div>
           </div>
         </aside>
+
+        <!-- Fondo oscuro detrás del drawer de filtros en mobile -->
+        <div class="filters-backdrop" id="filtersBackdrop"></div>
 
         <!-- ===== RESULTS ===== -->
         <div class="results-col">
