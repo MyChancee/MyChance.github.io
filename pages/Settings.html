@@ -86,38 +86,72 @@
 
       <div class="settings-layout">
 
-        <!-- ===== APPEARANCE ===== -->
-        <section class="settings-card">
-          <h3 data-i18n="settings.appearance.title">Appearance</h3>
-          <p class="settings-sub" data-i18n="settings.appearance.sub">Choose how MyChance looks on your screen.</p>
+        <div class="settings-row">
 
-          <div class="theme-switch-row">
-            <div class="theme-option" data-theme-option="light">
-              <div class="theme-preview theme-preview--light">
-                <span class="theme-preview-bar"></span>
-                <span class="theme-preview-card"></span>
+          <!-- ===== APPEARANCE ===== -->
+          <section class="settings-card">
+            <h3 data-i18n="settings.appearance.title">Appearance</h3>
+            <p class="settings-sub" data-i18n="settings.appearance.sub">Choose how MyChance looks on your screen.</p>
+
+            <div class="theme-switch-row">
+              <div class="theme-option" data-theme-option="light">
+                <div class="theme-preview theme-preview--light">
+                  <span class="theme-preview-bar"></span>
+                  <span class="theme-preview-card"></span>
+                </div>
+                <span class="theme-option-label" data-i18n="settings.theme.light">☀️ Light</span>
               </div>
-              <span class="theme-option-label" data-i18n="settings.theme.light">☀️ Light</span>
+
+              <label class="theme-toggle">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="theme-toggle-track">
+                  <span class="theme-toggle-thumb"></span>
+                </span>
+              </label>
+
+              <div class="theme-option" data-theme-option="dark">
+                <div class="theme-preview theme-preview--dark">
+                  <span class="theme-preview-bar"></span>
+                  <span class="theme-preview-card"></span>
+                </div>
+                <span class="theme-option-label" data-i18n="settings.theme.dark">🌙 Dark</span>
+              </div>
             </div>
 
-            <label class="theme-toggle">
-              <input type="checkbox" id="darkModeToggle">
-              <span class="theme-toggle-track">
-                <span class="theme-toggle-thumb"></span>
-              </span>
-            </label>
+            <span id="themeSaveStatus" class="save-status"></span>
+          </section>
 
-            <div class="theme-option" data-theme-option="dark">
-              <div class="theme-preview theme-preview--dark">
-                <span class="theme-preview-bar"></span>
-                <span class="theme-preview-card"></span>
-              </div>
-              <span class="theme-option-label" data-i18n="settings.theme.dark">🌙 Dark</span>
+          <!-- ===== ACCOUNT ===== -->
+          <section class="settings-card account-card">
+            <h3 data-i18n="settings.account.title">Account</h3>
+            <p class="settings-sub" data-i18n="settings.account.sub">Manage your session and account details.</p>
+
+            <!-- Se llena dinámicamente con las cuentas guardadas en este navegador -->
+            <div class="account-list" id="accountList"></div>
+
+            <div class="account-actions">
+              <a href="login.html?addingAccount=1" class="account-action">
+                <span class="account-action-icon account-action-icon--plus" aria-hidden="true">+</span>
+                <span data-i18n="settings.account.add">Add account</span>
+              </a>
+              <a href="Profile.html" class="account-action">
+                <span class="account-action-icon" aria-hidden="true">⚙️</span>
+                <span data-i18n="settings.account.manage">Manage my account</span>
+              </a>
+              <button type="button" class="account-action account-action--danger" id="logoutActiveBtn">
+                <span class="account-action-icon" aria-hidden="true">↪</span>
+                <span data-i18n="settings.account.logoutActive">Log out this account</span>
+              </button>
+              <button type="button" class="account-action account-action--danger" id="logoutAllBtn">
+                <span class="account-action-icon" aria-hidden="true">⎋</span>
+                <span data-i18n="settings.account.logoutAll">Log out of all accounts</span>
+              </button>
             </div>
-          </div>
 
-          <span id="themeSaveStatus" class="save-status"></span>
-        </section>
+            <span id="accountStatus" class="save-status"></span>
+          </section>
+
+        </div>
 
         <!-- ===== LANGUAGE ===== -->
         <section class="settings-card">
@@ -148,6 +182,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase/base.js"></script>
 <script src="../supabase/session.js"></script>
+<script src="../supabase/accounts.js"></script>
 <script src="../supabase/Theme.js"></script>
 <script src="../supabase/Language.js"></script>
 <script>
