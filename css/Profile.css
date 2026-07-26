@@ -654,3 +654,16 @@ input, select, textarea{ font-family: inherit; }
 [data-theme="dark"] .lc-card .form-field textarea:disabled{
   -webkit-text-fill-color: #2C1B22;
 }
+
+@media (min-width: 761px){
+  .profile-layout{
+    align-items: stretch;
+  }
+  .side-column{
+    display: flex;
+    flex-direction: column;
+  }
+  .lc-card{
+    margin-top: auto;
+  }
+}
