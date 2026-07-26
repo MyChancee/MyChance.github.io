@@ -65,14 +65,7 @@
     margin-top: 2px;
   }
 
-  .navbar {
-  display: flex;
-  align-items: center;
-  background-color: #81274a; /* tu color vino */
-  padding: 35px;
-  height: 48px;
-}
-
+ 
   .navbar-brand {
     display: flex;
     align-items: center;
@@ -390,4 +383,84 @@
   a.logo {
   text-decoration: none;
   color: inherit;
+}
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(44,27,34,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.modal-overlay[hidden]{
+  display: none !important;
+}
+.modal-card{
+  position: relative;
+  background: var(--cream-50);
+  color: var(--wine-900);
+  padding: 36px 32px;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 24px 60px -24px rgba(91,17,38,0.5);
+}
+
+.modal-close{
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--wine-900);
+  cursor: pointer;
+}
+
+.modal-card h3{
+  font-family: 'Poppins', serif;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.modal-card .sub{
+  margin-top: 6px;
+  font-size: 13px;
+  color: #6E5560;
+  line-height: 1.5;
+}
+
+.modal-card .field{ margin-top: 16px; }
+
+.modal-card .field label{
+  display:block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #6E5560;
+  margin-bottom: 6px;
+}
+
+.modal-card .field input{
+  width: 100%;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--input-text);
+  background: var(--input-bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.modal-card .btn-cream{
+  width: 100%;
+  margin-top: 18px;
+  color: var(--cream-50);
+  background: var(--wine-900);
+}
+
+.modal-card #mensajeForgotEmail,
+.modal-card #mensajeReset{
+  margin-top: 10px;
+  font-size: 12.5px;
 }
