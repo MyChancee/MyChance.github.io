@@ -1,0 +1,76 @@
+@media (max-width: 760px){
+
+  .app{
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar{
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 64px;
+    padding: 0;
+    gap: 0;
+    border-right: none;
+    border-top: 1px solid var(--line);
+    background: var(--cream-soft);
+    z-index: 3000;
+    box-shadow: 0 -6px 20px rgba(44, 27, 34, 0.10);
+  }
+
+  .sidebar-logo,
+  .user-card,
+  .quote-card{
+    display: none;
+  }
+
+  .nav{
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 0;
+  }
+
+  .nav-item{
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    height: 100%;
+    padding: 6px 2px;
+    border-radius: 0;
+    font-size: 10.5px;
+    font-weight: 500;
+  }
+
+  .nav-item span{
+    font-size: 10px;
+    line-height: 1.1;
+  }
+
+  .nav-icon{
+    width: 22px;
+    height: 22px;
+  }
+
+  .nav-item.active{
+    background: transparent;
+    color: var(--maroon);
+    font-weight: 700;
+  }
+
+  .main{
+    padding: 16px 16px 84px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .sidebar{ transition: none !important; }
+}
