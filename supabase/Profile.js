@@ -158,6 +158,13 @@ function setLcEditing(editing) {
   lcEditToggleBtn.textContent = editing ? "Save LC" : "Edit LC";
 }
 
+function autoResizeTextareas() {
+  document.querySelectorAll(".lc-form textarea").forEach(t => {
+    t.style.height = "auto";
+    t.style.height = t.scrollHeight + "px";
+  });
+}
+
 function setupLc(usuario) {
   const isPremium = usuario?.plan === "premium" || usuario?.plan === "enterprise";
 
@@ -165,6 +172,7 @@ function setupLc(usuario) {
     lcLocked.style.display = "none";
     lcForm.style.display = "flex";
     fillLcForm(usuario);
+    autoResizeTextareas();
   } else {
     lcLocked.style.display = "block";
     lcForm.style.display = "none";
