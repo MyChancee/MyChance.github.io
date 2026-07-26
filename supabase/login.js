@@ -1,6 +1,11 @@
 const formularioLogin = document.getElementById("formLogin");
 const mensajeLogin = document.getElementById("mensajeLogin");
 
+// ¿Venimos de "Add account" en Settings? Si es así, al terminar
+// volvemos a Settings en vez de mandar al usuario al dashboard.
+const loginParams = new URLSearchParams(window.location.search);
+const isAddingAccount = loginParams.get("addingAccount") === "1";
+
 formularioLogin.addEventListener("submit", iniciarSesion);
 
 async function iniciarSesion(event) {
@@ -33,11 +38,30 @@ async function iniciarSesion(event) {
       return;
     }
 
+    // Guardamos esta sesión en la lista de cuentas del navegador,
+    // para poder volver a ella desde Settings sin loguear de nuevo.
+    if (data?.session && data?.user) {
+      const { data: perfil } = await supabaseClient
+        .from("Usuarios")
+        .select("full_name, avatar_url")
+        .eq("id", data.user.id)
+        .maybeSingle();
+
+      upsertSavedAccount({
+        id: data.user.id,
+        email: data.user.email,
+        full_name: perfil?.full_name || data.user.email,
+        avatar_url: perfil?.avatar_url || null,
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+      });
+    }
+
     mensajeLogin.textContent = "¡Bienvenido! Redirigiendo...";
     mensajeLogin.style.color = "green";
 
     setTimeout(() => {
-      window.location.href = "dashboard.html";
+      window.location.href = isAddingAccount ? "Settings.html" : "dashboard.html";
     }, 1500);
 
   } catch (err) {
@@ -47,6 +71,9 @@ async function iniciarSesion(event) {
   }
 }
 
+// ============================================================
+// FORGOT PASSWORD — modal
+// ============================================================
 const modalForgot = document.getElementById("modalForgot");
 const btnForgot = document.getElementById("btnForgot");
 const btnCloseForgot = document.getElementById("btnCloseForgot");
