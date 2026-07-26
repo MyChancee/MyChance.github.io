@@ -46,3 +46,42 @@ async function iniciarSesion(event) {
     mensajeLogin.style.color = "red";
   }
 }
+
+const modalForgot = document.getElementById("modalForgot");
+const btnForgot = document.getElementById("btnForgot");
+const btnCloseForgot = document.getElementById("btnCloseForgot");
+const mensajeForgotEmail = document.getElementById("mensajeForgotEmail");
+
+btnForgot.addEventListener("click", (e) => {
+  e.preventDefault();
+  modalForgot.hidden = false;
+});
+
+btnCloseForgot.addEventListener("click", () => {
+  modalForgot.hidden = true;
+  mensajeForgotEmail.textContent = "";
+});
+
+document.getElementById("btnSendCode").addEventListener("click", async () => {
+  const email = document.getElementById("forgotEmail").value.trim();
+  if (!email) {
+    mensajeForgotEmail.textContent = "Ingresa tu correo.";
+    mensajeForgotEmail.style.color = "red";
+    return;
+  }
+  mensajeForgotEmail.textContent = "Enviando link...";
+  mensajeForgotEmail.style.color = "inherit";
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname.replace("login.html", "reset-password.html"),
+  });
+
+  if (error) {
+    mensajeForgotEmail.textContent = "Error: " + error.message;
+    mensajeForgotEmail.style.color = "red";
+    return;
+  }
+
+  mensajeForgotEmail.textContent = "¡Listo! Revisa tu correo.";
+  mensajeForgotEmail.style.color = "green";
+});
