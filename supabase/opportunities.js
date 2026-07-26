@@ -885,6 +885,30 @@ function setupEvents() {
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeModal();
   });
+
+  // ------------------------------------------------------------
+  // Drawer de filtros específicos en mobile (Country, Program
+  // Type, Format, Difficulty). En desktop estos botones no se
+  // muestran (ver opportunities-mobile.css), así que este código
+  // no afecta nada ahí.
+  // ------------------------------------------------------------
+  const mobileFiltersBtn = document.getElementById("mobileFiltersBtn");
+  const filtersPanelEl = document.querySelector(".filters-panel");
+  const filtersBackdrop = document.getElementById("filtersBackdrop");
+  const filtersCloseBtn = document.getElementById("filtersCloseBtn");
+
+  function openFiltersDrawer() {
+    filtersPanelEl?.classList.add("mobile-open");
+    filtersBackdrop?.classList.add("show");
+  }
+  function closeFiltersDrawer() {
+    filtersPanelEl?.classList.remove("mobile-open");
+    filtersBackdrop?.classList.remove("show");
+  }
+
+  mobileFiltersBtn?.addEventListener("click", openFiltersDrawer);
+  filtersBackdrop?.addEventListener("click", closeFiltersDrawer);
+  filtersCloseBtn?.addEventListener("click", closeFiltersDrawer);
 }
 
 // ------------------------------------------------------------
