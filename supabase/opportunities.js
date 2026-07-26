@@ -176,6 +176,52 @@ let currentModalOpportunityId = null;
 let justToggledFavId = null; // id del último favorito togglado, para animar solo ese corazón
 
 // ------------------------------------------------------------
+// Skeleton loaders: se muestran ANTES de que llegue la data de
+// Supabase (getOpportunities/getFavoriteIds/etc en init()), en
+// vez de dejar la grilla y la featured card en blanco.
+// ------------------------------------------------------------
+function renderSkeletonGrid(count = 8) {
+  const grid = document.getElementById("oppGrid");
+  const resultsCount = document.getElementById("resultsCount");
+  if (resultsCount) resultsCount.textContent = "";
+
+  grid.innerHTML = Array.from({ length: count }).map(() => `
+    <article class="skeleton-card">
+      <div class="skeleton-top">
+        <div class="skeleton-circle"></div>
+        <div class="skeleton-badge"></div>
+      </div>
+      <div class="skeleton-line title"></div>
+      <div class="skeleton-line meta"></div>
+      <div class="skeleton-line desc"></div>
+      <div class="skeleton-line desc short"></div>
+      <div>
+        <span class="skeleton-line tag"></span>
+        <span class="skeleton-line tag"></span>
+      </div>
+      <div class="skeleton-block btn"></div>
+    </article>
+  `).join("");
+}
+
+function renderSkeletonFeatured() {
+  const container = document.getElementById("featuredCard");
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="skeleton-featured">
+      <div class="skeleton-circle logo"></div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div class="skeleton-line title"></div>
+        <div class="skeleton-line meta"></div>
+        <div class="skeleton-line desc"></div>
+      </div>
+      <div class="skeleton-circle skeleton-ring"></div>
+    </div>
+  `;
+}
+
+// ------------------------------------------------------------
 // Helpers para armar los checkboxes de filtros con conteo.
 // `options` sigue siendo [valorCrudo, cantidad], y `labelFn`
 // decide qué texto mostrarle al usuario para ese valor crudo.
@@ -845,6 +891,11 @@ function setupEvents() {
 // Init
 // ------------------------------------------------------------
 async function init() {
+  // Skeleton loaders primero: evita la pantalla en blanco mientras
+  // esperamos las respuestas de Supabase de abajo.
+  renderSkeletonFeatured();
+  renderSkeletonGrid();
+
   const { data: userData } = await supabaseClient.auth.getUser();
   currentUserId = userData?.user?.id || null;
 
