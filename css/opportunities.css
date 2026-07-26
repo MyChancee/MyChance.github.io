@@ -448,6 +448,12 @@ input, select{ font-family: inherit; }
   animation: cardEnter .35s ease both;
 }
 
+.opp-card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(119, 9, 55, 0.14);
+  border-color: var(--maroon-light);
+}
+
 @keyframes cardEnter{
   from{
     opacity: 0;
@@ -653,6 +659,10 @@ input, select{ font-family: inherit; }
 .toast.show{
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+.toast.toast--success{
+  background: var(--green);
 }
 
 .match-badge{

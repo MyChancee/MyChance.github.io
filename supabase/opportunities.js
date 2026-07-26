@@ -585,6 +585,12 @@ async function toggleFavorite(id) {
 
   document.getElementById("savedCount").textContent = state.savedIds.size;
 
+  // === CAMBIO NUEVO: toast positivo solo al AGREGAR ===
+  if (!wasSaved) {
+    showOppToast(t("opp.toast.favAdded", getCurrentLang()), "success");
+  }
+  // === FIN CAMBIO NUEVO ===
+
   // Marca este id para que el corazón haga el pulso al repintar,
   // y lo limpia enseguida para que no vuelva a animar en el
   // próximo render (ej: al cambiar de filtro o de idioma).
@@ -614,10 +620,13 @@ async function toggleFavorite(id) {
 }
 
 // ------------------------------------------------------------
-// Toast pequeño para avisos (ej: límite del plan free)
+// Toast pequeño para avisos (ej: límite del plan free) y
+// confirmaciones positivas (ej: agregado a favoritos).
+// === CAMBIO NUEVO: se agregó el parámetro `type` ===
+// type: "default" (maroon, como el límite free) o "success" (verde).
 // ------------------------------------------------------------
 let oppToastTimeout = null;
-function showOppToast(message) {
+function showOppToast(message, type = "default") {
   let toastEl = document.getElementById("appToast");
   if (!toastEl) {
     toastEl = document.createElement("div");
@@ -626,6 +635,8 @@ function showOppToast(message) {
     document.body.appendChild(toastEl);
   }
   toastEl.textContent = message;
+  toastEl.classList.remove("toast--success");
+  if (type === "success") toastEl.classList.add("toast--success");
   toastEl.classList.add("show");
   clearTimeout(oppToastTimeout);
   oppToastTimeout = setTimeout(() => toastEl.classList.remove("show"), 3000);
