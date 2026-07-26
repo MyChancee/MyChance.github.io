@@ -29,7 +29,7 @@ body{
 
 a{ text-decoration:none; color:inherit; }
 button{ font-family: inherit; cursor:pointer; }
-input, select{ font-family: inherit; }
+input, select, textarea{ font-family: inherit; }
 
 .app{
   display:grid;
@@ -137,10 +137,20 @@ input, select{ font-family: inherit; }
 /* ===================== PROFILE CARD ===================== */
 .profile-layout{
   display:grid;
-  grid-template-columns: 1.6fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 20px;
   align-items:start;
-  max-width: 1040px;
+  max-width: 1100px;
+}
+
+/* Columna lateral: agrupa Goals + LC uno debajo del otro,
+   pero al lado del formulario de perfil en vez de ocupar
+   toda la fila cada uno. */
+.side-column{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
 }
 
 .profile-card{
@@ -148,6 +158,7 @@ input, select{ font-family: inherit; }
   border: 1px solid var(--line);
   border-radius: 20px;
   padding: 32px;
+  min-width: 0;
 }
 
 .profile-avatar-wrap{
@@ -223,6 +234,7 @@ input, select{ font-family: inherit; }
   display:flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
 }
 
 .form-field label{
@@ -245,10 +257,12 @@ input, select{ font-family: inherit; }
   transition: border-color .15s ease;
 }
 
-.form-field input::placeholder{ color: #B9AAB1; }
+.form-field input::placeholder,
+.form-field textarea::placeholder{ color: #B9AAB1; }
 
 .form-field input:focus,
-.form-field select:focus{
+.form-field select:focus,
+.form-field textarea:focus{
   border-color: var(--maroon);
 }
 
@@ -269,6 +283,36 @@ input, select{ font-family: inherit; }
 
 .form-field select:disabled{
   background: none;
+}
+
+/* Textareas para campos del LC que suelen tener texto largo
+   (idiomas, experiencia laboral, voluntariado, liderazgo,
+   certificaciones): a diferencia de un <input>, hacen salto
+   de línea en vez de esconder el texto que no cabe. */
+.form-field textarea{
+  border: none;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  padding: 8px 2px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--text-main);
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-height: 34px;
+  line-height: 1.4;
+  width: 100%;
+  transition: border-color .15s ease;
+}
+.form-field textarea:disabled{
+  border-bottom-color: transparent;
+  color: var(--text-main);
+  cursor: default;
+  -webkit-text-fill-color: var(--text-main);
+  opacity: 1;
 }
 
 .form-field-action{
@@ -309,6 +353,7 @@ input, select{ font-family: inherit; }
   border: 1px solid var(--line);
   border-radius: 20px;
   padding: 24px;
+  min-width: 0;
 }
 
 .goals-head h3{ font-size: 15.5px; font-weight: 700; }
@@ -447,12 +492,11 @@ input, select{ font-family: inherit; }
   border: 1px solid #F0D796;
   border-radius: 20px;
   padding: 28px 32px;
-  max-width: 1040px;
-  margin-top: 20px;
+  min-width: 0;
 }
 
 .lc-head h3{ font-size: 15.5px; font-weight: 700; color: var(--maroon-dark); }
-.lc-sub{ font-size: 12.5px; color: #7A5F32; margin-top: 4px; max-width: 520px; line-height: 1.5; }
+.lc-sub{ font-size: 12.5px; color: #7A5F32; margin-top: 4px; line-height: 1.5; }
 
 .lc-locked{
   margin-top: 18px;
@@ -477,12 +521,18 @@ input, select{ font-family: inherit; }
 
 .lc-form{ margin-top: 18px; display:flex; flex-direction: column; gap: 22px; }
 
+.lc-form .form-row{
+  grid-template-columns: 1fr;
+}
+
 .lc-form .form-field input,
-.lc-form .form-field select{
+.lc-form .form-field select,
+.lc-form .form-field textarea{
   border-bottom: 1px solid #E8CE8C;
 }
 .lc-form .form-field input:focus,
-.lc-form .form-field select:focus{
+.lc-form .form-field select:focus,
+.lc-form .form-field textarea:focus{
   border-color: var(--premium-gold);
 }
 
@@ -586,7 +636,8 @@ input, select{ font-family: inherit; }
 }
 
 [data-theme="dark"] .form-field input:disabled,
-[data-theme="dark"] .form-field select:disabled{
+[data-theme="dark"] .form-field select:disabled,
+[data-theme="dark"] .form-field textarea:disabled{
   -webkit-text-fill-color: var(--text-main);
 }
 
@@ -599,6 +650,7 @@ input, select{ font-family: inherit; }
   --text-muted: #8A7782;
 }
 [data-theme="dark"] .lc-card .form-field input:disabled,
-[data-theme="dark"] .lc-card .form-field select:disabled{
+[data-theme="dark"] .lc-card .form-field select:disabled,
+[data-theme="dark"] .lc-card .form-field textarea:disabled{
   -webkit-text-fill-color: #2C1B22;
 }
