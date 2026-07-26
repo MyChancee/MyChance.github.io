@@ -39,7 +39,7 @@ input, select{ font-family: inherit; }
 
 /* ===================== SIDEBAR (shared look) ===================== */
 .sidebar{
-  background: var(--cream-soft);
+  background: var(--white);
   border-right: 1px solid var(--line);
   padding: 24px 18px;
   display:flex;
