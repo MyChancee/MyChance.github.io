@@ -182,7 +182,7 @@
 
     </div>
 
-    <!-- ===== COLUMNA LATERAL: My Goals + Curriculum Vita juntos ===== -->
+    <!-- ===== COLUMNA LATERAL: My Goals ===== -->
     <div class="side-column">
 
       <!-- ===== MY GOALS (múltiples, con prioridad) ===== -->
@@ -203,87 +203,87 @@
         <div id="topGoalProgressCard" class="tgp-card"></div>
       </div>
 
-      <!-- ===== LC (LIFE CURRICULUM) ===== -->
-      <div class="lc-card" id="lcCard">
-        <div class="lc-head">
-          <h3 data-i18n="profile.lc.title">✨ Curriculum Vita (CV)</h3>
-          <p class="lc-sub" data-i18n="profile.lc.sub">Share more about yourself so we can fine-tune your matches and guide you toward the requirements you're missing.</p>
-        </div>
-
-        <!-- Locked state (free plan) -->
-        <div class="lc-locked" id="lcLocked">
-          <span class="lc-locked-icon">👑</span>
-          <p class="lc-locked-title" data-i18n="profile.lc.lockedTitle">CV is a Premium feature</p>
-          <p class="lc-locked-sub" data-i18n="profile.lc.lockedSub">Upgrade to Premium to unlock a deeper profile and get personalized guidance for the opportunities you want most.</p>
-          <a href="dashboard.html" class="lc-upgrade-btn" data-i18n="profile.lc.upgradeBtn">See Premium Plan ›</a>
-        </div>
-
-        <!-- Unlocked form (premium plan) -->
-        <form id="lcForm" class="lc-form" style="display:none;">
-          <div class="form-row">
-            <div class="form-field">
-              <label for="lcToefl" data-i18n="profile.lc.label.toefl">TOEFL / IELTS taken or willing to take?</label>
-              <select id="lcToefl" disabled>
-                <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
-                <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
-                <option value="false" data-i18n="profile.lc.option.no">No</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="lcBachelor" data-i18n="profile.lc.label.bachelor">Bachelor's degree completed?</label>
-              <select id="lcBachelor" disabled>
-                <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
-                <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
-                <option value="false" data-i18n="profile.lc.option.no">No</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label for="lcRecLetters" data-i18n="profile.lc.label.recLetters">Recommendation letters available</label>
-              <input type="number" id="lcRecLetters" min="0" max="10" data-i18n-placeholder="profile.lc.ph.recLetters" placeholder="e.g. 2" disabled>
-            </div>
-            <div class="form-field">
-              <label for="lcLanguages" data-i18n="profile.lc.label.languages">Languages you speak</label>
-              <textarea id="lcLanguages" rows="1" data-i18n-placeholder="profile.lc.ph.languages" placeholder="e.g. Spanish, English" disabled></textarea>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label for="lcWorkExperience" data-i18n="profile.lc.label.workExperience">Work experience</label>
-              <textarea id="lcWorkExperience" rows="1" data-i18n-placeholder="profile.lc.ph.workExperience" placeholder="e.g. 1 year as a tutor" disabled></textarea>
-            </div>
-            <div class="form-field">
-              <label for="lcVolunteerExperience" data-i18n="profile.lc.label.volunteerExperience">Volunteer experience</label>
-              <textarea id="lcVolunteerExperience" rows="1" data-i18n-placeholder="profile.lc.ph.volunteerExperience" placeholder="e.g. Local NGO, 6 months" disabled></textarea>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label for="lcLeadership" data-i18n="profile.lc.label.leadership">Leadership experience</label>
-              <textarea id="lcLeadership" rows="1" data-i18n-placeholder="profile.lc.ph.leadership" placeholder="e.g. Student council president" disabled></textarea>
-            </div>
-            <div class="form-field">
-              <label for="lcCertifications" data-i18n="profile.lc.label.certifications">Certifications</label>
-              <textarea id="lcCertifications" rows="1" data-i18n-placeholder="profile.lc.ph.certifications" placeholder="e.g. Google Data Analytics" disabled></textarea>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-field"></div>
-            <div class="form-field form-field-action">
-              <span id="lcSaveStatus" class="save-status"></span>
-              <button type="button" id="lcEditToggleBtn" class="btn-save lc-btn-save" data-i18n="profile.lc.editBtn">Edit LC</button>
-            </div>
-          </div>
-        </form>
-      </div>
-
     </div>
 
+  </div>
+
+  <!-- ===== LC (LIFE CURRICULUM) — ancha, debajo de todo ===== -->
+  <div class="lc-card" id="lcCard">
+    <div class="lc-head">
+      <h3 data-i18n="profile.lc.title">✨ Curriculum Vita (CV)</h3>
+      <p class="lc-sub" data-i18n="profile.lc.sub">Share more about yourself so we can fine-tune your matches and guide you toward the requirements you're missing.</p>
+    </div>
+
+    <!-- Locked state (free plan) -->
+    <div class="lc-locked" id="lcLocked">
+      <span class="lc-locked-icon">👑</span>
+      <p class="lc-locked-title" data-i18n="profile.lc.lockedTitle">CV is a Premium feature</p>
+      <p class="lc-locked-sub" data-i18n="profile.lc.lockedSub">Upgrade to Premium to unlock a deeper profile and get personalized guidance for the opportunities you want most.</p>
+      <a href="dashboard.html" class="lc-upgrade-btn" data-i18n="profile.lc.upgradeBtn">See Premium Plan ›</a>
+    </div>
+
+    <!-- Unlocked form (premium plan) -->
+    <form id="lcForm" class="lc-form" style="display:none;">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="lcToefl" data-i18n="profile.lc.label.toefl">TOEFL / IELTS taken or willing to take?</label>
+          <select id="lcToefl" disabled>
+            <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
+            <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
+            <option value="false" data-i18n="profile.lc.option.no">No</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="lcBachelor" data-i18n="profile.lc.label.bachelor">Bachelor's degree completed?</label>
+          <select id="lcBachelor" disabled>
+            <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
+            <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
+            <option value="false" data-i18n="profile.lc.option.no">No</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="lcRecLetters" data-i18n="profile.lc.label.recLetters">Recommendation letters available</label>
+          <input type="number" id="lcRecLetters" min="0" max="10" data-i18n-placeholder="profile.lc.ph.recLetters" placeholder="e.g. 2" disabled>
+        </div>
+        <div class="form-field">
+          <label for="lcLanguages" data-i18n="profile.lc.label.languages">Languages you speak</label>
+          <textarea id="lcLanguages" rows="1" data-i18n-placeholder="profile.lc.ph.languages" placeholder="e.g. Spanish, English" disabled></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="lcWorkExperience" data-i18n="profile.lc.label.workExperience">Work experience</label>
+          <textarea id="lcWorkExperience" rows="1" data-i18n-placeholder="profile.lc.ph.workExperience" placeholder="e.g. 1 year as a tutor" disabled></textarea>
+        </div>
+        <div class="form-field">
+          <label for="lcVolunteerExperience" data-i18n="profile.lc.label.volunteerExperience">Volunteer experience</label>
+          <textarea id="lcVolunteerExperience" rows="1" data-i18n-placeholder="profile.lc.ph.volunteerExperience" placeholder="e.g. Local NGO, 6 months" disabled></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="lcLeadership" data-i18n="profile.lc.label.leadership">Leadership experience</label>
+          <textarea id="lcLeadership" rows="1" data-i18n-placeholder="profile.lc.ph.leadership" placeholder="e.g. Student council president" disabled></textarea>
+        </div>
+        <div class="form-field">
+          <label for="lcCertifications" data-i18n="profile.lc.label.certifications">Certifications</label>
+          <textarea id="lcCertifications" rows="1" data-i18n-placeholder="profile.lc.ph.certifications" placeholder="e.g. Google Data Analytics" disabled></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field"></div>
+        <div class="form-field form-field-action">
+          <span id="lcSaveStatus" class="save-status"></span>
+          <button type="button" id="lcEditToggleBtn" class="btn-save lc-btn-save" data-i18n="profile.lc.editBtn">Edit LC</button>
+        </div>
+      </div>
+    </form>
   </div>
 
 </main>
