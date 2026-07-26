@@ -143,9 +143,7 @@ input, select, textarea{ font-family: inherit; }
   max-width: 1100px;
 }
 
-/* Columna lateral: agrupa Goals + LC uno debajo del otro,
-   pero al lado del formulario de perfil en vez de ocupar
-   toda la fila cada uno. */
+/* Columna lateral: por ahora solo contiene Goals. */
 .side-column{
   display: flex;
   flex-direction: column;
@@ -492,11 +490,12 @@ input, select, textarea{ font-family: inherit; }
   border: 1px solid #F0D796;
   border-radius: 20px;
   padding: 28px 32px;
-  min-width: 0;
+  max-width: 1100px;
+  margin-top: 20px;
 }
 
 .lc-head h3{ font-size: 15.5px; font-weight: 700; color: var(--maroon-dark); }
-.lc-sub{ font-size: 12.5px; color: #7A5F32; margin-top: 4px; line-height: 1.5; }
+.lc-sub{ font-size: 12.5px; color: #7A5F32; margin-top: 4px; max-width: 520px; line-height: 1.5; }
 
 .lc-locked{
   margin-top: 18px;
@@ -520,10 +519,6 @@ input, select, textarea{ font-family: inherit; }
 .lc-upgrade-btn:hover{ filter: brightness(0.97); }
 
 .lc-form{ margin-top: 18px; display:flex; flex-direction: column; gap: 22px; }
-
-.lc-form .form-row{
-  grid-template-columns: 1fr;
-}
 
 .lc-form .form-field input,
 .lc-form .form-field select,
@@ -653,17 +648,4 @@ input, select, textarea{ font-family: inherit; }
 [data-theme="dark"] .lc-card .form-field select:disabled,
 [data-theme="dark"] .lc-card .form-field textarea:disabled{
   -webkit-text-fill-color: #2C1B22;
-}
-
-@media (min-width: 761px){
-  .profile-layout{
-    align-items: stretch;
-  }
-  .side-column{
-    display: flex;
-    flex-direction: column;
-  }
-  .lc-card{
-    margin-top: auto;
-  }
 }
