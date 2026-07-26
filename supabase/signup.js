@@ -1,6 +1,11 @@
 const formulario = document.getElementById("formSignup");
 const mensaje = document.getElementById("mensaje");
 
+// Si llegamos aquí desde Settings > Add account > Sign Up, mantenemos
+// el contexto para volver a Settings después de loguear la cuenta nueva.
+const signupParams = new URLSearchParams(window.location.search);
+const isAddingAccount = signupParams.get("addingAccount") === "1";
+
 formulario.addEventListener("submit", registrarUsuario);
 
 formulario.addEventListener("keydown", function (e) {
@@ -88,7 +93,7 @@ async function registrarUsuario(event) {
 
     setTimeout(() => {
       console.log("Ejecutando redirección ahora");
-      window.location.href = "login.html";
+      window.location.href = isAddingAccount ? "login.html?addingAccount=1" : "login.html";
     }, 2000);
 
   } catch (err) {
