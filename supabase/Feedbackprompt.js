@@ -33,7 +33,7 @@
 const TESTIMONIOS_TABLE = 'testimonios';
 const USERS_TABLE = 'Usuarios';
 
-const SHOW_AFTER_MS = 25000; // cuánto espera antes de mostrar la notificación
+const SHOW_AFTER_MS = 90000; // cuánto espera antes de mostrar la notificación
 const DISMISS_DAYS = 30;     // si la cierran sin comentar, no volver a molestar por X días
 
 // Busca el cliente ya creado en base.js bajo los nombres más comunes.
