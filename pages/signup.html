@@ -251,6 +251,15 @@
 }
 
 .gpa-applied-note.show{ display:block; }
+
+/* ===== STEP 1 VALIDATION ERROR ===== */
+.step1-error{
+  color:#FFC2C2;
+  font-size:13px;
+  margin-top:-6px;
+  margin-bottom:10px;
+  min-height:16px;
+}
 </style>
 
 </head>
@@ -326,6 +335,8 @@
 <label>Password</label>
 <input type="password" id="password" placeholder="Password min 6 characters" minlength="6">
 </div>
+
+<p id="step1-error" class="step1-error"></p>
 
 <div class="btn-row">
 <button type="button" class="btn-next" onclick="nextStep()">
@@ -566,8 +577,39 @@ Next
     if (mensaje) {
         mensaje.textContent = "";
     }
+
+    const step1Error = document.getElementById("step1-error");
+    if (step1Error) {
+        step1Error.textContent = "";
+    }
 }
+
+        function validateStep1() {
+            const errorBox = document.getElementById("step1-error");
+            const full_name = document.getElementById("full_name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!full_name || !email || !password) {
+                errorBox.textContent = "Please fill in all fields.";
+                return false;
+            }
+
+            if (password.length < 6) {
+                errorBox.textContent = "Password must be at least 6 characters long.";
+                return false;
+            }
+
+            errorBox.textContent = "";
+            return true;
+        }
+
         function nextStep() {
+            // Validamos el Step 1 (Account) antes de dejar avanzar
+            if (currentStep === 0 && !validateStep1()) {
+                return;
+            }
+
             if (currentStep < steps.length - 1) {
                 currentStep++;
                 showStep(currentStep);
