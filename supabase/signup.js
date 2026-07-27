@@ -11,7 +11,6 @@ formulario.addEventListener("submit", registrarUsuario);
 formulario.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     const esUltimoStep = document.querySelector(".step:last-of-type").classList.contains("active");
-
     if (!esUltimoStep) {
       e.preventDefault();
     }
@@ -34,12 +33,20 @@ async function registrarUsuario(event) {
   const modality = document.getElementById("modality").value;
 
   if (!full_name || !email || !password) {
-    mensaje.textContent = "Completa nombre, email y contraseña.";
+    mensaje.textContent = "Please complete your name, email and password.";
     mensaje.style.color = "red";
     return;
   }
 
-  mensaje.textContent = "Creando cuenta...";
+  // Chequeo de respaldo: por si el usuario llega a este punto sin pasar
+  // por la validación del Step 1 (por ejemplo, con JS deshabilitado en algún paso).
+  if (password.length < 6) {
+    mensaje.textContent = "Password must be at least 6 characters long.";
+    mensaje.style.color = "red";
+    return;
+  }
+
+  mensaje.textContent = "Creating account...";
   mensaje.style.color = "inherit";
 
   try {
@@ -81,14 +88,13 @@ async function registrarUsuario(event) {
     console.log("PERFIL ERROR:", errorPerfil);
 
     if (errorPerfil) {
-      mensaje.textContent = "Cuenta creada, pero falló guardar el perfil: " + errorPerfil.message;
+      mensaje.textContent = "Account created, but saving your profile failed: " + errorPerfil.message;
       mensaje.style.color = "red";
       return;
     }
 
-    mensaje.textContent = "¡Cuenta creada con éxito! Redirigiendo...";
+    mensaje.textContent = "Account created successfully! Redirecting...";
     mensaje.style.color = "green";
-
     console.log("Redirigiendo en 2 segundos...");
 
     setTimeout(() => {
@@ -98,7 +104,7 @@ async function registrarUsuario(event) {
 
   } catch (err) {
     console.error("ERROR INESPERADO:", err);
-    mensaje.textContent = "Error inesperado: " + err.message;
+    mensaje.textContent = "Unexpected error: " + err.message;
     mensaje.style.color = "red";
   }
 }
