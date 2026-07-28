@@ -229,13 +229,21 @@ function showDashboardToast(message) {
   dashboardToastTimeout = setTimeout(() => toastEl.classList.remove("show"), 3000);
 }
 
+// Rutas de los íconos de cada plan. Si tus archivos se llaman
+// distinto, solo hay que actualizar estas tres líneas.
+const PLAN_ICON_SRC = {
+  free: "../free_icon.png",
+  premium: "../premium_icon.png",
+  enterprise: "../enterprise_icon.png"
+};
+
 // Definición de los planes en función del idioma (nombre, precio,
 // features), para no tener nada hardcodeado en inglés.
 function getPlanDefinitions(lang) {
   return [
     {
       id: "free",
-      icon: "👤",
+      icon: PLAN_ICON_SRC.free,
       name: t("dash.plan.free.name", lang),
       price: "$0",
       priceNote: t("dash.plan.free.priceNote", lang),
@@ -244,7 +252,7 @@ function getPlanDefinitions(lang) {
     },
     {
       id: "premium",
-      icon: "👑",
+      icon: PLAN_ICON_SRC.premium,
       name: t("dash.plan.premium.name", lang),
       price: "$8.99",
       priceNote: t("dash.plan.premium.priceNote", lang),
@@ -258,7 +266,7 @@ function getPlanDefinitions(lang) {
     },
     {
       id: "enterprise",
-      icon: "🏢",
+      icon: PLAN_ICON_SRC.enterprise,
       name: t("dash.plan.enterprise.name", lang),
       price: t("dash.plan.enterprise.price", lang),
       priceNote: t("dash.plan.enterprise.priceNote", lang),
@@ -283,14 +291,16 @@ function renderPlanCard(plan, currentPlanId, lang) {
 
   return `
     <div class="plan-card plan-card--${plan.modifier}">
-      <div class="plan-icon">${plan.icon}</div>
-      <p class="plan-name">${plan.name}</p>
-      <p class="plan-price">${plan.price}</p>
-      <p class="plan-price-note">${plan.priceNote}</p>
-      <ul class="plan-features">
-        ${plan.features.map(f => `<li>${f}</li>`).join("")}
-      </ul>
-      ${buttonHtml}
+      <div class="plan-icon"><img src="${plan.icon}" alt="" class="plan-icon-img"></div>
+      <div class="plan-body">
+        <p class="plan-name">${plan.name}</p>
+        <p class="plan-price">${plan.price}</p>
+        <p class="plan-price-note">${plan.priceNote}</p>
+        <ul class="plan-features">
+          ${plan.features.map(f => `<li>${f}</li>`).join("")}
+        </ul>
+        ${buttonHtml}
+      </div>
     </div>
   `;
 }
