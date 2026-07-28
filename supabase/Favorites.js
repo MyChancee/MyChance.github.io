@@ -8,6 +8,15 @@
 // localizeEnum, localizeCountry, getCurrentLang, t, tf,
 // pluralOpportunities) para pintar todo en el idioma activo, y se
 // vuelve a renderizar solo al recibir "languagechange".
+//
+// EXPIRACIÓN (nuevo): a diferencia de opportunities.js, ACÁ NO se
+// filtran las oportunidades vencidas (columna "Expire_date") — se
+// siguen mostrando porque el usuario las guardó, pero con un
+// banner grande de "se eliminó" y la tarjeta atenuada. El corazón
+// (ya activo en esta página) sigue funcionando como botón de
+// "cerrar": al tocarlo se borra de la tabla "Favoritos" igual que
+// antes, y como opportunities.js ya filtra las vencidas, nunca va
+// a volver a aparecer del lado de Opportunities.
 // ============================================================
 
 let ALL_DATA = [];
@@ -75,6 +84,38 @@ function renderFavIcon() {
 }
 
 // ------------------------------------------------------------
+// Expiración: mismo criterio que opportunities.js (columna
+// "Expire_date" de la tabla "Oportunidades"). Acá solo nos
+// interesa saber si YA venció, para mostrar el banner grande de
+// "se eliminó" — no filtramos nada de ALL_DATA.
+// ------------------------------------------------------------
+function daysUntilExpiry(item) {
+  if (!item || !item.Expire_date) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const expiry = new Date(item.Expire_date + "T00:00:00");
+  if (isNaN(expiry.getTime())) return null;
+  const diffMs = expiry - today;
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+}
+
+function isExpired(item) {
+  const days = daysUntilExpiry(item);
+  return days !== null && days < 0;
+}
+
+// Banner grande de "se eliminó" (más visible que el aviso de
+// Opportunities). Usa la key "fav.expired.banner" de language.js
+// si existe; si no, cae en un texto por default en inglés.
+function renderRemovedBanner(item, lang) {
+  if (!isExpired(item)) return "";
+  const label = (typeof t === "function" && t("fav.expired.banner", lang) !== "fav.expired.banner")
+    ? t("fav.expired.banner", lang)
+    : "This opportunity was removed";
+  return `<div class="expiry-banner-removed">${label}</div>`;
+}
+
+// ------------------------------------------------------------
 // Render de la grilla de favoritos
 // ------------------------------------------------------------
 function renderGrid() {
@@ -89,14 +130,19 @@ function renderGrid() {
     return;
   }
 
-  grid.innerHTML = ALL_DATA.map(item => `
-    <article class="opp-card" data-id="${item.id}">
+  grid.innerHTML = ALL_DATA.map(item => {
+    const expired = isExpired(item);
+
+    return `
+    <article class="opp-card ${expired ? "opp-card--expired" : ""}" data-id="${item.id}">
       <div class="opp-top">
         ${renderLogo(item, "opp-logo")}
-        <button class="fav-btn active" data-fav="${item.id}" aria-label="${t("opp.fav.remove", lang)}">
+        <button class="fav-btn active" data-fav="${item.id}" aria-label="${t(expired ? "fav.close" : "opp.fav.remove", lang)}" title="${t(expired ? "fav.close" : "opp.fav.remove", lang)}">
           ${renderFavIcon()}
         </button>
       </div>
+
+      ${renderRemovedBanner(item, lang)}
 
       <span class="match-badge">${tf("opp.matchBadge", lang, { pct: item.match_percent })}</span>
 
@@ -116,9 +162,13 @@ function renderGrid() {
         ${(item.tags || []).map(tag => `<span class="tag tag-cat">${tag}</span>`).join("")}
       </div>
 
-      <button class="btn-details" data-view-details="${item.id}">${t("opp.viewDetails", lang)}</button>
+      ${expired
+        ? ""
+        : `<button class="btn-details" data-view-details="${item.id}">${t("opp.viewDetails", lang)}</button>`
+      }
     </article>
-  `).join("");
+  `;
+  }).join("");
 
   grid.querySelectorAll("[data-fav]").forEach(btn => {
     btn.addEventListener("click", () => removeFavorite(Number(btn.dataset.fav)));
@@ -131,7 +181,10 @@ function renderGrid() {
 
 // ------------------------------------------------------------
 // Modal de detalles (igual que en opportunities.js, con el
-// corazón siempre activo ya que todo lo que se ve acá está guardado)
+// corazón siempre activo ya que todo lo que se ve acá está
+// guardado). Las expiradas no llegan acá: su tarjeta ya no tiene
+// botón "View details" (ver renderGrid), así que no hace falta
+// duplicar el banner de "se eliminó" adentro del modal.
 // ------------------------------------------------------------
 let currentModalOpportunityId = null;
 
@@ -214,7 +267,11 @@ function closeModal() {
 }
 
 // ------------------------------------------------------------
-// Quitar de favoritos (borra de Supabase y de la lista)
+// Quitar de favoritos (borra de Supabase y de la lista). Es la
+// misma función tanto para "quitar un favorito normal" como para
+// "cerrar" una tarjeta que ya se eliminó (expirada) — en ambos
+// casos el resultado es el mismo: deja de estar en "Favoritos", y
+// como Opportunities ya filtra las vencidas, no puede reaparecer.
 // ------------------------------------------------------------
 async function removeFavorite(id) {
   if (!currentUserId) return;
