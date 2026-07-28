@@ -37,7 +37,7 @@ const TESTIMONIOS_TABLE = 'testimonios';
 const USERS_TABLE = 'Usuarios';
 
 const SHOW_AFTER_MS = 300000; // cuánto espera antes de mostrar la notificación
-const DISMISS_DAYS = 30;     // si la cierran sin comentar, no volver a molestar por X días
+const DISMISS_DAYS = 15;     // si la cierran sin comentar, no volver a molestar por X días
 
 // --- Filtro de palabras inapropiadas ---
 // Lista básica; agrégale las variantes/palabras que quieras cubrir.
