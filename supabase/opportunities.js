@@ -14,6 +14,14 @@
 // localizeCountry, getCurrentLang, t, tf, pluralOpportunities.
 // Cuando el usuario cambia el idioma desde Ajustes, language.js
 // dispara "languagechange" y volvemos a pintar todo sin recargar.
+//
+// EXPIRACIÓN (nuevo): usa la columna "Expire_date" (date) de la
+// tabla "Oportunidades".
+//   - Si Expire_date ya pasó, la oportunidad se filtra de
+//     ALL_DATA en init() y no se muestra en Opportunities.
+//   - Si quedan entre 0 y 7 días, se muestra un banner de aviso
+//     ("se retira pronto") en la tarjeta, la featured card y el
+//     modal de detalles.
 // ============================================================
 
 // ------------------------------------------------------------
@@ -144,6 +152,53 @@ async function getFollowedOrgs(userId) {
   }
 
   return new Set(data.map(row => row.organization));
+}
+
+// ------------------------------------------------------------
+// Expiración: usa la columna "Expire_date" (date) de la tabla
+// "Oportunidades". Una oportunidad se considera:
+//  - expirada: Expire_date < hoy -> se filtra y NO se muestra
+//  - "expiring soon": quedan entre 0 y 7 días -> banner de aviso
+// ------------------------------------------------------------
+function daysUntilExpiry(item) {
+  if (!item || !item.Expire_date) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const expiry = new Date(item.Expire_date + "T00:00:00");
+  if (isNaN(expiry.getTime())) return null;
+  const diffMs = expiry - today;
+  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+}
+
+function isExpired(item) {
+  const days = daysUntilExpiry(item);
+  return days !== null && days < 0;
+}
+
+function isExpiringSoon(item) {
+  const days = daysUntilExpiry(item);
+  return days !== null && days >= 0 && days <= 7;
+}
+
+function formatExpiryDate(item, lang) {
+  if (!item || !item.Expire_date) return "";
+  const expiry = new Date(item.Expire_date + "T00:00:00");
+  if (isNaN(expiry.getTime())) return "";
+  return expiry.toLocaleDateString(lang === "es" ? "es-ES" : "en-US", {
+    month: "numeric", day: "numeric", year: "numeric"
+  });
+}
+
+// HTML del banner "se retira pronto" (tarjeta / featured / modal).
+// Usa t()/tf() de language.js si existen; si no encontrás la key
+// "opp.expiry.soon" todavía, cae en un texto por default en inglés.
+function renderExpiryBanner(item, lang, extraClass = "") {
+  if (!isExpiringSoon(item)) return "";
+  const dateStr = formatExpiryDate(item, lang);
+  const label = (typeof tf === "function")
+    ? tf("opp.expiry.soon", lang, { date: dateStr })
+    : `Expire Date: ${dateStr}`;
+  return `<div class="expiry-banner ${extraClass}">${label}</div>`;
 }
 
 // ------------------------------------------------------------
@@ -407,6 +462,7 @@ function renderGrid(data) {
         ${(item.tags || []).map(tag => `<span class="tag tag-cat">${tag}</span>`).join("")}
       </div>
 
+      ${renderExpiryBanner(item, lang)}
       <button class="btn-details" data-view-details="${item.id}">${t("opp.viewDetails", lang)}</button>
     </article>
   `).join("");
@@ -490,6 +546,7 @@ function renderFeatured(data) {
     <div class="featured-match">
       <div class="featured-ring" style="--pct:${featured.match_percent}"><span>${featured.match_percent}%</span></div>
       <span class="featured-match-label">${t("opp.matchLabel", lang)}</span>
+      ${renderExpiryBanner(featured, lang)}
       <button class="btn-learn" data-view-details="${featured.id}">${t("opp.learnMore", lang)}</button>
     </div>
   `;
@@ -584,6 +641,8 @@ function openModal(id, options = {}) {
       <h4>${t("opp.modal.benefits", lang)}</h4>
       ${benefits}
     </div>
+
+    ${renderExpiryBanner(item, lang, "expiry-banner-modal")}
 
     <div class="modal-actions">
       ${hasLink
@@ -923,7 +982,12 @@ async function init() {
   const { data: userData } = await supabaseClient.auth.getUser();
   currentUserId = userData?.user?.id || null;
 
-  ALL_DATA = await getOpportunities(currentUserId);
+  // Filtramos las oportunidades ya expiradas (Expire_date < hoy):
+  // no deben aparecer en Opportunities. Si esa oportunidad sigue
+  // guardada en Favoritos, se sigue mostrando ahí (con su propio
+  // aviso), pero acá no.
+  ALL_DATA = (await getOpportunities(currentUserId)).filter(item => !isExpired(item));
+
   state.savedIds = await getFavoriteIds(currentUserId);
   state.goalIds = await getGoalIds(currentUserId);
   state.goalChecklists = await getGoalChecklists(currentUserId);
@@ -945,8 +1009,15 @@ async function init() {
   const idParam = params.get("id");
   if (idParam) {
     const id = Number(idParam);
-    if (!Number.isNaN(id) && ALL_DATA.some(item => item.id === id)) {
-      openModal(id);
+    if (!Number.isNaN(id)) {
+      if (ALL_DATA.some(item => item.id === id)) {
+        openModal(id);
+      } else {
+        // No está en ALL_DATA: o no existe, o ya expiró y quedó
+        // filtrada arriba. Le avisamos con un mensaje chico en
+        // vez de dejar la página como si nada.
+        showOppToast(t("opp.toast.expired", getCurrentLang()) || "This opportunity is no longer available.");
+      }
     }
   }
 }
