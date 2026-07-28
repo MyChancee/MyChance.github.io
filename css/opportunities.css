@@ -1290,3 +1290,25 @@ input, select{ font-family: inherit; }
   --skeleton-base: rgba(255,255,255,0.08);
   --skeleton-shine: rgba(255,255,255,0.18);
 }
+
+/* ===================== EXPIRY BANNER (nuevo) =====================
+   Aviso que aparece cuando faltan entre 0 y 7 días para Expire_date
+   (columna "Expire_date" en la tabla "Oportunidades" de Supabase).
+   Se usa en la tarjeta de la grilla, en la featured card y en el
+   modal de detalles (con la clase extra .expiry-banner-modal). */
+.expiry-banner{
+  background: var(--maroon-dark);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+
+.expiry-banner-modal{
+  margin-top: 0;
+  margin-bottom: 18px;
+}
