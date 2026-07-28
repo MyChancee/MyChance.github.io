@@ -19,6 +19,9 @@
     2. El nombre que se guarda en `testimonios` ya no cae al email del usuario
        si no tiene full_name (eso exponía correos reales en la landing pública).
        Ahora cae a "MyChance User".
+    3. NUEVO: filtro básico de palabras inapropiadas antes de enviar el
+       comentario. No es infalible (ver nota de seguridad al final), pero
+       evita que groserías obvias lleguen a la tabla pública de testimonios.
 
   Requisitos en Supabase:
     1. Tabla `testimonios` con columnas: id (uuid, PK), nombre (text), comentario (text), created_at (timestamp).
@@ -35,6 +38,32 @@ const USERS_TABLE = 'Usuarios';
 
 const SHOW_AFTER_MS = 300000; // cuánto espera antes de mostrar la notificación
 const DISMISS_DAYS = 30;     // si la cierran sin comentar, no volver a molestar por X días
+
+// --- Filtro de palabras inapropiadas ---
+// Lista básica; agrégale las variantes/palabras que quieras cubrir.
+// Están en minúsculas y sin tildes porque normalizamos el texto antes de comparar.
+const BAD_WORDS = [
+  'mierda', 'puto', 'puta', 'pendejo', 'idiota', 'estupido',
+  'imbecil', 'cabron', 'verga', 'chinga', "maldito" , "xuxa" , "pinga" , "Xuxa" , "Pinga" , "hijo de puta" ,
+  // inglés, por si algún usuario escribe en inglés
+  'fuck', 'shit', 'bitch', 'asshole', 'bastard'
+];
+
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, ''); // quita tildes
+}
+
+function containsBadWords(text) {
+  const normalized = normalizeText(text);
+  return BAD_WORDS.some((word) => {
+    // \b para que no marque falsos positivos por ser substring de otra palabra
+    const pattern = new RegExp(`\\b${word}\\b`, 'i');
+    return pattern.test(normalized);
+  });
+}
 
 // Busca el cliente ya creado en base.js bajo los nombres más comunes.
 function getSupabaseClient() {
@@ -88,6 +117,13 @@ async function handleSubmit(toast, supabaseClient, userId, nombre) {
 
   if (!comentario) {
     textarea.focus();
+    return;
+  }
+
+  // Bloqueamos el envío si el comentario contiene lenguaje inapropiado.
+  if (containsBadWords(comentario)) {
+    textarea.focus();
+    alert('Please keep your feedback respectful and try again.');
     return;
   }
 
