@@ -1312,3 +1312,28 @@ input, select{ font-family: inherit; }
   margin-top: 0;
   margin-bottom: 18px;
 }
+
+/* ===================== FAVORITES: "SE ELIMINÓ" (nuevo) =====================
+   Cuando una oportunidad guardada en Favoritos ya venció (Expire_date
+   en el pasado), la tarjeta se atenúa un poco y muestra este banner
+   más grande que el de Opportunities. El corazón sigue activo y
+   funciona como botón de "cerrar" (removeFavorite en Favorites.js). */
+.opp-card--expired{
+  opacity: 0.75;
+}
+.opp-card--expired:hover{
+  transform: none;
+  box-shadow: none;
+  border-color: var(--line);
+}
+
+.expiry-banner-removed{
+  background: var(--maroon-dark);
+  color: var(--white);
+  font-size: 13.5px;
+  font-weight: 800;
+  text-align: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
