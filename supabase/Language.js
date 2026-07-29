@@ -232,6 +232,12 @@ const DICTIONARY = {
     "opp.fav.remove": "Quitar de favoritos",
     "opp.matchLabel": "Coincidencia",
 
+    // ---- Expiración (nuevo) ----
+    "opp.expiry.soon": "Vence pronto — {date}",
+    "opp.toast.expired": "Esta oportunidad ya no está disponible.",
+    "fav.expired.banner": "Esta oportunidad fue eliminada",
+    "fav.close": "Cerrar",
+
     // ---- Strings dinámicos generados en JS (dashboard.js) ----
     "dash.goal.empty.title": "Todavía no tenés una meta fijada",
     "dash.goal.empty.sub": "Elegí una beca en Oportunidades y marcala con 🎯",
@@ -453,6 +459,12 @@ const DICTIONARY = {
     "opp.fav.save": "Save opportunity",
     "opp.fav.remove": "Remove from favorites",
     "opp.matchLabel": "Match",
+
+    // ---- Expiration (new) ----
+    "opp.expiry.soon": "Expiring soon — {date}",
+    "opp.toast.expired": "This opportunity is no longer available.",
+    "fav.expired.banner": "This opportunity was removed",
+    "fav.close": "Close",
 
     // ---- Dynamic strings generated in JS (dashboard.js) ----
     "dash.goal.empty.title": "You don't have a goal set yet",
