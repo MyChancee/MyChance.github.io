@@ -198,7 +198,7 @@ function renderExpiryBanner(item, lang, extraClass = "") {
   const label = (typeof tf === "function")
     ? tf("opp.expiry.soon", lang, { date: dateStr })
     : `Expire Date: ${dateStr}`;
-  return `<div class="expiry-banner ${extraClass}">${label}</div>`;
+  return `<div class="expiry-banner ${extraClass}"><span class="expiry-banner-icon">!</span>${label}</div>`;
 }
 
 // ------------------------------------------------------------
