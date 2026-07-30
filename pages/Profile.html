@@ -15,7 +15,10 @@
 <link rel="icon" type="image/png" href="../mychance-nav-icon.png">
 <link rel="stylesheet" href="../css/Profile.css">
 <link rel="stylesheet" href="../css/Theme dark.css">
-  <link rel="stylesheet" href="../css/mobile-nav.css">
+<link rel="stylesheet" href="../css/mobile-nav.css">
+<link rel="stylesheet" href="../css/profile-extras.css">
+<!-- Cropper.js: librería para el recorte de la foto de perfil (arrastrar + zoom) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 </head>
 <body>
 
@@ -159,14 +162,34 @@
           </div>
         </div>
 
+        <!-- ---- Countries of interest / Professional interest ----
+             Ahora son multi-select con checkboxes en vez de texto
+             libre. El valor final sigue viajando como texto separado
+             por comas en el <input type="hidden">, así que el resto
+             del código (payload de guardado, signup.js, etc.) no
+             necesita cambios. -->
         <div class="form-row">
           <div class="form-field">
-            <label for="countriesInterest" data-i18n="profile.label.countriesInterest">Countries of interest</label>
-            <input type="text" id="countriesInterest" name="countriesInterest" data-i18n-placeholder="profile.ph.countriesInterest" placeholder="e.g. United States, Canada" disabled>
+            <label for="countriesInterestTrigger" data-i18n="profile.label.countriesInterest">Countries of interest</label>
+            <div class="multiselect" id="countriesInterestSelect">
+              <button type="button" class="multiselect-trigger" id="countriesInterestTrigger" disabled>
+                <span class="multiselect-trigger-text multiselect-placeholder" id="countriesInterestText" data-i18n="profile.ph.countriesInterest">e.g. United States, Canada</span>
+                <span class="multiselect-caret">▾</span>
+              </button>
+              <div class="multiselect-panel" id="countriesInterestPanel"></div>
+            </div>
+            <input type="hidden" id="countriesInterest" name="countriesInterest">
           </div>
           <div class="form-field">
-            <label for="professionalInterest" data-i18n="profile.label.professionalInterest">Professional interest</label>
-            <input type="text" id="professionalInterest" name="professionalInterest" data-i18n-placeholder="profile.ph.professionalInterest" placeholder="e.g. Engineering" disabled>
+            <label for="professionalInterestTrigger" data-i18n="profile.label.professionalInterest">Professional interest</label>
+            <div class="multiselect" id="professionalInterestSelect">
+              <button type="button" class="multiselect-trigger" id="professionalInterestTrigger" disabled>
+                <span class="multiselect-trigger-text multiselect-placeholder" id="professionalInterestText" data-i18n="profile.ph.professionalInterest">e.g. Engineering</span>
+                <span class="multiselect-caret">▾</span>
+              </button>
+              <div class="multiselect-panel" id="professionalInterestPanel"></div>
+            </div>
+            <input type="hidden" id="professionalInterest" name="professionalInterest">
           </div>
         </div>
 
@@ -289,6 +312,21 @@
 </main>
   </div>
 
+  <!-- ===== CROP MODAL (nuevo): recorte de la foto de perfil ===== -->
+  <div class="crop-modal-overlay" id="cropModalOverlay">
+    <div class="crop-modal-box">
+      <h3 data-i18n="profile.crop.title">Adjust your photo</h3>
+      <p class="crop-modal-sub" data-i18n="profile.crop.sub">Drag to reposition, scroll or pinch to zoom.</p>
+      <div class="crop-image-wrap">
+        <img id="cropImage" src="" alt="">
+      </div>
+      <div class="crop-modal-actions">
+        <button type="button" class="crop-btn-cancel" id="cropCancelBtn" data-i18n="profile.crop.cancel">Cancel</button>
+        <button type="button" class="crop-btn-confirm" id="cropConfirmBtn" data-i18n="profile.crop.confirm">Save photo</button>
+      </div>
+    </div>
+  </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase/base.js"></script>
 <script src="../supabase/session.js"></script>
@@ -302,6 +340,8 @@
   // traduzca lo que ya está en el DOM al cargar; el resto del perfil
   // (nombre, plan real desde Supabase) lo sigue llenando profile.js.
 </script>
+<!-- Cropper.js: debe cargar antes que Profile.js, que lo usa -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script src="../supabase/Profile.js"></script>
 </body>
 </html>
