@@ -1,651 +1,929 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700;800&display=swap');
-
-:root{
-    --maroon: #770937;
-  --maroon-dark: #a8084b;
-  --maroon-light: #8A1F38;
-  --cream: #F5F1E8;
-  --cream-soft: #FFFf;
-  --white: #FFFFFF;
-  --text-main: #2C1B22;
-  --text-muted: #8A7782;
-  --line: #ECE5D8;
-  --pink-soft: #F7E7EA;
-  --green: #2F6B4F;
-  --green-bg: #E4F3EA;
-  --premium-gold: #F3BF43;
-
-  --font-logo: 'Raleway', serif;
-  --font-body: 'Poppins', -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-*{ box-sizing: border-box; margin:0; padding:0; }
-
-body{
-  font-family: var(--font-body);
-  background: var(--cream);
-  color: var(--text-main);
-}
-
-a{ text-decoration:none; color:inherit; }
-button{ font-family: inherit; cursor:pointer; }
-input, select, textarea{ font-family: inherit; }
-
-.app{
-  display:grid;
-  grid-template-columns: 220px 1fr;
-  min-height: 100vh;
-}
-
-/* ===================== SIDEBAR (shared look) ===================== */
-.sidebar{
-  background: var(--cream-soft);
-  border-right: 1px solid var(--line);
-  padding: 24px 18px;
-  display:flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-.sidebar-logo{ display:flex; align-items:center; gap:8px; padding: 0 4px; text-decoration:none; }
-.logo-mark{ width: 28px; height: 28px; object-fit: contain; }
-.logo-text{
-  font-family: var(--font-logo);
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: 0.06em;
-  color: var(--maroon);
-}
-
-.user-card{
-  display:flex; align-items:center; gap:10px;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 10px 12px;
-}
-.user-avatar{
-  width: 34px; height: 34px; border-radius: 50%;
-  background: var(--maroon); color: var(--white);
-  display:flex; align-items:center; justify-content:center;
-  font-size: 15px; flex-shrink:0;
-  overflow: hidden;
-}
-.user-avatar img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.user-info{ display:flex; flex-direction: column; gap: 3px; }
-.user-hello{ font-size: 13px; font-weight: 600; }
-.plan-badge{
-  align-self:flex-start; font-size: 10px; font-weight: 600;
-  color: var(--white); background: var(--maroon);
-  padding: 2px 8px; border-radius: 999px;
-}
-
-.nav{ display:flex; flex-direction: column; gap: 4px; }
-.nav-item{
-  display:flex; align-items:center; gap: 10px;
-  padding: 10px 12px; border-radius: 10px;
-  font-size: 13.5px; font-weight: 500;
-  transition: background .15s ease, color .15s ease;
-}
-.nav-item:hover{ background: var(--pink-soft); }
-.nav-item.active{ background: var(--maroon); color: var(--white); font-weight: 600; }
-.nav-icon{
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-/* --- premium sidebar styling --- */
-.sidebar.premium .nav-item.active{
-  background: rgba(243,191,67,0.15);
-  color: var(--maroon-dark);
-  box-shadow: inset 0 0 0 2px var(--premium-gold);
-}
-.sidebar.premium .plan-badge{
-  background: var(--premium-gold);
-  color: var(--maroon-dark);
-}
-
-.quote-card{
-  margin-top: auto;
-  background: var(--pink-soft);
-  border-radius: 16px;
-  padding: 18px 16px 20px;
-  color: var(--maroon);
-}
-.quote-mark{ font-size: 22px; }
-.quote-card p{ font-size: 13px; font-weight: 700; margin-top: 6px; }
-.quote-sub{ font-size: 11.5px; font-weight: 500 !important; color: #7A5F68; margin-top: 4px !important; line-height: 1.4; }
-
-/* ===================== MAIN ===================== */
-.main{ padding: 22px 28px 60px; }
-
-.back-link{
-  display:inline-block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 18px;
-}
-.back-link:hover{ color: var(--maroon); }
-
-/* ===================== PROFILE CARD ===================== */
-.profile-layout{
-  display:grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 20px;
-  align-items:start;
-  max-width: 1100px;
-}
-
-/* Columna lateral: por ahora solo contiene Goals. */
-.side-column{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-width: 0;
-}
-
-.profile-card{
-  background: var(--cream-soft);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 32px;
-  min-width: 0;
-}
-
-.profile-avatar-wrap{
-  position: relative;
-  width: 90px;
-  height: 90px;
-  display: inline-block;
-  margin-bottom: 8px;
-}
-
-.profile-avatar{
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: var(--pink-soft);
-  border: 2px solid var(--maroon);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow: hidden;
-}
-
-.avatar-placeholder{
-  font-size: 40px;
-  color: var(--maroon);
-}
-
-.profile-avatar img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.avatar-camera{
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--maroon);
-  color: var(--white);
-  border: 3px solid var(--cream-soft);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size: 13px;
-  cursor: pointer;
-}
-.avatar-camera:hover{ background: var(--maroon-dark); }
-
-.profile-intro{
-  font-size: 13.5px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  max-width: 460px;
-  margin: 14px 0 30px;
-}
-
-.profile-form{
-  display:flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-.form-row{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.form-field{
-  display:flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-.form-field label{
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.required{ color: var(--maroon-light); margin-left: 2px; }
-
-.form-field input,
-.form-field select{
-  border: none;
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-  padding: 8px 2px;
-  font-size: 13.5px;
-  color: var(--text-main);
-  outline: none;
-  transition: border-color .15s ease;
-}
-
-.form-field input::placeholder,
-.form-field textarea::placeholder{ color: #B9AAB1; }
-
-.form-field input:focus,
-.form-field select:focus,
-.form-field textarea:focus{
-  border-color: var(--maroon);
-}
-
-.form-field select{
-  cursor: pointer;
-  color: var(--text-main);
-}
-
-.form-field input:disabled,
-.form-field select:disabled{
-  border-bottom-color: transparent;
-  color: var(--text-main);
-  cursor: default;
-  -webkit-text-fill-color: var(--text-main);
-  opacity: 1;
-  appearance: none;
-}
-
-.form-field select:disabled{
-  background: none;
-}
-
-/* Textareas para campos del LC que suelen tener texto largo
-   (idiomas, experiencia laboral, voluntariado, liderazgo,
-   certificaciones): a diferencia de un <input>, hacen salto
-   de línea en vez de esconder el texto que no cabe. */
-.form-field textarea{
-  border: none;
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-  padding: 8px 2px;
-  font-size: 13.5px;
-  font-family: inherit;
-  color: var(--text-main);
-  outline: none;
-  resize: none;
-  overflow: hidden;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  min-height: 34px;
-  line-height: 1.4;
-  width: 100%;
-  transition: border-color .15s ease;
-}
-.form-field textarea:disabled{
-  border-bottom-color: transparent;
-  color: var(--text-main);
-  cursor: default;
-  -webkit-text-fill-color: var(--text-main);
-  opacity: 1;
-}
-
-.form-field-action{
-  align-items:flex-end;
-  justify-content:flex-end;
-  flex-direction: row;
-  gap: 14px;
-}
-
-.save-status{
-  font-size: 12px;
-  color: var(--green);
-  font-weight: 600;
-  align-self: center;
-}
-
-.avatar-camera.uploading{
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.btn-save{
-  align-self: flex-end;
-  border: none;
-  background: transparent;
-  color: var(--maroon);
-  font-size: 13.5px;
-  font-weight: 700;
-  padding: 8px 2px;
-  border-bottom: 2px solid var(--maroon);
-}
-.btn-save:hover{ color: var(--maroon-dark); border-color: var(--maroon-dark); }
-
-/* ===================== GOAL CHECKLIST ===================== */
-/* ===================== MY GOALS ===================== */
-.goals-card{
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 24px;
-  min-width: 0;
-}
-
-.goals-head h3{ font-size: 15.5px; font-weight: 700; }
-.goals-sub{ font-size: 12.5px; color: var(--text-muted); margin-top: 4px; margin-bottom: 18px; }
-
-.goals-list{ display:flex; flex-direction: column; gap: 12px; }
-
-.goal-item{
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-.goal-item-top{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  padding: 12px;
-  cursor:pointer;
-}
-.goal-item-top:hover{ background: var(--pink-soft); }
-
-.goal-priority{
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--maroon);
-  background: var(--pink-soft);
-  border-radius: 999px;
-  padding: 2px 7px;
-  flex-shrink:0;
-}
-
-.goal-item-logo{
-  width: 34px; height: 34px; border-radius: 9px;
-  display:flex; align-items:center; justify-content:center;
-  color: var(--white); font-size: 14px; font-weight: 800;
-  flex-shrink:0;
-  overflow:hidden;
-}
-.goal-item-logo img{ width:100%; height:100%; object-fit:contain; padding:4px; background:var(--white); }
-
-.goal-item-info{ flex:1; min-width:0; }
-.goal-item-title{
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--text-main);
-  white-space: nowrap;
-  overflow:hidden;
-  text-overflow: ellipsis;
-}
-.goal-item-match{ font-size: 11px; color: var(--green); font-weight: 600; }
-
-.goal-item-actions{ display:flex; align-items:center; gap: 2px; flex-shrink:0; }
-
-.goal-reorder-btn, .goal-remove-btn{
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 12px;
-  display:flex; align-items:center; justify-content:center;
-}
-.goal-reorder-btn:hover{ background: var(--white); color: var(--maroon); }
-.goal-remove-btn:hover{ background: var(--white); color: #B3261E; }
-.goal-reorder-btn:disabled{ opacity: 0.3; cursor: default; }
-.goal-reorder-btn:disabled:hover{ background: transparent; color: var(--text-muted); }
-
-.goal-item-checklist{
-  padding: 4px 16px 16px;
-  border-top: 1px solid var(--line);
-}
-
-.checklist-progress-wrap{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  margin: 14px 0 14px;
-}
-.checklist-progress-bar{
-  flex:1;
-  height: 7px;
-  border-radius: 999px;
-  background: var(--pink-soft);
-  overflow:hidden;
-}
-.checklist-progress-fill{
-  height: 100%;
-  background: var(--green);
-  border-radius: 999px;
-  transition: width .3s ease;
-}
-.checklist-progress-label{
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.checklist-list{
-  list-style:none;
-  display:flex;
-  flex-direction:column;
-  gap: 10px;
-}
-.checklist-item{
-  display:flex;
-  align-items:flex-start;
-  gap: 9px;
-  font-size: 12.5px;
-  color: var(--text-main);
-  cursor:pointer;
-}
-.checklist-item input[type="checkbox"]{
-  margin-top: 2px;
-  accent-color: var(--maroon);
-  width:15px;
-  height:15px;
-  cursor:pointer;
-  flex-shrink: 0;
-}
-.checklist-item.done span{ text-decoration: line-through; color: var(--text-muted); }
-
-.goals-empty-note, .goals-premium-note{
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  text-align:center;
-  padding: 10px 4px 0;
-}
-.goals-premium-note a{ color: var(--maroon); font-weight: 600; }
-
-/* ===================== LC (LIFE CURRICULUM) ===================== */
-.lc-card{
-  background: linear-gradient(120deg, #FDF3DC 0%, #FBEEDB 100%);
-  border: 1px solid #F0D796;
-  border-radius: 20px;
-  padding: 28px 32px;
-  max-width: 1100px;
-  margin-top: 20px;
-}
-
-.lc-head h3{ font-size: 15.5px; font-weight: 700; color: var(--maroon-dark); }
-.lc-sub{ font-size: 12.5px; color: #7A5F32; margin-top: 4px; max-width: 520px; line-height: 1.5; }
-
-.lc-locked{
-  margin-top: 18px;
-  text-align:center;
-  padding: 30px 16px;
-  background: rgba(255,255,255,0.5);
-  border-radius: 16px;
-}
-.lc-locked-icon{ font-size: 28px; display:block; margin-bottom: 10px; }
-.lc-locked-title{ font-size: 14px; font-weight: 700; color: var(--maroon-dark); margin-bottom: 6px; }
-.lc-locked-sub{ font-size: 12.5px; color: #7A5F32; max-width: 380px; margin: 0 auto 16px; line-height: 1.5; }
-.lc-upgrade-btn{
-  display:inline-block;
-  background: var(--premium-gold);
-  color: var(--maroon-dark);
-  font-size: 12.5px;
-  font-weight: 700;
-  padding: 10px 20px;
-  border-radius: 999px;
-}
-.lc-upgrade-btn:hover{ filter: brightness(0.97); }
-
-.lc-form{ margin-top: 18px; display:flex; flex-direction: column; gap: 22px; }
-
-.lc-form .form-field input,
-.lc-form .form-field select,
-.lc-form .form-field textarea{
-  border-bottom: 1px solid #E8CE8C;
-}
-.lc-form .form-field input:focus,
-.lc-form .form-field select:focus,
-.lc-form .form-field textarea:focus{
-  border-color: var(--premium-gold);
-}
-
-.lc-btn-save{
-  color: #B4790E;
-  border-bottom-color: #B4790E;
-}
-.lc-btn-save:hover{ color: #8f5f08; border-color: #8f5f08; }
-
-/* ===================== RESPONSIVE ===================== */
-@media (max-width: 760px){
-  .app{ grid-template-columns: 1fr; }
-  .sidebar{ display:none; }
-  .main{ padding: 18px 16px 60px; }
-  .profile-layout{ grid-template-columns: 1fr; }
-  .profile-card, .goal-checklist-card, .lc-card{ padding: 24px 18px; }
-  .form-row{ grid-template-columns: 1fr; gap: 18px; }
-  .form-field-action{ align-items: flex-start; }
-  .btn-save{ align-self: flex-start; }
-}
-@media (prefers-reduced-motion: reduce){
-  *{ transition: none !important; }
-}
-.tgp-card{
-  display: none; /* el JS lo pone en "flex" cuando hay datos */
-  align-items: center;
-  gap: 16px;
-  margin-top: 18px;
-  padding: 16px;
-  background: var(--pink-soft);
-  border-radius: 16px;
-}
-
-.tgp-ring{
-  --match: 0;
-  --pct: 0;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: conic-gradient(
-    var(--maroon) 0% calc(var(--match)*1%),
-    var(--premium-gold) calc(var(--match)*1%) calc(var(--pct)*1%),
-    var(--white) calc(var(--pct)*1%) 100%
-  );
-}
-.tgp-ring::before{
-  content: "";
-  position: absolute;
-  inset: 7px;
-  background: var(--pink-soft);
-  border-radius: 50%;
-}
-
-.tgp-pct{
-  position: relative;
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--maroon);
-}
-.tgp-pct--complete{ color: #B4790E; }
-
-.tgp-label{
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--text-muted);
-  margin-bottom: 2px;
-}
-.tgp-name{
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-main);
-  line-height: 1.3;
-}
-.tgp-sub{
-  font-size: 11.5px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-/* ============================================================
-   MODO OSCURO — metido directo acá (no en un archivo aparte)
-   para que no dependa de que otro CSS se haya subido bien.
-   Solo redefine fondo/texto/borde; --maroon, --premium-gold y
-   --green quedan intactos en ambos temas.
-   ============================================================ */
-[data-theme="dark"]{
-  --cream: #0D0B0C;
-  --cream-soft: #171416;
-  --white: #221D20;
-  --text-main: #F2ECEE;
-  --text-muted: #A79399;
-  --line: #352E31;
-  --pink-soft: #2B1B22;
-}
-
-[data-theme="dark"] .form-field input:disabled,
-[data-theme="dark"] .form-field select:disabled,
-[data-theme="dark"] .form-field textarea:disabled{
-  -webkit-text-fill-color: var(--text-main);
-}
-
-/* La tarjeta del CV (Life Curriculum) tiene un fondo crema/dorado
-   fijo, no negro — así que acá el texto tiene que seguir siendo
-   el gris/oscuro de siempre en vez del blanco del resto del modo
-   oscuro, o quedaría invisible sobre ese fondo claro. */
-[data-theme="dark"] .lc-card{
-  --text-main: #2C1B22;
-  --text-muted: #8A7782;
-}
-[data-theme="dark"] .lc-card .form-field input:disabled,
-[data-theme="dark"] .lc-card .form-field select:disabled,
-[data-theme="dark"] .lc-card .form-field textarea:disabled{
-  -webkit-text-fill-color: #2C1B22;
-}
+// ============================================================
+// profile.js
+// - Perfil base + subida de foto (con recorte, ver más abajo).
+// - LC (Life Curriculum): campos extra, solo premium/enterprise.
+// - My Goals: lista de oportunidades marcadas con 🎯 (tabla
+//   "Metas"), ordenadas por prioridad. Free plan: máx 1 goal,
+//   sin reordenar. Premium/Enterprise: varios, con botones tipo
+//   Canva (traer al frente / adelante / atrás / enviar al fondo).
+//   Cada goal tiene su propio checklist de requirements, que el
+//   usuario tilda manualmente.
+//
+// MULTI-SELECT (nuevo): "Countries of interest" y "Professional
+// interest" pasaron de <input type="text"> a un dropdown con
+// checkboxes (ver buildMultiSelect más abajo). El valor elegido
+// se sigue guardando como texto separado por comas en un
+// <input type="hidden">, así que countries_interest /
+// professional_interest en Supabase no cambiaron de tipo ni de
+// formato — el resto del código (payload de guardado, signup.js)
+// no necesitó tocarse.
+//
+// RECORTE DE FOTO (nuevo): en vez de subir el archivo tal cual se
+// eligió, ahora se abre un modal con Cropper.js donde el usuario
+// puede arrastrar y hacer zoom dentro de un círculo antes de
+// confirmar. Recién ahí se sube el recorte final a Supabase Storage.
+// ============================================================
+
+const avatarInput = document.getElementById("avatarInput");
+const avatarCamera = document.querySelector(".avatar-camera");
+const avatarPreview = document.getElementById("avatarPreview");
+const profileForm = document.getElementById("profileForm");
+const editToggleBtn = document.getElementById("editToggleBtn");
+const saveStatus = document.getElementById("saveStatus");
+
+const editableFields = [
+  document.getElementById("fullName"),
+  document.getElementById("age"),
+  document.getElementById("nationality"),
+  document.getElementById("gender"),
+  document.getElementById("academicLevel"),
+  document.getElementById("gpa"),
+  document.getElementById("modality"),
+  document.getElementById("countriesInterest"),
+  document.getElementById("professionalInterest")
+];
+
+const lcForm = document.getElementById("lcForm");
+const lcLocked = document.getElementById("lcLocked");
+const lcEditToggleBtn = document.getElementById("lcEditToggleBtn");
+const lcSaveStatus = document.getElementById("lcSaveStatus");
+
+const lcEditableFields = [
+  document.getElementById("lcToefl"),
+  document.getElementById("lcBachelor"),
+  document.getElementById("lcRecLetters"),
+  document.getElementById("lcLanguages"),
+  document.getElementById("lcWorkExperience"),
+  document.getElementById("lcVolunteerExperience"),
+  document.getElementById("lcLeadership"),
+  document.getElementById("lcCertifications")
+];
+
+let currentUserId = null;
+let currentUserPlan = "free";
+let isEditing = false;
+let isLcEditing = false;
+let GOALS = []; // [{ id (Metas.id), opportunity_id, priority, checklist, opportunity: {...} }]
+let expandedGoalId = null;
+
+// ------------------------------------------------------------
+// Utilidades
+// ------------------------------------------------------------
+function setStatus(text, isError = false) {
+  saveStatus.textContent = text;
+  saveStatus.style.color = isError ? "#B3261E" : "var(--green)";
+  if (text) setTimeout(() => { saveStatus.textContent = ""; }, 3000);
+}
+
+function setLcStatus(text, isError = false) {
+  lcSaveStatus.textContent = text;
+  lcSaveStatus.style.color = isError ? "#B3261E" : "var(--green)";
+  if (text) setTimeout(() => { lcSaveStatus.textContent = ""; }, 3000);
+}
+
+function normalize(str) {
+  return String(str).trim().toLowerCase().replace(/[\s-]+/g, "_");
+}
+
+function setSelectValue(selectEl, rawValue) {
+  if (!rawValue) { selectEl.value = ""; return; }
+
+  const target = normalize(rawValue);
+  const match = Array.from(selectEl.options).find(opt => normalize(opt.value) === target || normalize(opt.textContent) === target);
+
+  if (match) {
+    selectEl.value = match.value;
+  } else {
+    const newOption = document.createElement("option");
+    newOption.value = rawValue;
+    newOption.textContent = rawValue;
+    selectEl.appendChild(newOption);
+    selectEl.value = rawValue;
+  }
+}
+
+function renderMiniLogo(opp) {
+  if (opp.logo_url && opp.logo_url.trim() !== "") {
+    return `<div class="goal-item-logo" style="background:${opp.logo_color}">
+      <img src="${opp.logo_url}" alt="" onerror="this.parentElement.innerHTML='${opp.logo_initial}'">
+    </div>`;
+  }
+  return `<div class="goal-item-logo" style="background:${opp.logo_color}">${opp.logo_initial}</div>`;
+}
+
+// ------------------------------------------------------------
+// Multi-select genérico (checkboxes en un dropdown), usado para
+// "Countries of interest" y "Professional interest". El valor
+// seleccionado se guarda como texto separado por comas en el
+// <input type="hidden"> asociado, para no cambiar el formato que
+// ya usa Supabase / signup.js.
+// ------------------------------------------------------------
+function buildMultiSelect({ triggerId, textId, panelId, hiddenInputId, options, placeholderText }) {
+  const trigger = document.getElementById(triggerId);
+  const text = document.getElementById(textId);
+  const panel = document.getElementById(panelId);
+  const hiddenInput = document.getElementById(hiddenInputId);
+
+  let selected = new Set();
+
+  function updateText() {
+    if (selected.size === 0) {
+      text.textContent = placeholderText;
+      text.classList.add("multiselect-placeholder");
+    } else {
+      const labels = options.filter(o => selected.has(o.value)).map(o => o.label);
+      text.textContent = labels.join(", ");
+      text.classList.remove("multiselect-placeholder");
+    }
+    hiddenInput.value = Array.from(selected)
+      .map(v => options.find(o => o.value === v)?.label || v)
+      .join(", ");
+  }
+
+  function renderPanel() {
+    panel.innerHTML = options.map(o => `
+      <label class="multiselect-option">
+        <input type="checkbox" value="${o.value}" ${selected.has(o.value) ? "checked" : ""}>
+        <span>${o.label}</span>
+      </label>
+    `).join("");
+
+    panel.querySelectorAll("input[type=checkbox]").forEach(cb => {
+      cb.addEventListener("change", () => {
+        if (cb.checked) selected.add(cb.value);
+        else selected.delete(cb.value);
+        updateText();
+      });
+    });
+  }
+
+  trigger.addEventListener("click", () => {
+    if (trigger.disabled) return;
+    panel.classList.toggle("open");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!trigger.contains(e.target) && !panel.contains(e.target)) {
+      panel.classList.remove("open");
+    }
+  });
+
+  renderPanel();
+  updateText();
+
+  return {
+    // Recibe el string guardado en Supabase (ej. "United States, Canada")
+    // y marca los checkboxes que matcheen (por value o por label,
+    // sin importar mayúsculas/espacios). Lo que no matchee se ignora
+    // silenciosamente — dato viejo cargado como texto libre antes de
+    // este cambio puede no coincidir con ninguna opción de la lista.
+    setValue(rawValue) {
+      const tokens = String(rawValue || "")
+        .split(",")
+        .map(s => s.trim().toLowerCase())
+        .filter(Boolean);
+
+      selected = new Set(
+        options
+          .filter(o => tokens.includes(o.value.toLowerCase()) || tokens.includes(o.label.toLowerCase()))
+          .map(o => o.value)
+      );
+
+      renderPanel();
+      updateText();
+    },
+    setDisabled(disabled) {
+      trigger.disabled = disabled;
+      if (disabled) panel.classList.remove("open");
+    }
+  };
+}
+
+// Países: reusa el mismo diccionario que ya usa Opportunities
+// (COUNTRY_NAMES, definido en language.js) para que la lista de
+// países sea consistente en toda la app.
+function buildCountryOptions(lang) {
+  return Object.keys(COUNTRY_NAMES)
+    .map(value => ({ value, label: localizeCountry(value, lang) }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+// Intereses profesionales: lista fija de áreas comunes. Agregá o
+// quitá items de este arreglo según lo que quieras ofrecer — el
+// dropdown se arma solo a partir de esta lista.
+const PROFESSIONAL_INTERESTS = [
+  { value: "Engineering", es: "Ingeniería", en: "Engineering" },
+  { value: "Computer Science", es: "Informática", en: "Computer Science" },
+  { value: "Medicine", es: "Medicina", en: "Medicine" },
+  { value: "Business & Finance", es: "Negocios y Finanzas", en: "Business & Finance" },
+  { value: "Law", es: "Derecho", en: "Law" },
+  { value: "Arts & Design", es: "Arte y Diseño", en: "Arts & Design" },
+  { value: "Architecture", es: "Arquitectura", en: "Architecture" },
+  { value: "Natural Sciences", es: "Ciencias Naturales", en: "Natural Sciences" },
+  { value: "Social Sciences", es: "Ciencias Sociales", en: "Social Sciences" },
+  { value: "Education", es: "Educación", en: "Education" },
+  { value: "Psychology", es: "Psicología", en: "Psychology" },
+  { value: "Communications & Media", es: "Comunicación y Medios", en: "Communications & Media" },
+  { value: "Environmental Studies", es: "Estudios Ambientales", en: "Environmental Studies" },
+  { value: "Music & Performing Arts", es: "Música y Artes Escénicas", en: "Music & Performing Arts" },
+  { value: "International Relations", es: "Relaciones Internacionales", en: "International Relations" },
+];
+
+function buildProfessionalInterestOptions(lang) {
+  return PROFESSIONAL_INTERESTS
+    .map(o => ({ value: o.value, label: lang === "es" ? o.es : o.en }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+let countriesInterestControl = null;
+let professionalInterestControl = null;
+
+function setupMultiSelects() {
+  const lang = getCurrentLang();
+
+  countriesInterestControl = buildMultiSelect({
+    triggerId: "countriesInterestTrigger",
+    textId: "countriesInterestText",
+    panelId: "countriesInterestPanel",
+    hiddenInputId: "countriesInterest",
+    options: buildCountryOptions(lang),
+    placeholderText: t("profile.ph.countriesInterest", lang)
+  });
+
+  professionalInterestControl = buildMultiSelect({
+    triggerId: "professionalInterestTrigger",
+    textId: "professionalInterestText",
+    panelId: "professionalInterestPanel",
+    hiddenInputId: "professionalInterest",
+    options: buildProfessionalInterestOptions(lang),
+    placeholderText: t("profile.ph.professionalInterest", lang)
+  });
+}
+
+// Si el usuario cambia el idioma desde Ajustes, volvemos a armar
+// las opciones (labels traducidos) sin perder lo que ya tenía
+// tildado.
+window.addEventListener("languagechange", () => {
+  if (!countriesInterestControl || !professionalInterestControl) return;
+  const countriesRaw = document.getElementById("countriesInterest").value;
+  const professionalRaw = document.getElementById("professionalInterest").value;
+  setupMultiSelects();
+  countriesInterestControl.setValue(countriesRaw);
+  professionalInterestControl.setValue(professionalRaw);
+  countriesInterestControl.setDisabled(!isEditing);
+  professionalInterestControl.setDisabled(!isEditing);
+});
+
+function fillForm(usuario) {
+  document.getElementById("fullName").value = usuario?.full_name || "";
+  document.getElementById("email").value = usuario?.email || "";
+  document.getElementById("age").value = usuario?.age ?? "";
+  document.getElementById("nationality").value = usuario?.nationality || "";
+  setSelectValue(document.getElementById("gender"), usuario?.gender);
+  setSelectValue(document.getElementById("academicLevel"), usuario?.academic_level);
+  document.getElementById("gpa").value = usuario?.gpa ?? "";
+  setSelectValue(document.getElementById("modality"), usuario?.modality);
+
+  if (countriesInterestControl) countriesInterestControl.setValue(usuario?.countries_interest || "");
+  if (professionalInterestControl) professionalInterestControl.setValue(usuario?.professional_interest || "");
+
+  if (usuario?.avatar_url) {
+    avatarPreview.innerHTML = `<img src="${usuario.avatar_url}" alt="Profile photo">`;
+  }
+
+  const sidebarName = document.getElementById("sidebarUserName");
+  const sidebarAvatar = document.getElementById("sidebarAvatar");
+  const planBadge = document.getElementById("planBadge");
+  const sidebarEl = document.querySelector(".sidebar");
+
+  if (sidebarName && usuario?.full_name) sidebarName.textContent = usuario.full_name.split(" ")[0];
+  if (sidebarAvatar && usuario?.avatar_url) sidebarAvatar.innerHTML = `<img src="${usuario.avatar_url}" alt="">`;
+
+  const isPremium = usuario?.plan === "premium" || usuario?.plan === "enterprise";
+
+  if (planBadge) {
+    const planLabels = { free: "Free plan", premium: "Premium plan", enterprise: "Enterprise plan" };
+    planBadge.textContent = planLabels[usuario?.plan] || "Free plan";
+  }
+  if (sidebarEl) sidebarEl.classList.toggle("premium", isPremium);
+}
+
+function setEditing(editing) {
+  isEditing = editing;
+  editableFields.forEach(field => { if (field) field.disabled = !editing; });
+  if (countriesInterestControl) countriesInterestControl.setDisabled(!editing);
+  if (professionalInterestControl) professionalInterestControl.setDisabled(!editing);
+  editToggleBtn.textContent = editing ? "Save changes" : "Edit profile";
+}
+
+// ------------------------------------------------------------
+// LC
+// ------------------------------------------------------------
+
+// Los campos de LC que son <textarea> (idiomas, experiencia laboral,
+// voluntariado, liderazgo, certificaciones) necesitan crecer solos
+// según el contenido, en vez de quedar con scroll interno o cortar
+// el texto como haría un <input>.
+function autoResizeTextareas() {
+  document.querySelectorAll(".lc-form textarea").forEach(t => {
+    t.style.height = "auto";
+    t.style.height = t.scrollHeight + "px";
+  });
+}
+
+function fillLcForm(usuario) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+
+  set("lcToefl", usuario?.lc_toefl_ielts === true ? "true" : usuario?.lc_toefl_ielts === false ? "false" : "");
+  set("lcBachelor", usuario?.lc_bachelor_completed === true ? "true" : usuario?.lc_bachelor_completed === false ? "false" : "");
+  set("lcRecLetters", usuario?.lc_recommendation_letters ?? "");
+  set("lcLanguages", usuario?.lc_languages || "");
+  set("lcWorkExperience", usuario?.lc_work_experience || "");
+  set("lcVolunteerExperience", usuario?.lc_volunteer_experience || "");
+  set("lcLeadership", usuario?.lc_leadership_experience || "");
+  set("lcCertifications", usuario?.lc_certifications || "");
+}
+
+function setLcEditing(editing) {
+  isLcEditing = editing;
+  lcEditableFields.forEach(field => { if (field) field.disabled = !editing; });
+  lcEditToggleBtn.textContent = editing ? "Save LC" : "Edit LC";
+}
+
+function setupLc(usuario) {
+  const isPremium = usuario?.plan === "premium" || usuario?.plan === "enterprise";
+
+  if (isPremium) {
+    lcLocked.style.display = "none";
+    lcForm.style.display = "flex";
+    fillLcForm(usuario);
+    autoResizeTextareas();
+  } else {
+    lcLocked.style.display = "block";
+    lcForm.style.display = "none";
+  }
+}
+
+lcEditToggleBtn?.addEventListener("click", async () => {
+  if (!isLcEditing) {
+    setLcEditing(true);
+    document.getElementById("lcToefl")?.focus();
+    autoResizeTextareas();
+    return;
+  }
+
+  if (!currentUserId) {
+    setLcStatus("No user session found.", true);
+    return;
+  }
+
+  const toeflVal = document.getElementById("lcToefl").value;
+  const bachelorVal = document.getElementById("lcBachelor").value;
+
+  const payload = {
+    lc_toefl_ielts: toeflVal === "" ? null : toeflVal === "true",
+    lc_bachelor_completed: bachelorVal === "" ? null : bachelorVal === "true",
+    lc_recommendation_letters: document.getElementById("lcRecLetters").value ? Number(document.getElementById("lcRecLetters").value) : null,
+    lc_languages: document.getElementById("lcLanguages").value.trim(),
+    lc_work_experience: document.getElementById("lcWorkExperience").value.trim(),
+    lc_volunteer_experience: document.getElementById("lcVolunteerExperience").value.trim(),
+    lc_leadership_experience: document.getElementById("lcLeadership").value.trim(),
+    lc_certifications: document.getElementById("lcCertifications").value.trim()
+  };
+
+  const { error } = await supabaseClient.from("Usuarios").update(payload).eq("id", currentUserId);
+
+  if (error) {
+    console.error("Error guardando el LC:", error);
+    setLcStatus("Could not save changes.", true);
+    return;
+  }
+
+  setLcEditing(false);
+  setLcStatus("Saved ✓");
+  autoResizeTextareas();
+});
+
+// Mientras el usuario escribe en un textarea del LC, que crezca
+// en tiempo real en vez de esperar a guardar.
+document.querySelectorAll(".lc-form textarea").forEach(t => {
+  t.addEventListener("input", () => {
+    t.style.height = "auto";
+    t.style.height = t.scrollHeight + "px";
+  });
+});
+
+// ------------------------------------------------------------
+// My Goals: cargar Metas + datos de cada Oportunidad
+// ------------------------------------------------------------
+async function loadGoals() {
+  const emptyNote = document.getElementById("goalsEmptyNote");
+  const premiumNote = document.getElementById("goalsPremiumNote");
+  const isPremium = currentUserPlan === "premium" || currentUserPlan === "enterprise";
+
+  const { data: metas, error } = await supabaseClient
+    .from("Metas")
+    .select("*")
+    .eq("user_id", currentUserId)
+    .order("priority", { ascending: true });
+
+  if (error) {
+    console.error("Error trayendo goals:", error);
+    return;
+  }
+
+  if (!metas || metas.length === 0) {
+    GOALS = [];
+    document.getElementById("goalsList").innerHTML = "";
+    emptyNote.style.display = "block";
+    premiumNote.style.display = "none";
+    renderTopGoalProgress();
+    return;
+  }
+
+  const oppIds = metas.map(m => m.opportunity_id);
+
+  const { data: opportunities, error: oppError } = await supabaseClient
+    .from("Oportunidades")
+    .select("id, title, country, format, logo_color, logo_initial, logo_url, requirements")
+    .in("id", oppIds);
+
+  if (oppError) {
+    console.error("Error trayendo las becas de los goals:", oppError);
+    return;
+  }
+
+  // El match_percent de la tabla "Oportunidades" es un valor fijo,
+  // no el calculado para este usuario. Traemos el match real vía el
+  // mismo RPC que usan opportunities.js / dashboard.js, para que el
+  // mini widget de progreso (abajo de la lista) muestre el número
+  // correcto, coherente con el resto de la app.
+  const { data: matched, error: matchError } = await supabaseClient
+    .rpc("get_matched_opportunities", { p_user_id: currentUserId });
+
+  const matchMap = new Map();
+  if (!matchError && matched) {
+    matched.forEach(o => matchMap.set(o.id, o.match_percent));
+  } else if (matchError) {
+    console.error("Error trayendo el match real de las oportunidades:", matchError);
+  }
+
+  GOALS = metas.map(m => {
+    const opp = opportunities.find(o => o.id === m.opportunity_id) || null;
+    return {
+      ...m,
+      checklist: Array.isArray(m.checklist) ? m.checklist : [],
+      opportunity: opp ? { ...opp, match_percent: matchMap.get(opp.id) ?? 0 } : null
+    };
+  }).filter(g => g.opportunity !== null);
+
+  emptyNote.style.display = "none";
+  premiumNote.style.display = (!isPremium) ? "block" : "none";
+
+  // El checklist del goal de mayor prioridad (#1) arranca abierto,
+  // así se ve directamente debajo de "My Goals" sin tener que
+  // hacer clic para expandirlo.
+  if (expandedGoalId === null && GOALS.length > 0) {
+    expandedGoalId = GOALS[0].id;
+  }
+
+  renderGoalsList(isPremium);
+  renderTopGoalProgress();
+}
+
+function renderGoalsList(isPremium) {
+  const container = document.getElementById("goalsList");
+  const canReorder = isPremium && GOALS.length > 1;
+
+  container.innerHTML = GOALS.map((goal, index) => {
+    const opp = goal.opportunity;
+    const requirements = Array.isArray(opp.requirements) ? opp.requirements : [];
+    const isExpanded = expandedGoalId === goal.id;
+
+    const reorderButtons = canReorder ? `
+      <button class="goal-reorder-btn" data-front="${goal.id}" title="Bring to front" ${index === 0 ? "disabled" : ""}>⇈</button>
+      <button class="goal-reorder-btn" data-forward="${goal.id}" title="Bring forward" ${index === 0 ? "disabled" : ""}>↑</button>
+      <button class="goal-reorder-btn" data-backward="${goal.id}" title="Send backward" ${index === GOALS.length - 1 ? "disabled" : ""}>↓</button>
+      <button class="goal-reorder-btn" data-back="${goal.id}" title="Send to back" ${index === GOALS.length - 1 ? "disabled" : ""}>⇊</button>
+    ` : "";
+
+    const checklistHtml = requirements.length > 0 ? `
+      <div class="checklist-progress-wrap">
+        <div class="checklist-progress-bar"><div class="checklist-progress-fill" data-fill="${goal.id}"></div></div>
+        <span class="checklist-progress-label" data-label="${goal.id}"></span>
+      </div>
+      <ul class="checklist-list">
+        ${requirements.map((req, i) => `
+          <li class="checklist-item ${goal.checklist[i] ? "done" : ""}" data-goal="${goal.id}" data-index="${i}">
+            <input type="checkbox" ${goal.checklist[i] ? "checked" : ""} data-goal="${goal.id}" data-index="${i}">
+            <span>${req}</span>
+          </li>
+        `).join("")}
+      </ul>
+    ` : `<p class="goals-empty-note">This opportunity has no listed requirements yet.</p>`;
+
+    return `
+      <div class="goal-item" data-id="${goal.id}">
+        <div class="goal-item-top" data-toggle="${goal.id}">
+          <span class="goal-priority">#${index + 1}</span>
+          ${renderMiniLogo(opp)}
+          <div class="goal-item-info">
+            <p class="goal-item-title">${opp.title}</p>
+            <span class="goal-item-match">📍 ${opp.country}</span>
+          </div>
+          <div class="goal-item-actions">
+            ${reorderButtons}
+            <button class="goal-remove-btn" data-remove="${goal.id}" title="Remove goal">✕</button>
+          </div>
+        </div>
+        <div class="goal-item-checklist" style="display:${isExpanded ? "block" : "none"};">
+          ${checklistHtml}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  // Progreso de cada checklist visible
+  GOALS.forEach(goal => {
+    const requirements = Array.isArray(goal.opportunity.requirements) ? goal.opportunity.requirements : [];
+    if (requirements.length === 0) return;
+    updateChecklistProgress(goal.id, requirements.length);
+  });
+
+  attachGoalListEvents();
+}
+
+function updateChecklistProgress(goalId, total) {
+  const goal = GOALS.find(g => g.id === goalId);
+  if (!goal) return;
+
+  const done = goal.checklist.filter(Boolean).length;
+  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+  const fill = document.querySelector(`[data-fill="${goalId}"]`);
+  const label = document.querySelector(`[data-label="${goalId}"]`);
+  if (fill) fill.style.width = `${pct}%`;
+  if (label) label.textContent = `${done} / ${total} completed`;
+}
+
+// ------------------------------------------------------------
+// Mini widget de progreso del goal #1 (mayor prioridad), para que
+// el usuario lo vea acá mismo sin tener que ir al dashboard.
+// Misma lógica que "Current Goal" en dashboard.js: el número
+// arranca en el match real (nunca en 0%) y sube hacia 100% a
+// medida que se tilda la checklist; el tramo ganado se pinta en
+// dorado (--premium-gold) sobre el mismo marrón del match original.
+// ------------------------------------------------------------
+function checklistProgressPct(checklist, totalRequirements) {
+  if (!totalRequirements || totalRequirements === 0) return null;
+  const done = (checklist || []).filter(Boolean).length;
+  return Math.round((done / totalRequirements) * 100);
+}
+
+function renderTopGoalProgress() {
+  const container = document.getElementById("topGoalProgressCard");
+  if (!container) return; // si el HTML todavía no tiene este contenedor, no hace nada
+
+  if (GOALS.length === 0) {
+    container.innerHTML = "";
+    container.style.display = "none";
+    return;
+  }
+
+  const top = GOALS[0];
+  const opp = top.opportunity;
+  const totalRequirements = Array.isArray(opp.requirements) ? opp.requirements.length : 0;
+  const checklistPct = checklistProgressPct(top.checklist, totalRequirements);
+  const matchPct = opp.match_percent ?? 0;
+
+  const displayPct = checklistPct !== null
+    ? Math.round(matchPct + (checklistPct / 100) * (100 - matchPct))
+    : matchPct;
+  const isComplete = checklistPct !== null && checklistPct >= 100;
+
+  container.style.display = "flex";
+  container.innerHTML = `
+    <div class="tgp-ring" style="--match:${matchPct}; --pct:${displayPct}">
+      <span class="tgp-pct ${isComplete ? "tgp-pct--complete" : ""}">${displayPct}%</span>
+    </div>
+    <div class="tgp-info">
+      <p class="tgp-label">Current Goal Progress</p>
+      <p class="tgp-name">${opp.title}</p>
+      <p class="tgp-sub">${isComplete ? "Goal reached! 🎉" : "Keep going!"}</p>
+    </div>
+  `;
+}
+
+function attachGoalListEvents() {
+  const isPremium = currentUserPlan === "premium" || currentUserPlan === "enterprise";
+
+  document.querySelectorAll("[data-toggle]").forEach(el => {
+    el.addEventListener("click", () => {
+      const id = Number(el.dataset.toggle);
+      expandedGoalId = expandedGoalId === id ? null : id;
+      renderGoalsList(isPremium);
+    });
+  });
+
+  document.querySelectorAll("input[type=checkbox][data-goal]").forEach(box => {
+    box.addEventListener("click", e => e.stopPropagation());
+    box.addEventListener("change", e => {
+      e.stopPropagation();
+      toggleChecklistItem(Number(e.target.dataset.goal), Number(e.target.dataset.index));
+    });
+  });
+
+  document.querySelectorAll("[data-remove]").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      removeGoal(Number(btn.dataset.remove));
+    });
+  });
+
+  document.querySelectorAll("[data-front]").forEach(btn => {
+    btn.addEventListener("click", e => { e.stopPropagation(); moveGoal(Number(btn.dataset.front), "front"); });
+  });
+  document.querySelectorAll("[data-forward]").forEach(btn => {
+    btn.addEventListener("click", e => { e.stopPropagation(); moveGoal(Number(btn.dataset.forward), "forward"); });
+  });
+  document.querySelectorAll("[data-backward]").forEach(btn => {
+    btn.addEventListener("click", e => { e.stopPropagation(); moveGoal(Number(btn.dataset.backward), "backward"); });
+  });
+  document.querySelectorAll("[data-back]").forEach(btn => {
+    btn.addEventListener("click", e => { e.stopPropagation(); moveGoal(Number(btn.dataset.back), "back"); });
+  });
+}
+
+async function toggleChecklistItem(goalId, index) {
+  const goal = GOALS.find(g => g.id === goalId);
+  if (!goal) return;
+
+  goal.checklist[index] = !goal.checklist[index];
+
+  const item = document.querySelector(`.checklist-item[data-goal="${goalId}"][data-index="${index}"]`);
+  if (item) item.classList.toggle("done", goal.checklist[index]);
+
+  const total = Array.isArray(goal.opportunity.requirements) ? goal.opportunity.requirements.length : 0;
+  updateChecklistProgress(goalId, total);
+
+  // El goal que cambió puede ser el #1 (el que muestra el mini
+  // widget), así que lo repintamos también.
+  renderTopGoalProgress();
+
+  const { error } = await supabaseClient
+    .from("Metas")
+    .update({ checklist: goal.checklist })
+    .eq("id", goalId);
+
+  if (error) console.error("Error guardando el checklist:", error);
+}
+
+async function removeGoal(goalId) {
+  const { error } = await supabaseClient.from("Metas").delete().eq("id", goalId);
+
+  if (error) {
+    console.error("Error quitando el goal:", error);
+    return;
+  }
+
+  if (expandedGoalId === goalId) expandedGoalId = null;
+  await resequenceGoals();
+  await loadGoals();
+}
+
+async function resequenceGoals() {
+  const { data, error } = await supabaseClient
+    .from("Metas")
+    .select("id, priority")
+    .eq("user_id", currentUserId)
+    .order("priority", { ascending: true });
+
+  if (error || !data) return;
+
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].priority !== i + 1) {
+      await supabaseClient.from("Metas").update({ priority: i + 1 }).eq("id", data[i].id);
+    }
+  }
+}
+
+async function moveGoal(goalId, direction) {
+  const isPremium = currentUserPlan === "premium" || currentUserPlan === "enterprise";
+  if (!isPremium || GOALS.length <= 1) return;
+
+  const index = GOALS.findIndex(g => g.id === goalId);
+  if (index === -1) return;
+
+  let newIndex = index;
+  if (direction === "front") newIndex = 0;
+  else if (direction === "forward") newIndex = Math.max(0, index - 1);
+  else if (direction === "backward") newIndex = Math.min(GOALS.length - 1, index + 1);
+  else if (direction === "back") newIndex = GOALS.length - 1;
+
+  if (newIndex === index) return;
+
+  const [moved] = GOALS.splice(index, 1);
+  GOALS.splice(newIndex, 0, moved);
+
+  // Actualizamos prioridad en memoria y persistimos
+  const updates = GOALS.map((g, i) => ({ id: g.id, priority: i + 1 }));
+  GOALS.forEach((g, i) => { g.priority = i + 1; });
+
+  renderGoalsList(isPremium);
+  renderTopGoalProgress();
+
+  for (const u of updates) {
+    const { error } = await supabaseClient.from("Metas").update({ priority: u.priority }).eq("id", u.id);
+    if (error) console.error("Error reordenando goals:", error);
+  }
+}
+
+// ------------------------------------------------------------
+// Cargar el perfil del usuario logueado
+// ------------------------------------------------------------
+async function loadProfile() {
+  const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+
+  if (userError || !userData?.user) {
+    console.error("No hay usuario logueado:", userError);
+    return;
+  }
+
+  currentUserId = userData.user.id;
+
+  const { data: usuario, error } = await supabaseClient
+    .from("Usuarios")
+    .select("*")
+    .eq("id", currentUserId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error cargando el perfil:", error);
+    return;
+  }
+
+  currentUserPlan = usuario?.plan || "free";
+
+  fillForm(usuario);
+  setupLc(usuario);
+  await loadGoals();
+}
+
+// ------------------------------------------------------------
+// Toggle Edit / Save (perfil base)
+// ------------------------------------------------------------
+editToggleBtn.addEventListener("click", async () => {
+  if (!isEditing) {
+    setEditing(true);
+    document.getElementById("fullName").focus();
+    return;
+  }
+
+  if (!currentUserId) {
+    setStatus("No user session found.", true);
+    return;
+  }
+
+  const payload = {
+    full_name: document.getElementById("fullName").value.trim(),
+    age: document.getElementById("age").value ? Number(document.getElementById("age").value) : null,
+    nationality: document.getElementById("nationality").value.trim(),
+    gender: document.getElementById("gender").value,
+    academic_level: document.getElementById("academicLevel").value,
+    gpa: document.getElementById("gpa").value ? Number(document.getElementById("gpa").value) : null,
+    modality: document.getElementById("modality").value,
+    countries_interest: document.getElementById("countriesInterest").value.trim(),
+    professional_interest: document.getElementById("professionalInterest").value.trim()
+  };
+
+  const { error } = await supabaseClient.from("Usuarios").update(payload).eq("id", currentUserId);
+
+  if (error) {
+    console.error("Error guardando el perfil:", error);
+    setStatus("Could not save changes.", true);
+    return;
+  }
+
+  setEditing(false);
+  setStatus("Saved ✓");
+});
+
+// ------------------------------------------------------------
+// Recorte de foto de perfil (nuevo, con Cropper.js)
+// ------------------------------------------------------------
+const cropModalOverlay = document.getElementById("cropModalOverlay");
+const cropImage = document.getElementById("cropImage");
+const cropCancelBtn = document.getElementById("cropCancelBtn");
+const cropConfirmBtn = document.getElementById("cropConfirmBtn");
+
+let cropper = null;
+
+function openCropModal(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    cropImage.src = reader.result;
+    cropModalOverlay.classList.add("open");
+
+    // Si ya había un cropper de una vez anterior, lo destruimos
+    // antes de crear uno nuevo sobre la imagen actual.
+    if (cropper) { cropper.destroy(); cropper = null; }
+
+    cropper = new Cropper(cropImage, {
+      aspectRatio: 1,
+      viewMode: 1,
+      dragMode: "move",
+      background: false,
+      guides: false,
+      center: false,
+      highlight: false,
+      cropBoxMovable: false,
+      cropBoxResizable: false,
+      toggleDragModeOnDblclick: false,
+      autoCropArea: 1,
+      minCropBoxWidth: 200,
+      minCropBoxHeight: 200,
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function closeCropModal() {
+  cropModalOverlay.classList.remove("open");
+  if (cropper) { cropper.destroy(); cropper = null; }
+  avatarInput.value = ""; // permite volver a elegir el mismo archivo si cancela y reintenta
+}
+
+avatarInput.addEventListener("change", () => {
+  const file = avatarInput.files[0];
+  if (!file || !currentUserId) return;
+  openCropModal(file);
+});
+
+cropCancelBtn.addEventListener("click", closeCropModal);
+
+cropModalOverlay.addEventListener("click", (e) => {
+  if (e.target === cropModalOverlay) closeCropModal();
+});
+
+cropConfirmBtn.addEventListener("click", () => {
+  if (!cropper) return;
+
+  cropper.getCroppedCanvas({
+    width: 500,
+    height: 500,
+    imageSmoothingQuality: "high",
+  }).toBlob(async (blob) => {
+    if (!blob) return;
+    await uploadAvatarBlob(blob);
+    closeCropModal();
+  }, "image/jpeg", 0.92);
+});
+
+// Sube el recorte final (Blob) a Supabase Storage. Misma lógica que
+// antes tenía avatarInput.addEventListener("change", ...), solo que
+// ahora recibe el Blob ya recortado en vez del archivo original.
+async function uploadAvatarBlob(blob) {
+  avatarCamera.classList.add("uploading");
+
+  const localPreviewUrl = URL.createObjectURL(blob);
+  avatarPreview.innerHTML = `<img src="${localPreviewUrl}" alt="Profile photo">`;
+
+  const filePath = `${currentUserId}/avatar.jpg`;
+
+  const { error: uploadError } = await supabaseClient
+    .storage.from("avatars").upload(filePath, blob, { upsert: true, contentType: "image/jpeg" });
+
+  if (uploadError) {
+    console.error("Error subiendo la foto:", uploadError);
+    setStatus("Could not upload photo.", true);
+    avatarCamera.classList.remove("uploading");
+    return;
+  }
+
+  const { data: publicUrlData } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
+  const avatarUrl = `${publicUrlData.publicUrl}?t=${Date.now()}`;
+
+  const { error: dbError } = await supabaseClient
+    .from("Usuarios").update({ avatar_url: avatarUrl }).eq("id", currentUserId);
+
+  avatarCamera.classList.remove("uploading");
+
+  if (dbError) {
+    console.error("Error guardando la URL de la foto:", dbError);
+    setStatus("Photo uploaded, but could not save link.", true);
+    return;
+  }
+
+  const sidebarAvatar = document.getElementById("sidebarAvatar");
+  if (sidebarAvatar) sidebarAvatar.innerHTML = `<img src="${avatarUrl}" alt="">`;
+
+  setStatus("Photo updated ✓");
+}
+
+// ------------------------------------------------------------
+// Init
+// ------------------------------------------------------------
+setupMultiSelects();
+setEditing(false);
+setLcEditing(false);
+loadProfile();
