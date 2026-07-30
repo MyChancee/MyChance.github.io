@@ -551,6 +551,50 @@ input, select, textarea{ font-family: inherit; }
 @media (prefers-reduced-motion: reduce){
   *{ transition: none !important; }
 }
+
+/* ===================== "VER MÁS" EN MOBILE =====================
+   Aplica solo al form de datos personales (.profile-form) y al
+   form del CV (.lc-form): en celular arrancan recortados a una
+   altura fija con un degradé (mask-image) y un botón debajo los
+   expande. En desktop el botón queda oculto y .collapsible no
+   tiene ningún límite de altura.
+   ================================================================ */
+.see-more-btn{ display: none; }
+
+@media (max-width: 760px){
+  .collapsible{
+    max-height: 280px;
+    overflow: hidden;
+    transition: max-height .35s ease;
+    -webkit-mask-image: linear-gradient(to bottom, #000 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 75%, transparent 100%);
+  }
+  .collapsible.expanded{
+    max-height: 4000px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .see-more-btn{
+    display: block;
+    width: 100%;
+    margin: 4px 0 4px;
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+    color: var(--maroon);
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+  }
+  .see-more-btn:hover{ color: var(--maroon-dark); }
+  .lc-form .see-more-btn{
+    border-top-color: #E8CE8C;
+    color: #B4790E;
+  }
+  .lc-form .see-more-btn:hover{ color: #8f5f08; }
+}
+
 .tgp-card{
   display: none; /* el JS lo pone en "flex" cuando hay datos */
   align-items: center;
