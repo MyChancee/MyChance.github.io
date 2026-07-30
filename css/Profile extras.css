@@ -1,0 +1,206 @@
+/* ============================================================
+   profile-extras.css
+   Estilos nuevos para Profile.html:
+   - Multi-select con checkboxes (Countries / Professional interest)
+   - Modal de recorte de foto de perfil (Cropper.js)
+   Pensado para convivir con Profile.css sin pisar nada de ahí;
+   si algún color no calza con tu paleta, ajustá las variables
+   (--maroon, --maroon-dark, etc. ya deberían venir de tu CSS base).
+   ============================================================ */
+
+/* ---- Multi-select ---- */
+.multiselect{
+  position: relative;
+}
+
+.multiselect-trigger{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--line, #ECE5D8);
+  background: var(--white, #fff);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--text-main, #2C1B22);
+  cursor: pointer;
+  text-align: left;
+}
+
+.multiselect-trigger:disabled{
+  background: var(--cream, #F5F1E8);
+  color: var(--text-muted, #8A7782);
+  cursor: default;
+}
+
+.multiselect-trigger-text{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.multiselect-trigger-text.multiselect-placeholder{
+  color: var(--text-muted, #8A7782);
+}
+
+.multiselect-caret{
+  font-size: 11px;
+  color: var(--text-muted, #8A7782);
+  flex-shrink: 0;
+}
+
+.multiselect-panel{
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--white, #fff);
+  border: 1px solid var(--line, #ECE5D8);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(44,27,34,0.14);
+  padding: 8px;
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.multiselect-panel.open{
+  display: flex;
+}
+
+.multiselect-option{
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  padding: 8px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.multiselect-option:hover{
+  background: var(--pink-soft, #F7E7EA);
+}
+
+.multiselect-option input[type="checkbox"]{
+  accent-color: var(--maroon, #770937);
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* ---- Modal de recorte de foto ---- */
+.crop-modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 27, 34, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease, visibility .25s ease;
+  z-index: 3000;
+  padding: 20px;
+}
+
+.crop-modal-overlay.open{
+  opacity: 1;
+  visibility: visible;
+}
+
+.crop-modal-box{
+  width: 420px;
+  max-width: 100%;
+  background: var(--white, #fff);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 24px 60px rgba(44,27,34,0.3);
+}
+
+.crop-modal-box h3{
+  font-family: var(--font-logo, inherit);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--maroon-dark, #a8084b);
+  margin-bottom: 4px;
+}
+
+.crop-modal-sub{
+  font-size: 12.5px;
+  color: var(--text-muted, #8A7782);
+  margin-bottom: 16px;
+}
+
+.crop-image-wrap{
+  width: 100%;
+  height: 320px;
+  background: #111;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.crop-image-wrap img{
+  display: block;
+  max-width: 100%;
+}
+
+/* Cropper.js dibuja su propio cropbox rectangular por default;
+   lo forzamos a verse redondo con un box-shadow gigante que "tapa"
+   todo menos el círculo central. */
+.crop-image-wrap .cropper-view-box,
+.crop-image-wrap .cropper-face{
+  border-radius: 50%;
+}
+
+.crop-image-wrap .cropper-view-box{
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  outline: none;
+}
+
+.crop-image-wrap .cropper-dashed,
+.crop-image-wrap .cropper-line,
+.crop-image-wrap .cropper-point{
+  display: none;
+}
+
+.crop-modal-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.crop-btn-cancel{
+  border: 1px solid var(--line, #ECE5D8);
+  background: var(--white, #fff);
+  color: var(--text-main, #2C1B22);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 999px;
+}
+.crop-btn-cancel:hover{ background: var(--cream, #F5F1E8); }
+
+.crop-btn-confirm{
+  border: none;
+  background: var(--maroon, #770937);
+  color: var(--white, #fff);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 999px;
+}
+.crop-btn-confirm:hover{ filter: brightness(1.1); }
+
+@media (max-width: 480px){
+  .crop-modal-box{ padding: 18px; }
+  .crop-image-wrap{ height: 260px; }
+}
