@@ -101,97 +101,107 @@
 
       <form id="profileForm" class="profile-form">
 
-        <div class="form-row">
-          <div class="form-field">
-            <label for="fullName" data-i18n="profile.label.fullName">Full name<span class="required">*</span></label>
-            <input type="text" id="fullName" name="fullName" required data-i18n-placeholder="profile.ph.fullName" placeholder="e.g. Maria Gonzalez" disabled>
-          </div>
-          <div class="form-field">
-            <label for="email" data-i18n="profile.label.email">Email</label>
-            <input type="email" id="email" name="email" data-i18n-placeholder="profile.ph.email" placeholder="you@example.com" disabled>
-          </div>
-        </div>
+        <!-- ===== Bloque recortable en mobile: todos los campos
+             menos la fila de guardar/editar. Ver .collapsible en
+             Profile.css y setupSeeMoreToggle en Profile.js ===== -->
+        <div class="collapsible" id="profileCollapsible">
 
-        <div class="form-row">
-          <div class="form-field">
-            <label for="age" data-i18n="profile.label.age">Age</label>
-            <input type="number" id="age" name="age" min="0" data-i18n-placeholder="profile.ph.age" placeholder="e.g. 17" disabled>
-          </div>
-          <div class="form-field">
-            <label for="nationality" data-i18n="profile.label.nationality">Nationality</label>
-            <input type="text" id="nationality" name="nationality" data-i18n-placeholder="profile.ph.nationality" placeholder="e.g. Panamanian" disabled>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-field">
-            <label for="gender" data-i18n="profile.label.gender">Gender</label>
-            <select id="gender" name="gender" disabled>
-              <option value="" data-i18n="profile.option.selectGender">Select gender</option>
-              <option value="female" data-i18n="profile.option.female">Female</option>
-              <option value="male" data-i18n="profile.option.male">Male</option>
-              <option value="other" data-i18n="profile.option.other">Other</option>
-              <option value="prefer_not_to_say" data-i18n="profile.option.preferNotToSay">Prefer not to say</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label for="academicLevel" data-i18n="profile.label.academicLevel">Academic Level</label>
-            <select id="academicLevel" name="academicLevel" disabled>
-              <option value="" data-i18n="profile.option.selectLevel">Select level</option>
-              <option value="high_school" data-i18n="profile.option.highSchool">High School</option>
-              <option value="undergraduate" data-i18n="profile.option.undergraduate">Undergraduate</option>
-              <option value="graduate" data-i18n="profile.option.graduate">Graduate</option>
-              <option value="postgraduate" data-i18n="profile.option.postgraduate">Postgraduate</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-field">
-            <label for="gpa" data-i18n="profile.label.gpa">GPA</label>
-            <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="4" data-i18n-placeholder="profile.ph.gpa" placeholder="e.g. 3.75" disabled>
-          </div>
-          <div class="form-field">
-            <label for="modality" data-i18n="profile.label.modality">Modality</label>
-            <select id="modality" name="modality" disabled>
-              <option value="" data-i18n="profile.option.selectModality">Select modality</option>
-              <option value="in-person" data-i18n="profile.option.inPerson">In-person</option>
-              <option value="virtual" data-i18n="profile.option.virtual">Virtual</option>
-              <option value="hybrid" data-i18n="profile.option.hybrid">Hybrid</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- ---- Countries of interest / Professional interest ----
-             Ahora son multi-select con checkboxes en vez de texto
-             libre. El valor final sigue viajando como texto separado
-             por comas en el <input type="hidden">, así que el resto
-             del código (payload de guardado, signup.js, etc.) no
-             necesita cambios. -->
-        <div class="form-row">
-          <div class="form-field">
-            <label for="countriesInterestTrigger" data-i18n="profile.label.countriesInterest">Countries of interest</label>
-            <div class="multiselect" id="countriesInterestSelect">
-              <button type="button" class="multiselect-trigger" id="countriesInterestTrigger" disabled>
-                <span class="multiselect-trigger-text multiselect-placeholder" id="countriesInterestText" data-i18n="profile.ph.countriesInterest">e.g. United States, Canada</span>
-                <span class="multiselect-caret">▾</span>
-              </button>
-              <div class="multiselect-panel" id="countriesInterestPanel"></div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="fullName" data-i18n="profile.label.fullName">Full name<span class="required">*</span></label>
+              <input type="text" id="fullName" name="fullName" required data-i18n-placeholder="profile.ph.fullName" placeholder="e.g. Maria Gonzalez" disabled>
             </div>
-            <input type="hidden" id="countriesInterest" name="countriesInterest">
-          </div>
-          <div class="form-field">
-            <label for="professionalInterestTrigger" data-i18n="profile.label.professionalInterest">Professional interest</label>
-            <div class="multiselect" id="professionalInterestSelect">
-              <button type="button" class="multiselect-trigger" id="professionalInterestTrigger" disabled>
-                <span class="multiselect-trigger-text multiselect-placeholder" id="professionalInterestText" data-i18n="profile.ph.professionalInterest">e.g. Engineering</span>
-                <span class="multiselect-caret">▾</span>
-              </button>
-              <div class="multiselect-panel" id="professionalInterestPanel"></div>
+            <div class="form-field">
+              <label for="email" data-i18n="profile.label.email">Email</label>
+              <input type="email" id="email" name="email" data-i18n-placeholder="profile.ph.email" placeholder="you@example.com" disabled>
             </div>
-            <input type="hidden" id="professionalInterest" name="professionalInterest">
           </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="age" data-i18n="profile.label.age">Age</label>
+              <input type="number" id="age" name="age" min="0" data-i18n-placeholder="profile.ph.age" placeholder="e.g. 17" disabled>
+            </div>
+            <div class="form-field">
+              <label for="nationality" data-i18n="profile.label.nationality">Nationality</label>
+              <input type="text" id="nationality" name="nationality" data-i18n-placeholder="profile.ph.nationality" placeholder="e.g. Panamanian" disabled>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="gender" data-i18n="profile.label.gender">Gender</label>
+              <select id="gender" name="gender" disabled>
+                <option value="" data-i18n="profile.option.selectGender">Select gender</option>
+                <option value="female" data-i18n="profile.option.female">Female</option>
+                <option value="male" data-i18n="profile.option.male">Male</option>
+                <option value="other" data-i18n="profile.option.other">Other</option>
+                <option value="prefer_not_to_say" data-i18n="profile.option.preferNotToSay">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="academicLevel" data-i18n="profile.label.academicLevel">Academic Level</label>
+              <select id="academicLevel" name="academicLevel" disabled>
+                <option value="" data-i18n="profile.option.selectLevel">Select level</option>
+                <option value="high_school" data-i18n="profile.option.highSchool">High School</option>
+                <option value="undergraduate" data-i18n="profile.option.undergraduate">Undergraduate</option>
+                <option value="graduate" data-i18n="profile.option.graduate">Graduate</option>
+                <option value="postgraduate" data-i18n="profile.option.postgraduate">Postgraduate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="gpa" data-i18n="profile.label.gpa">GPA</label>
+              <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="4" data-i18n-placeholder="profile.ph.gpa" placeholder="e.g. 3.75" disabled>
+            </div>
+            <div class="form-field">
+              <label for="modality" data-i18n="profile.label.modality">Modality</label>
+              <select id="modality" name="modality" disabled>
+                <option value="" data-i18n="profile.option.selectModality">Select modality</option>
+                <option value="in-person" data-i18n="profile.option.inPerson">In-person</option>
+                <option value="virtual" data-i18n="profile.option.virtual">Virtual</option>
+                <option value="hybrid" data-i18n="profile.option.hybrid">Hybrid</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ---- Countries of interest / Professional interest ----
+               Ahora son multi-select con checkboxes en vez de texto
+               libre. El valor final sigue viajando como texto separado
+               por comas en el <input type="hidden">, así que el resto
+               del código (payload de guardado, signup.js, etc.) no
+               necesita cambios. -->
+          <div class="form-row">
+            <div class="form-field">
+              <label for="countriesInterestTrigger" data-i18n="profile.label.countriesInterest">Countries of interest</label>
+              <div class="multiselect" id="countriesInterestSelect">
+                <button type="button" class="multiselect-trigger" id="countriesInterestTrigger" disabled>
+                  <span class="multiselect-trigger-text multiselect-placeholder" id="countriesInterestText" data-i18n="profile.ph.countriesInterest">e.g. United States, Canada</span>
+                  <span class="multiselect-caret">▾</span>
+                </button>
+                <div class="multiselect-panel" id="countriesInterestPanel"></div>
+              </div>
+              <input type="hidden" id="countriesInterest" name="countriesInterest">
+            </div>
+            <div class="form-field">
+              <label for="professionalInterestTrigger" data-i18n="profile.label.professionalInterest">Professional interest</label>
+              <div class="multiselect" id="professionalInterestSelect">
+                <button type="button" class="multiselect-trigger" id="professionalInterestTrigger" disabled>
+                  <span class="multiselect-trigger-text multiselect-placeholder" id="professionalInterestText" data-i18n="profile.ph.professionalInterest">e.g. Engineering</span>
+                  <span class="multiselect-caret">▾</span>
+                </button>
+                <div class="multiselect-panel" id="professionalInterestPanel"></div>
+              </div>
+              <input type="hidden" id="professionalInterest" name="professionalInterest">
+            </div>
+          </div>
+
         </div>
+        <!-- ===== fin .collapsible ===== -->
+
+        <button type="button" class="see-more-btn" id="profileSeeMoreBtn" data-i18n="profile.seeMore">Ver más ▾</button>
 
         <div class="form-row">
           <div class="form-field"></div>
@@ -247,57 +257,67 @@
 
     <!-- Unlocked form (premium plan) -->
     <form id="lcForm" class="lc-form" style="display:none;">
-      <div class="form-row">
-        <div class="form-field">
-          <label for="lcToefl" data-i18n="profile.lc.label.toefl">TOEFL / IELTS taken or willing to take?</label>
-          <select id="lcToefl" disabled>
-            <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
-            <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
-            <option value="false" data-i18n="profile.lc.option.no">No</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label for="lcBachelor" data-i18n="profile.lc.label.bachelor">Bachelor's degree completed?</label>
-          <select id="lcBachelor" disabled>
-            <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
-            <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
-            <option value="false" data-i18n="profile.lc.option.no">No</option>
-          </select>
-        </div>
-      </div>
 
-      <div class="form-row">
-        <div class="form-field">
-          <label for="lcRecLetters" data-i18n="profile.lc.label.recLetters">Recommendation letters available</label>
-          <input type="number" id="lcRecLetters" min="0" max="10" data-i18n-placeholder="profile.lc.ph.recLetters" placeholder="e.g. 2" disabled>
-        </div>
-        <div class="form-field">
-          <label for="lcLanguages" data-i18n="profile.lc.label.languages">Languages you speak</label>
-          <textarea id="lcLanguages" rows="1" data-i18n-placeholder="profile.lc.ph.languages" placeholder="e.g. Spanish, English" disabled></textarea>
-        </div>
-      </div>
+      <!-- ===== Bloque recortable en mobile: todos los campos del
+           CV menos la fila de guardar/editar. ===== -->
+      <div class="collapsible" id="lcCollapsible">
 
-      <div class="form-row">
-        <div class="form-field">
-          <label for="lcWorkExperience" data-i18n="profile.lc.label.workExperience">Work experience</label>
-          <textarea id="lcWorkExperience" rows="1" data-i18n-placeholder="profile.lc.ph.workExperience" placeholder="e.g. 1 year as a tutor" disabled></textarea>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="lcToefl" data-i18n="profile.lc.label.toefl">TOEFL / IELTS taken or willing to take?</label>
+            <select id="lcToefl" disabled>
+              <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
+              <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
+              <option value="false" data-i18n="profile.lc.option.no">No</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="lcBachelor" data-i18n="profile.lc.label.bachelor">Bachelor's degree completed?</label>
+            <select id="lcBachelor" disabled>
+              <option value="" data-i18n="profile.lc.option.selectOption">Select an option</option>
+              <option value="true" data-i18n="profile.lc.option.yes">Yes</option>
+              <option value="false" data-i18n="profile.lc.option.no">No</option>
+            </select>
+          </div>
         </div>
-        <div class="form-field">
-          <label for="lcVolunteerExperience" data-i18n="profile.lc.label.volunteerExperience">Volunteer experience</label>
-          <textarea id="lcVolunteerExperience" rows="1" data-i18n-placeholder="profile.lc.ph.volunteerExperience" placeholder="e.g. Local NGO, 6 months" disabled></textarea>
-        </div>
-      </div>
 
-      <div class="form-row">
-        <div class="form-field">
-          <label for="lcLeadership" data-i18n="profile.lc.label.leadership">Leadership experience</label>
-          <textarea id="lcLeadership" rows="1" data-i18n-placeholder="profile.lc.ph.leadership" placeholder="e.g. Student council president" disabled></textarea>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="lcRecLetters" data-i18n="profile.lc.label.recLetters">Recommendation letters available</label>
+            <input type="number" id="lcRecLetters" min="0" max="10" data-i18n-placeholder="profile.lc.ph.recLetters" placeholder="e.g. 2" disabled>
+          </div>
+          <div class="form-field">
+            <label for="lcLanguages" data-i18n="profile.lc.label.languages">Languages you speak</label>
+            <textarea id="lcLanguages" rows="1" data-i18n-placeholder="profile.lc.ph.languages" placeholder="e.g. Spanish, English" disabled></textarea>
+          </div>
         </div>
-        <div class="form-field">
-          <label for="lcCertifications" data-i18n="profile.lc.label.certifications">Certifications</label>
-          <textarea id="lcCertifications" rows="1" data-i18n-placeholder="profile.lc.ph.certifications" placeholder="e.g. Google Data Analytics" disabled></textarea>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="lcWorkExperience" data-i18n="profile.lc.label.workExperience">Work experience</label>
+            <textarea id="lcWorkExperience" rows="1" data-i18n-placeholder="profile.lc.ph.workExperience" placeholder="e.g. 1 year as a tutor" disabled></textarea>
+          </div>
+          <div class="form-field">
+            <label for="lcVolunteerExperience" data-i18n="profile.lc.label.volunteerExperience">Volunteer experience</label>
+            <textarea id="lcVolunteerExperience" rows="1" data-i18n-placeholder="profile.lc.ph.volunteerExperience" placeholder="e.g. Local NGO, 6 months" disabled></textarea>
+          </div>
         </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="lcLeadership" data-i18n="profile.lc.label.leadership">Leadership experience</label>
+            <textarea id="lcLeadership" rows="1" data-i18n-placeholder="profile.lc.ph.leadership" placeholder="e.g. Student council president" disabled></textarea>
+          </div>
+          <div class="form-field">
+            <label for="lcCertifications" data-i18n="profile.lc.label.certifications">Certifications</label>
+            <textarea id="lcCertifications" rows="1" data-i18n-placeholder="profile.lc.ph.certifications" placeholder="e.g. Google Data Analytics" disabled></textarea>
+          </div>
+        </div>
+
       </div>
+      <!-- ===== fin .collapsible ===== -->
+
+      <button type="button" class="see-more-btn" id="lcSeeMoreBtn" data-i18n="profile.lc.seeMore">Ver más ▾</button>
 
       <div class="form-row">
         <div class="form-field"></div>
