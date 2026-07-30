@@ -9,7 +9,7 @@
 //   Cada goal tiene su propio checklist de requirements, que el
 //   usuario tilda manualmente.
 //
-// MULTI-SELECT (nuevo): "Countries of interest" y "Professional
+// MULTI-SELECT: "Countries of interest" y "Professional
 // interest" pasaron de <input type="text"> a un dropdown con
 // checkboxes (ver buildMultiSelect más abajo). El valor elegido
 // se sigue guardando como texto separado por comas en un
@@ -18,10 +18,16 @@
 // formato — el resto del código (payload de guardado, signup.js)
 // no necesitó tocarse.
 //
-// RECORTE DE FOTO (nuevo): en vez de subir el archivo tal cual se
-// eligió, ahora se abre un modal con Cropper.js donde el usuario
+// RECORTE DE FOTO: en vez de subir el archivo tal cual se
+// eligió, se abre un modal con Cropper.js donde el usuario
 // puede arrastrar y hacer zoom dentro de un círculo antes de
 // confirmar. Recién ahí se sube el recorte final a Supabase Storage.
+//
+// "VER MÁS" EN MOBILE (nuevo): el form de datos personales y el
+// del CV se recortan en celular (ver .collapsible en Profile.css)
+// y un botón los expande. setupSeeMoreToggle() maneja el toggle;
+// al entrar en modo edición se expanden solos para que el usuario
+// pueda llegar a cualquier campo sin buscar el botón primero.
 // ============================================================
 
 const avatarInput = document.getElementById("avatarInput");
@@ -110,6 +116,68 @@ function renderMiniLogo(opp) {
   }
   return `<div class="goal-item-logo" style="background:${opp.logo_color}">${opp.logo_initial}</div>`;
 }
+
+// ------------------------------------------------------------
+// "Ver más" en mobile (nuevo)
+// ------------------------------------------------------------
+// Envuelve un bloque .collapsible + su botón "Ver más" para que
+// se puedan expandir/contraer en celular. En desktop el CSS oculta
+// el botón y .collapsible no tiene límite de altura, así que este
+// toggle no cambia nada ahí. Devuelve { expand, collapse } para
+// poder forzar el estado desde otras partes del código (por
+// ejemplo, al entrar en modo edición).
+function setupSeeMoreToggle(collapsibleEl, buttonEl) {
+  if (!collapsibleEl || !buttonEl) return null;
+
+  let expanded = false;
+
+  function render() {
+    const lang = typeof getCurrentLang === "function" ? getCurrentLang() : "es";
+    collapsibleEl.classList.toggle("expanded", expanded);
+    buttonEl.textContent = expanded
+      ? (lang === "es" ? "Ver menos ▴" : "See less ▴")
+      : (lang === "es" ? "Ver más ▾" : "See more ▾");
+  }
+
+  buttonEl.addEventListener("click", () => {
+    expanded = !expanded;
+    render();
+  });
+
+  render();
+
+  return {
+    expand() { expanded = true; render(); },
+    collapse() { expanded = false; render(); }
+  };
+}
+
+let profileSeeMore = null;
+let lcSeeMore = null;
+
+// Si el usuario cambia el idioma desde Ajustes, el texto del botón
+// (Ver más / See more) tiene que actualizarse aunque no haya
+// tocado el estado expandido/contraído.
+window.addEventListener("languagechange", () => {
+  const lang = typeof getCurrentLang === "function" ? getCurrentLang() : "es";
+  const profileBtn = document.getElementById("profileSeeMoreBtn");
+  const lcBtn = document.getElementById("lcSeeMoreBtn");
+  const profileCollapsible = document.getElementById("profileCollapsible");
+  const lcCollapsible = document.getElementById("lcCollapsible");
+
+  if (profileBtn && profileCollapsible) {
+    const expanded = profileCollapsible.classList.contains("expanded");
+    profileBtn.textContent = expanded
+      ? (lang === "es" ? "Ver menos ▴" : "See less ▴")
+      : (lang === "es" ? "Ver más ▾" : "See more ▾");
+  }
+  if (lcBtn && lcCollapsible) {
+    const expanded = lcCollapsible.classList.contains("expanded");
+    lcBtn.textContent = expanded
+      ? (lang === "es" ? "Ver menos ▴" : "See less ▴")
+      : (lang === "es" ? "Ver más ▾" : "See more ▾");
+  }
+});
 
 // ------------------------------------------------------------
 // Multi-select genérico (checkboxes en un dropdown), usado para
@@ -314,6 +382,10 @@ function setEditing(editing) {
   if (countriesInterestControl) countriesInterestControl.setDisabled(!editing);
   if (professionalInterestControl) professionalInterestControl.setDisabled(!editing);
   editToggleBtn.textContent = editing ? "Save changes" : "Edit profile";
+  // En mobile, al entrar en modo edición mostramos todos los campos
+  // de una: si no, el usuario tendría que tocar "Ver más" antes de
+  // poder llegar a los campos que quedaron recortados.
+  if (editing) profileSeeMore?.expand();
 }
 
 // ------------------------------------------------------------
@@ -348,6 +420,7 @@ function setLcEditing(editing) {
   isLcEditing = editing;
   lcEditableFields.forEach(field => { if (field) field.disabled = !editing; });
   lcEditToggleBtn.textContent = editing ? "Save LC" : "Edit LC";
+  if (editing) lcSeeMore?.expand();
 }
 
 function setupLc(usuario) {
@@ -809,7 +882,7 @@ editToggleBtn.addEventListener("click", async () => {
 });
 
 // ------------------------------------------------------------
-// Recorte de foto de perfil (nuevo, con Cropper.js)
+// Recorte de foto de perfil (con Cropper.js)
 // ------------------------------------------------------------
 const cropModalOverlay = document.getElementById("cropModalOverlay");
 const cropImage = document.getElementById("cropImage");
@@ -926,4 +999,6 @@ async function uploadAvatarBlob(blob) {
 setupMultiSelects();
 setEditing(false);
 setLcEditing(false);
+profileSeeMore = setupSeeMoreToggle(document.getElementById("profileCollapsible"), document.getElementById("profileSeeMoreBtn"));
+lcSeeMore = setupSeeMoreToggle(document.getElementById("lcCollapsible"), document.getElementById("lcSeeMoreBtn"));
 loadProfile();
