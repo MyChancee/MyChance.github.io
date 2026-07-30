@@ -232,9 +232,9 @@ function showDashboardToast(message) {
 // Rutas de los íconos de cada plan. Si tus archivos se llaman
 // distinto, solo hay que actualizar estas tres líneas.
 const PLAN_ICON_SRC = {
-  free: "../free_icon.png",
-  premium: "../premium_icon.png",
-  enterprise: "../enterprise_icon.png"
+  free: { dark: "../free_icon.png", light: "../free_icon-white.png" },
+  premium: { dark: "../premium_icon.png", light: "../premium_icon-white.png" },
+  enterprise: { dark: "../enterprise_icon.png", light: "../enterprise_icon-white.png" }
 };
 
 // Definición de los planes en función del idioma (nombre, precio,
@@ -289,20 +289,23 @@ function renderPlanCard(plan, currentPlanId, lang) {
     buttonHtml = `<button class="plan-btn plan-btn--upgrade-${plan.modifier}" data-upgrade="${plan.id}">${t("dash.plan.upgradeBtn", lang)}</button>`;
   }
 
-  return `
-    <div class="plan-card plan-card--${plan.modifier}">
-      <div class="plan-icon"><img src="${plan.icon}" alt="" class="plan-icon-img"></div>
-      <div class="plan-body">
-        <p class="plan-name">${plan.name}</p>
-        <p class="plan-price">${plan.price}</p>
-        <p class="plan-price-note">${plan.priceNote}</p>
-        <ul class="plan-features">
-          ${plan.features.map(f => `<li>${f}</li>`).join("")}
-        </ul>
-        ${buttonHtml}
-      </div>
+ return `
+  <div class="plan-card plan-card--${plan.modifier}">
+    <div class="plan-icon">
+      <img src="${plan.icon.dark}" alt="" class="plan-icon-img icon-dark">
+      <img src="${plan.icon.light}" alt="" class="plan-icon-img icon-light">
     </div>
-  `;
+    <div class="plan-body">
+      <p class="plan-name">${plan.name}</p>
+      <p class="plan-price">${plan.price}</p>
+      <p class="plan-price-note">${plan.priceNote}</p>
+      <ul class="plan-features">
+        ${plan.features.map(f => `<li>${f}</li>`).join("")}
+      </ul>
+      ${buttonHtml}
+    </div>
+  </div>
+`;
 }
 
 let lastCurrentPlanId = "free";
