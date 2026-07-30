@@ -238,6 +238,12 @@ const DICTIONARY = {
     "fav.expired.banner": "Esta oportunidad fue eliminada",
     "fav.close": "Cerrar",
 
+    // ---- Recorte de foto de perfil (nuevo) ----
+    "profile.crop.title": "Ajustá tu foto",
+    "profile.crop.sub": "Arrastrá para reposicionar, hacé scroll o pellizcá para hacer zoom.",
+    "profile.crop.cancel": "Cancelar",
+    "profile.crop.confirm": "Guardar foto",
+
     // ---- Strings dinámicos generados en JS (dashboard.js) ----
     "dash.goal.empty.title": "Todavía no tenés una meta fijada",
     "dash.goal.empty.sub": "Elegí una beca en Oportunidades y marcala con 🎯",
@@ -465,6 +471,12 @@ const DICTIONARY = {
     "opp.toast.expired": "This opportunity is no longer available.",
     "fav.expired.banner": "This opportunity was removed",
     "fav.close": "Close",
+
+    // ---- Profile photo crop (new) ----
+    "profile.crop.title": "Adjust your photo",
+    "profile.crop.sub": "Drag to reposition, scroll or pinch to zoom.",
+    "profile.crop.cancel": "Cancel",
+    "profile.crop.confirm": "Save photo",
 
     // ---- Dynamic strings generated in JS (dashboard.js) ----
     "dash.goal.empty.title": "You don't have a goal set yet",
