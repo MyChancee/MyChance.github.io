@@ -104,6 +104,31 @@ function isExpired(item) {
   return days !== null && days < 0;
 }
 
+function isExpiringSoon(item) {
+  const days = daysUntilExpiry(item);
+  return days !== null && days >= 0 && days <= 7;
+}
+
+function formatExpiryDate(item, lang) {
+  if (!item || !item.Expire_date) return "";
+  const expiry = new Date(item.Expire_date + "T00:00:00");
+  if (isNaN(expiry.getTime())) return "";
+  return expiry.toLocaleDateString(lang === "es" ? "es-ES" : "en-US", {
+    month: "numeric", day: "numeric", year: "numeric"
+  });
+}
+
+// Aviso de "se va a ir pronto" (quedan entre 0 y 7 días), mismo
+// texto/estilo que en Opportunities — para que el usuario sepa que
+// una oportunidad que guardó está por vencer, ANTES de que
+// desaparezca del todo.
+function renderExpiringSoonBanner(item, lang) {
+  if (!isExpiringSoon(item)) return "";
+  const dateStr = formatExpiryDate(item, lang);
+  const label = tf("opp.expiry.soon", lang, { date: dateStr });
+  return `<div class="expiry-banner">${label}</div>`;
+}
+
 // Banner grande de "se eliminó" (más visible que el aviso de
 // Opportunities). Usa la key "fav.expired.banner" de language.js
 // si existe; si no, cae en un texto por default en inglés.
@@ -143,6 +168,7 @@ function renderGrid() {
       </div>
 
       ${renderRemovedBanner(item, lang)}
+      ${renderExpiringSoonBanner(item, lang)}
 
       <span class="match-badge">${tf("opp.matchBadge", lang, { pct: item.match_percent })}</span>
 
