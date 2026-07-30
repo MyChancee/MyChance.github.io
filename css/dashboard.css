@@ -1330,3 +1330,24 @@ button{ font-family: inherit; cursor:pointer; }
     margin-top: 4px;
   }
 }
+
+/* ============================================================
+   MODO OSCURO — fix de contraste en las tarjetas de plan
+   ============================================================
+   .plan-card--free / --premium / --enterprise tienen un fondo
+   pastel FIJO (no cambia con el tema), pero .plan-name y
+   .plan-price-note usan var(--text-main) / var(--text-muted),
+   que en modo oscuro se vuelven casi blancos. Resultado: texto
+   claro sobre fondo claro, ilegible (era el bug de la captura).
+   Mismo caso que .lc-card en Profile.css: en vez de tocar cada
+   propiedad, redefinimos las variables SOLO dentro de .plan-card
+   para que, sin importar el tema, el texto de esa tarjeta se
+   siga viendo oscuro sobre su fondo pastel fijo.
+   Selector con 2 clases (mayor especificidad) para que gane
+   pase lo que pase lo que traiga "Theme dark.css", sin depender
+   del orden en que se cargan los <link>.
+   ============================================================ */
+[data-theme="dark"] .plans-grid .plan-card{
+  --text-main: #2C1B22;
+  --text-muted: #6B5B62;
+}
