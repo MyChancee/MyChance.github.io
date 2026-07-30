@@ -1,6 +1,6 @@
 // ============================================================
 // profile.js
-// - Perfil base + subida de foto (igual que antes).
+// - Perfil base + subida de foto (con recorte, ver más abajo).
 // - LC (Life Curriculum): campos extra, solo premium/enterprise.
 // - My Goals: lista de oportunidades marcadas con 🎯 (tabla
 //   "Metas"), ordenadas por prioridad. Free plan: máx 1 goal,
@@ -8,6 +8,20 @@
 //   Canva (traer al frente / adelante / atrás / enviar al fondo).
 //   Cada goal tiene su propio checklist de requirements, que el
 //   usuario tilda manualmente.
+//
+// MULTI-SELECT (nuevo): "Countries of interest" y "Professional
+// interest" pasaron de <input type="text"> a un dropdown con
+// checkboxes (ver buildMultiSelect más abajo). El valor elegido
+// se sigue guardando como texto separado por comas en un
+// <input type="hidden">, así que countries_interest /
+// professional_interest en Supabase no cambiaron de tipo ni de
+// formato — el resto del código (payload de guardado, signup.js)
+// no necesitó tocarse.
+//
+// RECORTE DE FOTO (nuevo): en vez de subir el archivo tal cual se
+// eligió, ahora se abre un modal con Cropper.js donde el usuario
+// puede arrastrar y hacer zoom dentro de un círculo antes de
+// confirmar. Recién ahí se sube el recorte final a Supabase Storage.
 // ============================================================
 
 const avatarInput = document.getElementById("avatarInput");
@@ -97,6 +111,169 @@ function renderMiniLogo(opp) {
   return `<div class="goal-item-logo" style="background:${opp.logo_color}">${opp.logo_initial}</div>`;
 }
 
+// ------------------------------------------------------------
+// Multi-select genérico (checkboxes en un dropdown), usado para
+// "Countries of interest" y "Professional interest". El valor
+// seleccionado se guarda como texto separado por comas en el
+// <input type="hidden"> asociado, para no cambiar el formato que
+// ya usa Supabase / signup.js.
+// ------------------------------------------------------------
+function buildMultiSelect({ triggerId, textId, panelId, hiddenInputId, options, placeholderText }) {
+  const trigger = document.getElementById(triggerId);
+  const text = document.getElementById(textId);
+  const panel = document.getElementById(panelId);
+  const hiddenInput = document.getElementById(hiddenInputId);
+
+  let selected = new Set();
+
+  function updateText() {
+    if (selected.size === 0) {
+      text.textContent = placeholderText;
+      text.classList.add("multiselect-placeholder");
+    } else {
+      const labels = options.filter(o => selected.has(o.value)).map(o => o.label);
+      text.textContent = labels.join(", ");
+      text.classList.remove("multiselect-placeholder");
+    }
+    hiddenInput.value = Array.from(selected)
+      .map(v => options.find(o => o.value === v)?.label || v)
+      .join(", ");
+  }
+
+  function renderPanel() {
+    panel.innerHTML = options.map(o => `
+      <label class="multiselect-option">
+        <input type="checkbox" value="${o.value}" ${selected.has(o.value) ? "checked" : ""}>
+        <span>${o.label}</span>
+      </label>
+    `).join("");
+
+    panel.querySelectorAll("input[type=checkbox]").forEach(cb => {
+      cb.addEventListener("change", () => {
+        if (cb.checked) selected.add(cb.value);
+        else selected.delete(cb.value);
+        updateText();
+      });
+    });
+  }
+
+  trigger.addEventListener("click", () => {
+    if (trigger.disabled) return;
+    panel.classList.toggle("open");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!trigger.contains(e.target) && !panel.contains(e.target)) {
+      panel.classList.remove("open");
+    }
+  });
+
+  renderPanel();
+  updateText();
+
+  return {
+    // Recibe el string guardado en Supabase (ej. "United States, Canada")
+    // y marca los checkboxes que matcheen (por value o por label,
+    // sin importar mayúsculas/espacios). Lo que no matchee se ignora
+    // silenciosamente — dato viejo cargado como texto libre antes de
+    // este cambio puede no coincidir con ninguna opción de la lista.
+    setValue(rawValue) {
+      const tokens = String(rawValue || "")
+        .split(",")
+        .map(s => s.trim().toLowerCase())
+        .filter(Boolean);
+
+      selected = new Set(
+        options
+          .filter(o => tokens.includes(o.value.toLowerCase()) || tokens.includes(o.label.toLowerCase()))
+          .map(o => o.value)
+      );
+
+      renderPanel();
+      updateText();
+    },
+    setDisabled(disabled) {
+      trigger.disabled = disabled;
+      if (disabled) panel.classList.remove("open");
+    }
+  };
+}
+
+// Países: reusa el mismo diccionario que ya usa Opportunities
+// (COUNTRY_NAMES, definido en language.js) para que la lista de
+// países sea consistente en toda la app.
+function buildCountryOptions(lang) {
+  return Object.keys(COUNTRY_NAMES)
+    .map(value => ({ value, label: localizeCountry(value, lang) }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+// Intereses profesionales: lista fija de áreas comunes. Agregá o
+// quitá items de este arreglo según lo que quieras ofrecer — el
+// dropdown se arma solo a partir de esta lista.
+const PROFESSIONAL_INTERESTS = [
+  { value: "Engineering", es: "Ingeniería", en: "Engineering" },
+  { value: "Computer Science", es: "Informática", en: "Computer Science" },
+  { value: "Medicine", es: "Medicina", en: "Medicine" },
+  { value: "Business & Finance", es: "Negocios y Finanzas", en: "Business & Finance" },
+  { value: "Law", es: "Derecho", en: "Law" },
+  { value: "Arts & Design", es: "Arte y Diseño", en: "Arts & Design" },
+  { value: "Architecture", es: "Arquitectura", en: "Architecture" },
+  { value: "Natural Sciences", es: "Ciencias Naturales", en: "Natural Sciences" },
+  { value: "Social Sciences", es: "Ciencias Sociales", en: "Social Sciences" },
+  { value: "Education", es: "Educación", en: "Education" },
+  { value: "Psychology", es: "Psicología", en: "Psychology" },
+  { value: "Communications & Media", es: "Comunicación y Medios", en: "Communications & Media" },
+  { value: "Environmental Studies", es: "Estudios Ambientales", en: "Environmental Studies" },
+  { value: "Music & Performing Arts", es: "Música y Artes Escénicas", en: "Music & Performing Arts" },
+  { value: "International Relations", es: "Relaciones Internacionales", en: "International Relations" },
+];
+
+function buildProfessionalInterestOptions(lang) {
+  return PROFESSIONAL_INTERESTS
+    .map(o => ({ value: o.value, label: lang === "es" ? o.es : o.en }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+let countriesInterestControl = null;
+let professionalInterestControl = null;
+
+function setupMultiSelects() {
+  const lang = getCurrentLang();
+
+  countriesInterestControl = buildMultiSelect({
+    triggerId: "countriesInterestTrigger",
+    textId: "countriesInterestText",
+    panelId: "countriesInterestPanel",
+    hiddenInputId: "countriesInterest",
+    options: buildCountryOptions(lang),
+    placeholderText: t("profile.ph.countriesInterest", lang)
+  });
+
+  professionalInterestControl = buildMultiSelect({
+    triggerId: "professionalInterestTrigger",
+    textId: "professionalInterestText",
+    panelId: "professionalInterestPanel",
+    hiddenInputId: "professionalInterest",
+    options: buildProfessionalInterestOptions(lang),
+    placeholderText: t("profile.ph.professionalInterest", lang)
+  });
+}
+
+// Si el usuario cambia el idioma desde Ajustes, volvemos a armar
+// las opciones (labels traducidos) sin perder lo que ya tenía
+// tildado.
+window.addEventListener("languagechange", () => {
+  if (!countriesInterestControl || !professionalInterestControl) return;
+  const countriesRaw = document.getElementById("countriesInterest").value;
+  const professionalRaw = document.getElementById("professionalInterest").value;
+  setupMultiSelects();
+  countriesInterestControl.setValue(countriesRaw);
+  professionalInterestControl.setValue(professionalRaw);
+  countriesInterestControl.setDisabled(!isEditing);
+  professionalInterestControl.setDisabled(!isEditing);
+});
+
 function fillForm(usuario) {
   document.getElementById("fullName").value = usuario?.full_name || "";
   document.getElementById("email").value = usuario?.email || "";
@@ -106,8 +283,9 @@ function fillForm(usuario) {
   setSelectValue(document.getElementById("academicLevel"), usuario?.academic_level);
   document.getElementById("gpa").value = usuario?.gpa ?? "";
   setSelectValue(document.getElementById("modality"), usuario?.modality);
-  document.getElementById("countriesInterest").value = usuario?.countries_interest || "";
-  document.getElementById("professionalInterest").value = usuario?.professional_interest || "";
+
+  if (countriesInterestControl) countriesInterestControl.setValue(usuario?.countries_interest || "");
+  if (professionalInterestControl) professionalInterestControl.setValue(usuario?.professional_interest || "");
 
   if (usuario?.avatar_url) {
     avatarPreview.innerHTML = `<img src="${usuario.avatar_url}" alt="Profile photo">`;
@@ -132,7 +310,9 @@ function fillForm(usuario) {
 
 function setEditing(editing) {
   isEditing = editing;
-  editableFields.forEach(field => { field.disabled = !editing; });
+  editableFields.forEach(field => { if (field) field.disabled = !editing; });
+  if (countriesInterestControl) countriesInterestControl.setDisabled(!editing);
+  if (professionalInterestControl) professionalInterestControl.setDisabled(!editing);
   editToggleBtn.textContent = editing ? "Save changes" : "Edit profile";
 }
 
@@ -629,22 +809,89 @@ editToggleBtn.addEventListener("click", async () => {
 });
 
 // ------------------------------------------------------------
-// Subida de la foto de perfil a Supabase Storage
+// Recorte de foto de perfil (nuevo, con Cropper.js)
 // ------------------------------------------------------------
-avatarInput.addEventListener("change", async () => {
+const cropModalOverlay = document.getElementById("cropModalOverlay");
+const cropImage = document.getElementById("cropImage");
+const cropCancelBtn = document.getElementById("cropCancelBtn");
+const cropConfirmBtn = document.getElementById("cropConfirmBtn");
+
+let cropper = null;
+
+function openCropModal(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    cropImage.src = reader.result;
+    cropModalOverlay.classList.add("open");
+
+    // Si ya había un cropper de una vez anterior, lo destruimos
+    // antes de crear uno nuevo sobre la imagen actual.
+    if (cropper) { cropper.destroy(); cropper = null; }
+
+    cropper = new Cropper(cropImage, {
+      aspectRatio: 1,
+      viewMode: 1,
+      dragMode: "move",
+      background: false,
+      guides: false,
+      center: false,
+      highlight: false,
+      cropBoxMovable: false,
+      cropBoxResizable: false,
+      toggleDragModeOnDblclick: false,
+      autoCropArea: 1,
+      minCropBoxWidth: 200,
+      minCropBoxHeight: 200,
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function closeCropModal() {
+  cropModalOverlay.classList.remove("open");
+  if (cropper) { cropper.destroy(); cropper = null; }
+  avatarInput.value = ""; // permite volver a elegir el mismo archivo si cancela y reintenta
+}
+
+avatarInput.addEventListener("change", () => {
   const file = avatarInput.files[0];
   if (!file || !currentUserId) return;
+  openCropModal(file);
+});
 
+cropCancelBtn.addEventListener("click", closeCropModal);
+
+cropModalOverlay.addEventListener("click", (e) => {
+  if (e.target === cropModalOverlay) closeCropModal();
+});
+
+cropConfirmBtn.addEventListener("click", () => {
+  if (!cropper) return;
+
+  cropper.getCroppedCanvas({
+    width: 500,
+    height: 500,
+    imageSmoothingQuality: "high",
+  }).toBlob(async (blob) => {
+    if (!blob) return;
+    await uploadAvatarBlob(blob);
+    closeCropModal();
+  }, "image/jpeg", 0.92);
+});
+
+// Sube el recorte final (Blob) a Supabase Storage. Misma lógica que
+// antes tenía avatarInput.addEventListener("change", ...), solo que
+// ahora recibe el Blob ya recortado en vez del archivo original.
+async function uploadAvatarBlob(blob) {
   avatarCamera.classList.add("uploading");
 
-  const localPreview = URL.createObjectURL(file);
-  avatarPreview.innerHTML = `<img src="${localPreview}" alt="Profile photo">`;
+  const localPreviewUrl = URL.createObjectURL(blob);
+  avatarPreview.innerHTML = `<img src="${localPreviewUrl}" alt="Profile photo">`;
 
-  const fileExt = file.name.split(".").pop();
-  const filePath = `${currentUserId}/avatar.${fileExt}`;
+  const filePath = `${currentUserId}/avatar.jpg`;
 
   const { error: uploadError } = await supabaseClient
-    .storage.from("avatars").upload(filePath, file, { upsert: true });
+    .storage.from("avatars").upload(filePath, blob, { upsert: true, contentType: "image/jpeg" });
 
   if (uploadError) {
     console.error("Error subiendo la foto:", uploadError);
@@ -671,11 +918,12 @@ avatarInput.addEventListener("change", async () => {
   if (sidebarAvatar) sidebarAvatar.innerHTML = `<img src="${avatarUrl}" alt="">`;
 
   setStatus("Photo updated ✓");
-});
+}
 
 // ------------------------------------------------------------
 // Init
 // ------------------------------------------------------------
+setupMultiSelects();
 setEditing(false);
 setLcEditing(false);
 loadProfile();
