@@ -1336,3 +1336,75 @@ input, select{ font-family: inherit; }
   border-radius: 12px;
   margin-bottom: 12px;
 }
+/* ===================== EXPLORER BANNER (nuevo) =====================
+   Se muestra cuando el usuario no completó su perfil todavía.
+   Reemplaza la experiencia de match por un aviso claro que invita
+   a completar los datos, con un botón directo a Profile.html. */
+.explorer-banner{
+  background: linear-gradient(120deg, #E9DDEF 0%, #F0E1E6 55%, #FBEDE4 100%);
+  border-radius: 20px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.explorer-banner-text{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.explorer-banner-icon{
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.explorer-banner-title{
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--maroon-dark);
+  margin-bottom: 3px;
+}
+
+.explorer-banner-sub{
+  font-size: 12px;
+  color: #5C4750;
+  line-height: 1.45;
+  max-width: 480px;
+}
+
+.explorer-banner-btn{
+  flex-shrink: 0;
+  background: var(--maroon);
+  color: var(--white);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.explorer-banner-btn:hover{ filter: brightness(1.1); }
+
+/* --- featured card en explorer mode: reemplaza el anillo de match
+   por un ícono de brújula, mismo layout que .featured-ring --- */
+.featured-explorer-icon{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--white);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 26px;
+}
+
+@media (max-width: 600px){
+  .explorer-banner{ flex-direction: column; align-items: flex-start; }
+  .explorer-banner-btn{ width: 100%; text-align: center; }
+}
