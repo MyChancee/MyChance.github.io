@@ -15,13 +15,21 @@
 // Cuando el usuario cambia el idioma desde Ajustes, language.js
 // dispara "languagechange" y volvemos a pintar todo sin recargar.
 //
-// EXPIRACIÓN (nuevo): usa la columna "Expire_date" (date) de la
-// tabla "Oportunidades".
+// EXPIRACIÓN: usa la columna "Expire_date" (date) de la tabla
+// "Oportunidades".
 //   - Si Expire_date ya pasó, la oportunidad se filtra de
 //     ALL_DATA en init() y no se muestra en Opportunities.
 //   - Si quedan entre 0 y 7 días, se muestra un banner de aviso
 //     ("se retira pronto") en la tarjeta, la featured card y el
 //     modal de detalles.
+//
+// EXPLORER MODE (nuevo): si el usuario no completó su perfil
+// (mismo criterio que isProfileEmpty en Profile.js), la sección
+// se comporta como un catálogo simple: se ocultan el % de match,
+// el badge de progreso de checklist y el ranking "Best match" del
+// selector de orden, y se muestra un banner arriba invitando a
+// completar el perfil. Apenas el usuario completa sus datos y
+// vuelve a esta página, todo funciona con match real como antes.
 // ============================================================
 
 // ------------------------------------------------------------
@@ -49,6 +57,33 @@ async function getOpportunities(userId) {
   }
 
   return data;
+}
+
+// ------------------------------------------------------------
+// Perfil del usuario: se usa solo para decidir si activamos el
+// "explorer mode" (ver isProfileEmptyOpp más abajo). Mismo
+// criterio que Profile.js, para que la experiencia sea coherente
+// en toda la app.
+// ------------------------------------------------------------
+async function getUserProfileBasics(userId) {
+  if (!userId) return null;
+
+  const { data, error } = await supabaseClient
+    .from("Usuarios")
+    .select("full_name, age, academic_level, gpa")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error trayendo el perfil básico del usuario:", error);
+    return null;
+  }
+
+  return data;
+}
+
+function isProfileEmptyOpp(usuario) {
+  return !usuario?.full_name && !usuario?.age && !usuario?.academic_level && !usuario?.gpa;
 }
 
 // ------------------------------------------------------------
@@ -221,7 +256,8 @@ const state = {
   savedIds: new Set(),
   goalIds: new Set(),
   followedOrgs: new Set(),
-  goalChecklists: new Map()
+  goalChecklists: new Map(),
+  hasProfile: true // ver applyExplorerMode() en init()
 };
 
 let ALL_DATA = [];
@@ -229,6 +265,34 @@ let currentUserId = null;
 let currentUserPlan = "free";
 let currentModalOpportunityId = null;
 let justToggledFavId = null; // id del último favorito togglado, para animar solo ese corazón
+
+// ------------------------------------------------------------
+// EXPLORER MODE (nuevo)
+// Decide y aplica el modo de la página según si el usuario tiene
+// un perfil completo o no. Se llama una vez en init(), antes de
+// pintar cualquier cosa, para que todo el resto del renderizado
+// (grilla, featured, modal) ya sepa si tiene que mostrar match o no.
+// ------------------------------------------------------------
+function applyExplorerMode() {
+  const banner = document.getElementById("explorerBanner");
+  const sortMatchOption = document.getElementById("sortMatchOption");
+
+  if (banner) banner.style.display = state.hasProfile ? "none" : "flex";
+
+  if (sortMatchOption) {
+    sortMatchOption.disabled = !state.hasProfile;
+    sortMatchOption.style.display = state.hasProfile ? "" : "none";
+  }
+
+  // Si no hay perfil y el orden actual era "match" (default), lo
+  // pasamos a "newest" para no ordenar por un número que ni
+  // siquiera se está mostrando.
+  if (!state.hasProfile && state.sort === "match") {
+    state.sort = "newest";
+    const sortSelect = document.getElementById("sortSelect");
+    if (sortSelect) sortSelect.value = "newest";
+  }
+}
 
 // ------------------------------------------------------------
 // Skeleton loaders: se muestran ANTES de que llegue la data de
@@ -409,11 +473,11 @@ function filterData() {
 function sortData(data) {
   const lang = getCurrentLang();
   const sorted = [...data];
-  if (state.sort === "match") {
+  if (state.sort === "match" && state.hasProfile) {
     sorted.sort((a, b) => b.match_percent - a.match_percent);
   } else if (state.sort === "az") {
     sorted.sort((a, b) => localizeField(a, "title", lang).localeCompare(localizeField(b, "title", lang)));
-  } else if (state.sort === "newest") {
+  } else if (state.sort === "newest" || (state.sort === "match" && !state.hasProfile)) {
     sorted.sort((a, b) => b.id - a.id);
   }
   return sorted;
@@ -444,7 +508,7 @@ function renderGrid(data) {
         </button>
       </div>
 
-      <span class="match-badge">${tf("opp.matchBadge", lang, { pct: item.match_percent })}</span>
+      ${state.hasProfile ? `<span class="match-badge">${tf("opp.matchBadge", lang, { pct: item.match_percent })}</span>` : ""}
 
       <h4>${localizeField(item, "title", lang)}</h4>
       <div class="opp-meta">
@@ -454,9 +518,11 @@ function renderGrid(data) {
 
       <p class="opp-desc">${localizeField(item, "description", lang)}</p>
 
+      ${state.hasProfile ? `
       <ul class="opp-reasons">
         ${(localizeField(item, "reasons", lang) || []).slice(0, 2).map(r => `<li>${r}</li>`).join("")}
       </ul>
+      ` : ""}
 
       <div class="opp-tags">
         ${(item.tags || []).map(tag => `<span class="tag tag-cat">${tag}</span>`).join("")}
@@ -495,9 +561,11 @@ function renderLogo(item, className) {
 
 // Badge dorado junto al de match, mostrando cuánto avanzó el
 // usuario en la checklist de "My Goals" para esta oportunidad.
-// Solo aparece si la oportunidad está marcada como goal (🎯) y
-// tiene al menos un requirement (osea, algo que tildar).
+// Solo aparece si la oportunidad está marcada como goal (🎯),
+// tiene al menos un requirement (algo que tildar), y el usuario
+// tiene perfil completo (explorer mode nunca muestra checklist).
 function renderChecklistBadge(item, lang) {
+  if (!state.hasProfile) return "";
   const checklist = state.goalChecklists.get(item.id);
   if (checklist === undefined) return ""; // no es un goal actual
   const total = Array.isArray(item.requirements) ? item.requirements.length : 0;
@@ -525,6 +593,16 @@ function renderFeatured(data) {
 
   const isSaved = state.savedIds.has(featured.id);
 
+  const matchBlockHtml = state.hasProfile
+    ? `
+      <div class="featured-ring" style="--pct:${featured.match_percent}"><span>${featured.match_percent}%</span></div>
+      <span class="featured-match-label">${t("opp.matchLabel", lang)}</span>
+    `
+    : `
+      <span class="featured-explorer-icon">🧭</span>
+      <span class="featured-match-label">${t("opp.explorer.featuredLabel", lang)}</span>
+    `;
+
   container.innerHTML = `
     <span class="featured-badge">${t("opp.featuredBadge", lang)}</span>
     <button class="fav-btn featured-fav-btn ${isSaved ? "active" : ""} ${featured.id === justToggledFavId ? "animate" : ""}" data-fav="${featured.id}" aria-label="${t("opp.fav.save", lang)}">
@@ -544,8 +622,7 @@ function renderFeatured(data) {
       </div>
     </div>
     <div class="featured-match">
-      <div class="featured-ring" style="--pct:${featured.match_percent}"><span>${featured.match_percent}%</span></div>
-      <span class="featured-match-label">${t("opp.matchLabel", lang)}</span>
+      ${matchBlockHtml}
       ${renderExpiryBanner(featured, lang)}
       <button class="btn-learn" data-view-details="${featured.id}">${t("opp.learnMore", lang)}</button>
     </div>
@@ -623,7 +700,7 @@ function openModal(id, options = {}) {
       <span>${formatIcon(item.format)} ${localizeEnum(item.format, "format", lang)}</span>
     </div>
 
-    <span class="modal-match">${tf("opp.matchBadge", lang, { pct: item.match_percent })}</span>
+    ${state.hasProfile ? `<span class="modal-match">${tf("opp.matchBadge", lang, { pct: item.match_percent })}</span>` : ""}
     ${renderChecklistBadge(item, lang)}
 
     <div class="modal-tags">
@@ -690,11 +767,9 @@ async function toggleFavorite(id) {
 
   document.getElementById("savedCount").textContent = state.savedIds.size;
 
-  // === CAMBIO NUEVO: toast positivo solo al AGREGAR ===
   if (!wasSaved) {
     showOppToast(t("opp.toast.favAdded", getCurrentLang()), "success");
   }
-  // === FIN CAMBIO NUEVO ===
 
   // Marca este id para que el corazón haga el pulso al repintar,
   // y lo limpia enseguida para que no vuelva a animar en el
@@ -727,8 +802,7 @@ async function toggleFavorite(id) {
 // ------------------------------------------------------------
 // Toast pequeño para avisos (ej: límite del plan free) y
 // confirmaciones positivas (ej: agregado a favoritos).
-// === CAMBIO NUEVO: se agregó el parámetro `type` ===
-// type: "default" (maroon, como el límite free) o "success" (verde).
+// type: "default" (maroon) o "success" (verde).
 // ------------------------------------------------------------
 let oppToastTimeout = null;
 function showOppToast(message, type = "default") {
@@ -786,8 +860,6 @@ async function toggleGoal(id, btnEl) {
     if (error) console.error("Error guardando el goal:", error);
   }
 
-  // Repintar el modal si sigue abierto en esta misma oportunidad,
-  // avisándole que anime el botón que se acaba de tocar.
   if (document.getElementById("modalOverlay").classList.contains("open")) {
     openModal(id, { animateGoal: true });
   }
@@ -824,7 +896,7 @@ async function toggleFollow(organization, opportunityId) {
 
     if (error) {
       console.error("Error quitando la suscripción:", error);
-      state.followedOrgs.add(organization); // revertimos si falló
+      state.followedOrgs.add(organization);
       return;
     }
   } else {
@@ -836,13 +908,11 @@ async function toggleFollow(organization, opportunityId) {
 
     if (error) {
       console.error("Error guardando la suscripción:", error);
-      state.followedOrgs.delete(organization); // revertimos si falló
+      state.followedOrgs.delete(organization);
       return;
     }
   }
 
-  // Avisa al panel de notificaciones del header (notifications.js),
-  // por si está abierto en este momento, para que se refresque solo.
   document.dispatchEvent(new CustomEvent("mychance:follow-changed", {
     detail: { organization, following: !isFollowing }
   }));
@@ -852,9 +922,6 @@ async function toggleFollow(organization, opportunityId) {
   }
 }
 
-// Si el usuario deja de seguir una organización desde el panel del
-// header (notifications.js), esto mantiene el estado de la campanita
-// del modal al día sin tener que recargar la página.
 document.addEventListener("mychance:follow-changed", (e) => {
   const { organization, following } = e.detail || {};
   if (!organization) return;
@@ -982,6 +1049,12 @@ async function init() {
   const { data: userData } = await supabaseClient.auth.getUser();
   currentUserId = userData?.user?.id || null;
 
+  // EXPLORER MODE: decide si el usuario ve match/checklist o el
+  // catálogo simple, antes de pintar cualquier tarjeta.
+  const usuarioBasics = await getUserProfileBasics(currentUserId);
+  state.hasProfile = currentUserId ? !isProfileEmptyOpp(usuarioBasics) : false;
+  applyExplorerMode();
+
   // Filtramos las oportunidades ya expiradas (Expire_date < hoy):
   // no deben aparecer en Opportunities. Si esa oportunidad sigue
   // guardada en Favoritos, se sigue mostrando ahí (con su propio
@@ -1013,9 +1086,6 @@ async function init() {
       if (ALL_DATA.some(item => item.id === id)) {
         openModal(id);
       } else {
-        // No está en ALL_DATA: o no existe, o ya expiró y quedó
-        // filtrada arriba. Le avisamos con un mensaje chico en
-        // vez de dejar la página como si nada.
         showOppToast(t("opp.toast.expired", getCurrentLang()) || "This opportunity is no longer available.");
       }
     }
