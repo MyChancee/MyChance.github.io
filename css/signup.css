@@ -488,7 +488,9 @@ a.logo {
 .ms-option:hover{
     background:rgba(103,14,39,.08);
 }
-
+.hidden-field {
+  display: none !important;
+}
 .ms-empty{
     padding:10px 14px;
     color:var(--muted);
