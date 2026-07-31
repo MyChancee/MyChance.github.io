@@ -6,8 +6,30 @@ const mensaje = document.getElementById("mensaje");
 const signupParams = new URLSearchParams(window.location.search);
 const isAddingAccount = signupParams.get("addingAccount") === "1";
 
+// Si llegamos aquí porque un usuario de Google necesita completar su perfil.
+const isCompleteMode = signupParams.get("mode") === "complete";
+
 let currentStep = 0;
 const steps = document.querySelectorAll(".step");
+
+// ============================================================
+// Ajustes visuales si venimos en modo "completar perfil"
+// ============================================================
+if (isCompleteMode) {
+  // Ocultamos email y password del Step 1: ya vienen de Google
+  document.getElementById("email")?.closest(".field")?.classList.add("hidden-field");
+  document.getElementById("password")?.closest(".field")?.classList.add("hidden-field");
+
+  // Cambiamos textos de "Create account" a "Complete your account"
+  document.querySelectorAll(".step h1, .step h2").forEach(el => {
+    if (/create.*account/i.test(el.textContent)) {
+      el.textContent = "Complete your account";
+    }
+  });
+
+  const btnFinal = formulario?.querySelector('button[type="submit"]');
+  if (btnFinal) btnFinal.textContent = "Complete your account";
+}
 
 function showStep(index) {
     steps.forEach(step => {
@@ -28,6 +50,17 @@ function showStep(index) {
 function validateStep1() {
     const errorBox = document.getElementById("step1-error");
     const full_name = document.getElementById("full_name").value.trim();
+
+    // En modo "completar", no hay email/password que validar en este paso
+    if (isCompleteMode) {
+      if (!full_name) {
+        errorBox.textContent = "Please enter your name.";
+        return false;
+      }
+      errorBox.textContent = "";
+      return true;
+    }
+
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
@@ -116,8 +149,6 @@ async function registrarUsuario(event) {
   event.preventDefault();
 
   const full_name = document.getElementById("full_name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
   const age = parseInt(document.getElementById("age").value, 10) || null;
   const nationality = document.getElementById("nationality").value.trim();
   const gender = document.getElementById("gender").value;
@@ -127,24 +158,75 @@ async function registrarUsuario(event) {
   const professional_interest = document.getElementById("professional_interest").value.trim();
   const modality = document.getElementById("modality").value;
 
-  if (!full_name || !email || !password) {
-    mensaje.textContent = "Please complete your name, email and password.";
+  if (!full_name) {
+    mensaje.textContent = "Please complete your name.";
     mensaje.style.color = "red";
     return;
   }
 
-  // Chequeo de respaldo: por si el usuario llega a este punto sin pasar
-  // por la validación del Step 1 (por ejemplo, con JS deshabilitado en algún paso).
-  if (password.length < 6) {
-    mensaje.textContent = "Password must be at least 6 characters long.";
-    mensaje.style.color = "red";
-    return;
-  }
-
-  // Chequeo de respaldo: por si el usuario llega hasta aquí sin pasar
-  // por la validación del Step 3 (por ejemplo, saltando pasos).
   if (!isNaN(gpa) && (gpa > 4.0 || gpa < 0)) {
     mensaje.textContent = "GPA must be between 0 and 4.0. Please go back and correct it.";
+    mensaje.style.color = "red";
+    return;
+  }
+
+  // ============================================================
+  // MODO "COMPLETAR PERFIL" — usuario ya logueado vía Google
+  // ============================================================
+  if (isCompleteMode) {
+    mensaje.textContent = "Saving your profile...";
+    mensaje.style.color = "inherit";
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const { error: errorUpdate } = await supabaseClient
+      .from("Usuarios")
+      .update({
+        full_name,
+        age,
+        nationality,
+        gender,
+        academic_level,
+        gpa: isNaN(gpa) ? null : gpa,
+        countries_interest,
+        professional_interest,
+        modality,
+        form_completed: true
+      })
+      .eq("id", session.user.id);
+
+    if (errorUpdate) {
+      mensaje.textContent = "Error: " + errorUpdate.message;
+      mensaje.style.color = "red";
+      return;
+    }
+
+    mensaje.textContent = "Profile completed! Redirecting...";
+    mensaje.style.color = "green";
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 1500);
+    return;
+  }
+
+  // ============================================================
+  // MODO NORMAL — signup con email + password (tu flujo original)
+  // ============================================================
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!email || !password) {
+    mensaje.textContent = "Please complete your email and password.";
+    mensaje.style.color = "red";
+    return;
+  }
+
+  if (password.length < 6) {
+    mensaje.textContent = "Password must be at least 6 characters long.";
     mensaje.style.color = "red";
     return;
   }
@@ -185,7 +267,8 @@ async function registrarUsuario(event) {
         gpa: isNaN(gpa) ? null : gpa,
         countries_interest,
         professional_interest,
-        modality
+        modality,
+        form_completed: true
       }]);
 
     console.log("PERFIL ERROR:", errorPerfil);
