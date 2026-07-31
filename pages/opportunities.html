@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-  // Aplica el tema guardado ANTES de pintar la página, para
-  // evitar el flash de claro→oscuro al navegar entre páginas.
   (function(){
     try {
       var t = localStorage.getItem("mychance_theme");
@@ -110,11 +108,11 @@
     <input id="searchInput" type="text" data-i18n-placeholder="opportunities.searchPlaceholder" placeholder="Search opportunities...">
   </div>
 
-  <!-- NUEVO wrapper: agrupa Sort by + Filters para que siempre queden juntos -->
+  <!-- Agrupa Sort by + Filters para que siempre queden juntos -->
   <div class="search-row-bottom">
     <div class="sort-select-wrap">
       <select id="sortSelect">
-        <option value="match" data-i18n="opportunities.sort.match">Sort by: Best match</option>
+        <option value="match" id="sortMatchOption" data-i18n="opportunities.sort.match">Sort by: Best match</option>
         <option value="newest" data-i18n="opportunities.sort.newest">Sort by: Newest</option>
         <option value="az" data-i18n="opportunities.sort.az">Sort by: A–Z</option>
       </select>
@@ -201,6 +199,22 @@
 
         <!-- ===== RESULTS ===== -->
         <div class="results-col">
+
+          <!-- ===== EXPLORER BANNER (new): se muestra cuando el
+               usuario no completó su perfil todavía. Reemplaza la
+               experiencia de "match" por un aviso claro + CTA hacia
+               Profile.html. applyExplorerMode() en opportunities.js
+               decide cuándo mostrarlo. ===== -->
+          <section class="explorer-banner" id="explorerBanner" style="display:none;">
+            <div class="explorer-banner-text">
+              <span class="explorer-banner-icon">🧭</span>
+              <div>
+                <p class="explorer-banner-title" data-i18n="opp.explorer.title">You're browsing in explorer mode</p>
+                <p class="explorer-banner-sub" data-i18n="opp.explorer.sub">Complete your profile so we can calculate your match with every opportunity and recommend the ones that fit you best.</p>
+              </div>
+            </div>
+            <a href="Profile.html" class="explorer-banner-btn" data-i18n="opp.explorer.cta">Complete my profile ›</a>
+          </section>
 
           <section class="featured-card" id="featuredCard"></section>
 
