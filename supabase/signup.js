@@ -16,11 +16,9 @@ const steps = document.querySelectorAll(".step");
 // Ajustes visuales si venimos en modo "completar perfil"
 // ============================================================
 if (isCompleteMode) {
-  // Ocultamos email y password del Step 1: ya vienen de Google
   document.getElementById("email")?.closest(".field")?.classList.add("hidden-field");
   document.getElementById("password")?.closest(".field")?.classList.add("hidden-field");
 
-  // Cambiamos textos de "Create account" a "Complete your account"
   document.querySelectorAll(".step h1, .step h2").forEach(el => {
     if (/create.*account/i.test(el.textContent)) {
       el.textContent = "Complete your account";
@@ -51,7 +49,6 @@ function validateStep1() {
     const errorBox = document.getElementById("step1-error");
     const full_name = document.getElementById("full_name").value.trim();
 
-    // En modo "completar", no hay email/password que validar en este paso
     if (isCompleteMode) {
       if (!full_name) {
         errorBox.textContent = "Please enter your name.";
@@ -208,13 +205,13 @@ async function registrarUsuario(event) {
     mensaje.textContent = "Profile completed! Redirecting...";
     mensaje.style.color = "green";
     setTimeout(() => {
-      window.location.href = "dashboard.html";
+      window.location.href = "profile.html";
     }, 1500);
     return;
   }
 
   // ============================================================
-  // MODO NORMAL — signup con email + password (tu flujo original)
+  // MODO NORMAL — signup con email + password (flujo original)
   // ============================================================
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
@@ -251,7 +248,6 @@ async function registrarUsuario(event) {
 
     const userId = data.user.id;
 
-    // Pequeña espera para asegurar que la sesión ya está activa antes de insertar
     await new Promise(resolve => setTimeout(resolve, 500));
 
     const { error: errorPerfil } = await supabaseClient
@@ -293,4 +289,36 @@ async function registrarUsuario(event) {
     mensaje.textContent = "Unexpected error: " + err.message;
     mensaje.style.color = "red";
   }
+}
+
+// ============================================================
+// Precarga de datos existentes (usuarios de Google en modo
+// "completar perfil"): traemos lo que ya tenga guardado para no
+// empezar de cero cada vez que vuelve a este formulario.
+// ============================================================
+if (isCompleteMode) {
+  precargarDatosExistentes();
+}
+
+async function precargarDatosExistentes() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) return;
+
+  const { data: usuario, error } = await supabaseClient
+    .from("Usuarios")
+    .select("full_name, age, nationality, gender, academic_level, gpa, countries_interest, professional_interest, modality")
+    .eq("id", session.user.id)
+    .maybeSingle();
+
+  if (error || !usuario) return;
+
+  if (usuario.full_name) document.getElementById("full_name").value = usuario.full_name;
+  if (usuario.age !== null) document.getElementById("age").value = usuario.age;
+  if (usuario.nationality) document.getElementById("nationality").value = usuario.nationality;
+  if (usuario.gender) document.getElementById("gender").value = usuario.gender;
+  if (usuario.academic_level) document.getElementById("academic_level").value = usuario.academic_level;
+  if (usuario.gpa !== null) document.getElementById("gpa").value = usuario.gpa;
+  if (usuario.countries_interest) document.getElementById("countries_interest").value = usuario.countries_interest;
+  if (usuario.professional_interest) document.getElementById("professional_interest").value = usuario.professional_interest;
+  if (usuario.modality) document.getElementById("modality").value = usuario.modality;
 }
