@@ -693,3 +693,95 @@ input, select, textarea{ font-family: inherit; }
 [data-theme="dark"] .lc-card .form-field textarea:disabled{
   -webkit-text-fill-color: #2C1B22;
 }
+/* ===== LC head con acciones (info + descarga PDF) ===== */
+.lc-head-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.lc-head-actions{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.lc-info-btn, .lc-download-btn{
+  border: none;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+.lc-info-btn{
+  background: rgba(255,255,255,0.6);
+  color: var(--maroon-dark);
+}
+.lc-info-btn:hover{ background: rgba(255,255,255,0.9); }
+
+.lc-download-btn{
+  background: var(--maroon);
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.lc-download-btn:hover{ background: var(--maroon-dark); }
+
+/* ===== Modal: para qué sirve el CV ===== */
+.lc-info-modal-overlay{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 27, 34, 0.55);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 200;
+}
+.lc-info-modal-overlay.open{ display: flex; }
+
+.lc-info-modal-box{
+  position: relative;
+  background: var(--cream-soft);
+  border-radius: 20px;
+  padding: 30px 28px;
+  max-width: 460px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.lc-info-modal-box h3{
+  font-size: 16.5px;
+  font-weight: 800;
+  color: var(--maroon-dark);
+  margin-bottom: 18px;
+  padding-right: 24px;
+}
+.lc-info-modal-close{
+  position: absolute;
+  top: 18px; right: 18px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: var(--pink-soft);
+  color: var(--maroon);
+  font-size: 12px;
+  display:flex; align-items:center; justify-content:center;
+}
+.lc-info-modal-close:hover{ background: var(--maroon); color: var(--white); }
+
+.lc-info-faq{ display:flex; flex-direction:column; gap: 16px; }
+.lc-info-faq-item{ border-top: 1px solid var(--line); padding-top: 14px; }
+.lc-info-faq-item:first-child{ border-top: none; padding-top: 0; }
+.lc-info-faq-q{ font-size: 13.5px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+.lc-info-faq-a{ font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
+@media (max-width: 760px){
+  .lc-head-row{ flex-direction: column; }
+  .lc-head-actions{ width: 100%; }
+  .lc-info-btn, .lc-download-btn{ flex: 1; text-align: center; }
+}
