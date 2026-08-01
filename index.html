@@ -4,76 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyChance</title>
-    <link rel="icon" type="image/png" href="mychance-nav-icon.png">
-    <link rel="stylesheet" href="css/Welcome.css">
-    <link rel="stylesheet" href="css/Features.css">
-
+    <link rel="icon" type="image/png" href="../mychance-nav-icon.png">
+    <link rel="stylesheet" href="../css/Welcome.css">
+    <link rel="stylesheet" href="../css/Features.css">
 </head>
 <body>
-
     <header class="site-header">
-        <a href="pages/index.html" class="brand">
-            <img src="mychance_no_text_efefeb_HD (1).png" alt="" height="40" class="brand-logo">
+        <a href="index.html" class="brand">
+            <img src="../mychance_no_text_efefeb_HD (1).png" alt="" height="40" class="brand-logo">
             <span class="brand-name">MyChance</span>
         </a>
+        <nav class="header-right">
+            <!-- Desktop: links directos (se ocultan en móvil) -->
+            <a href="about_us.html" class="signin-link nav-link-desktop">About us</a>
+            <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="signin-link nav-link-desktop">Contact us</a>
 
-        <div class="header-right">
-            <a href="pages/login.html" class="signin-link" >Log in</a>
-        <div class="nav-menu">
-            <button class="menu-toggle" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" data-menu-toggle="siteMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="nav-dropdown" id="siteMenu">
-                <a href="pages/about_us.html">About us</a>
-                <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer">Contact us</a>
+            <!-- Móvil: hamburguesa + dropdown solo para About us / Contact us -->
+            <div class="menu-group">
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="dropdownMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="about_us.html" class="dropdown-link">About us</a>
+                    <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="dropdown-link">Contact us</a>
+                </div>
             </div>
-        </div>
-        </div>
-    </header>
 
+            <a href="login.html" class="signin-link">Log in</a>
+        </nav>
+    </header>
     <main class="hero">
         <h1 class="hero-title">
-            <img src="fondo_logo.png" alt="WELCOME!" class="hero-title-img">
+            <img src="../fondo_logo.png" alt="WELCOME!" class="hero-title-img">
         </h1>
-
         <p class="hero-subtitle">
             Explore a world of opportunities. From scholarships and
             courses to exchange programs and competitions,
             MyChance is here to guide you every step of the way
             toward your dreams.
         </p>
-
         <div class="buttons">
-            <a href="pages/login.html">
+            <a href="login.html">
                 <button class="btn btn-outline">Log in</button>
             </a>
-
-            <a href="pages/signup.html">
+            <a href="signup.html">
                 <button class="btn btn-filled">Sign up</button>
             </a>
         </div>
     </main>
-
     <section class="offer-section">
         <h2 class="offer-title">
-            <img src="offer_title.png" alt="With us, you'll connect with" class="offer-title-img">
+            <img src="../offer_title.png" alt="With us, you'll connect with" class="offer-title-img">
         </h2>
         <div class="offer-stage" id="offerStage"></div>
     </section>
-
     <section class="impact-section">
         <div class="impact-header">
             <h2>
-                <img src="impact_left.png" alt="We've helped:" class="impact-title-img">
+                <img src="../impact_left.png" alt="We've helped:" class="impact-title-img">
                 <span id="userCount">160</span>
-                <img src="impact_right.png" alt="users" class="impact-title-img">
+                <img src="../impact_right.png" alt="users" class="impact-title-img">
             </h2>
         </div>
         <div class="testimonial-track" id="testimonialTrack"></div>
     </section>
-
     <div class="comment-modal-overlay" id="commentOverlay">
         <div class="comment-modal">
             <button class="close-btn" id="closeModal">&times;</button>
@@ -81,11 +77,39 @@
             <p id="modalText"></p>
         </div>
     </div>
-
-    <script src="supabase/Menu.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase/base.js"></script>
-    <script src="supabase/Features.js"></script>
+    <script src="../supabase/base.js"></script>
+    <script src="../supabase/Features.js"></script>
+    <script>
+        // Toggle del menú hamburguesa (About us / Contact us) en móvil
+        (function () {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('dropdownMenu');
+            if (!btn || !menu) return;
 
+            function closeMenu() {
+                menu.classList.remove('open');
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const isOpen = menu.classList.toggle('open');
+                btn.classList.toggle('open', isOpen);
+                btn.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target) && e.target !== btn) {
+                    closeMenu();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeMenu();
+            });
+        })();
+    </script>
 </body>
 </html>
