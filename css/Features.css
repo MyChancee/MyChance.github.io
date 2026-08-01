@@ -1,7 +1,7 @@
 /* ===================== SECCIÓN: IMPACTO + TESTIMONIOS ===================== */
 .impact-section{
   position:relative;
-  padding:30px 20px 90px;
+  padding:64px 20px 110px;
   overflow-x:hidden;
   font-family: var(--font-body, "Poppins", sans-serif);
 }
@@ -110,7 +110,7 @@
 
 /* ===================== SECCIÓN: QUÉ OFRECEMOS ===================== */
 .offer-section{
-  padding:36px 20px 90px;
+  padding:56px 20px 100px;
   text-align:center;
   overflow-x:hidden;
   font-family: var(--font-body, "Poppins", sans-serif);
@@ -129,10 +129,16 @@
 }
 .offer-stage{
   display:grid;
-  grid-template-columns: repeat(2, minmax(210px, 320px));
+  /* auto-fit + min(100%, ...) evita que las columnas se desborden
+     en pantallas angostas: si no entran 2 columnas de 210-320px,
+     el grid baja a 1 columna solo, sin necesidad de un breakpoint
+     fijo y sin generar scroll horizontal. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 320px));
   gap:18px 24px;
   justify-content:center;
+  justify-items:center;
   align-items:center;
+  width:100%;
   max-width:760px;
   margin:0 auto;
   min-height:280px;
@@ -165,7 +171,7 @@
 }
 
 .offer-item.signup-btn{
-  grid-column: 1 / span 2;
+  grid-column: 1 / -1;
   justify-self:center;
   background:var(--wine-700, #74182F);
   cursor:pointer;
@@ -178,13 +184,13 @@
 /* ===================== MOBILE FIXES ===================== */
 @media (max-width: 640px){
   .offer-section{
-    padding-top: 24px;
+    padding-top: 40px;
+    padding-bottom: 64px;
   }
   .offer-title{
     margin-bottom: 28px;
   }
   .offer-stage{
-    grid-template-columns: 1fr;
     max-width: 300px;
     gap: 14px;
     min-height: 0;
@@ -196,12 +202,10 @@
     justify-content: center;
     text-align: center;
   }
-  .offer-item.signup-btn{
-    grid-column: 1;
-  }
 
   .impact-section{
-    padding-top: 18px;
+    padding-top: 48px;
+    padding-bottom: 80px;
   }
   .impact-header{
     margin-bottom: 26px;
