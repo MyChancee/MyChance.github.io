@@ -18,6 +18,13 @@
 // formato — el resto del código (payload de guardado, signup.js)
 // no necesitó tocarse.
 //
+// LISTAS COMPARTIDAS (nuevo): las opciones de país e interés
+// profesional ahora vienen de ALL_COUNTRIES y
+// ALL_PROFESSIONAL_FIELDS, definidas en language.js. Son las
+// mismas listas que usa el combobox de signup.html, así el texto
+// guardado desde cualquiera de los dos formularios siempre
+// coincide con una opción real acá.
+//
 // RECORTE DE FOTO: en vez de subir el archivo tal cual se
 // eligió, se abre un modal con Cropper.js donde el usuario
 // puede arrastrar y hacer zoom dentro de un círculo antes de
@@ -29,9 +36,9 @@
 // entrar en modo edición se expanden solos para que el usuario
 // pueda llegar a cualquier campo sin buscar el botón primero.
 //
-// USUARIOS DE GOOGLE (nuevo): si el usuario inició sesión con
-// Google, el botón "Edit profile" ya no activa la edición inline
-// de esta página — en vez de eso lo manda al formulario multi-paso
+// USUARIOS DE GOOGLE: si el usuario inició sesión con Google, el
+// botón "Edit profile" ya no activa la edición inline de esta
+// página — en vez de eso lo manda al formulario multi-paso
 // (signup.html?mode=complete), que precarga lo que ya tenga
 // guardado. Esto es porque el login con Google existe justamente
 // para saltarse el formulario al entrar, así que completar el
@@ -259,33 +266,20 @@ function buildMultiSelect({ triggerId, textId, panelId, hiddenInputId, options, 
   };
 }
 
+// Países: usa la lista maestra compartida (ALL_COUNTRIES, definida
+// en language.js), la misma que usa el combobox de signup.html.
 function buildCountryOptions(lang) {
-  return Object.keys(COUNTRY_NAMES)
+  return ALL_COUNTRIES
     .map(value => ({ value, label: localizeCountry(value, lang) }))
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
-const PROFESSIONAL_INTERESTS = [
-  { value: "Engineering", es: "Ingeniería", en: "Engineering" },
-  { value: "Computer Science", es: "Informática", en: "Computer Science" },
-  { value: "Medicine", es: "Medicina", en: "Medicine" },
-  { value: "Business & Finance", es: "Negocios y Finanzas", en: "Business & Finance" },
-  { value: "Law", es: "Derecho", en: "Law" },
-  { value: "Arts & Design", es: "Arte y Diseño", en: "Arts & Design" },
-  { value: "Architecture", es: "Arquitectura", en: "Architecture" },
-  { value: "Natural Sciences", es: "Ciencias Naturales", en: "Natural Sciences" },
-  { value: "Social Sciences", es: "Ciencias Sociales", en: "Social Sciences" },
-  { value: "Education", es: "Educación", en: "Education" },
-  { value: "Psychology", es: "Psicología", en: "Psychology" },
-  { value: "Communications & Media", es: "Comunicación y Medios", en: "Communications & Media" },
-  { value: "Environmental Studies", es: "Estudios Ambientales", en: "Environmental Studies" },
-  { value: "Music & Performing Arts", es: "Música y Artes Escénicas", en: "Music & Performing Arts" },
-  { value: "International Relations", es: "Relaciones Internacionales", en: "International Relations" },
-];
-
+// Intereses profesionales: usa la lista maestra compartida
+// (ALL_PROFESSIONAL_FIELDS, definida en language.js), la misma
+// que usa el combobox de signup.html.
 function buildProfessionalInterestOptions(lang) {
-  return PROFESSIONAL_INTERESTS
-    .map(o => ({ value: o.value, label: lang === "es" ? o.es : o.en }))
+  return ALL_PROFESSIONAL_FIELDS
+    .map(value => ({ value, label: value }))
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
