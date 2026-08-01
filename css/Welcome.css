@@ -6,6 +6,11 @@
    Layout   : centered hero, cream canvas framed by rotated wine "diamond"
               tiles that step down the right edge and anchor the corners
    Signature: the two-graduate glyph standing in for the "M" in WELCOME
+
+   HEADER (actualizado): "About us" y "Contact us" pasaron de estar
+   escondidos en un menú hamburguesa a ser links directos, con el mismo
+   estilo que "Log in" (.signin-link). El menú hamburguesa y su dropdown
+   ya no se usan — se sacaron del HTML y de este archivo.
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -69,10 +74,12 @@ body {
 
 .site-header {
   position: relative;
-  z-index: 100; /* antes: 2 — ahora explícitamente por encima de .hero */
+  z-index: 100;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  row-gap: 12px;
   padding: 24px clamp(20px, 5vw, 56px);
   background: var(--sinup-border);
 }
@@ -83,24 +90,35 @@ body {
   gap: 10px;
   text-decoration: none;
   color: var(--cream-50);
+  min-width: 0;
 }
 
 .brand-logo {
   display: block;
   height: 40px;
   width: auto;
+  flex-shrink: 0;
 }
 
 .brand-name{
-    color:var(--cream-50);
-    font-size:30px;
-     font-family: var(--font-display);
+  color: var(--cream-50);
+  /* antes era un tamaño fijo (30px) que no bajaba en mobile y
+     empujaba el header a desbordar; ahora escala con el viewport. */
+  font-size: clamp(1.15rem, 4.5vw, 1.875rem);
+  font-family: var(--font-display);
+  white-space: nowrap;
 }
 
+/* ---------- header right: About us / Contact us / Log in ----------
+   Los tres son links del mismo tipo (.signin-link), en línea, con
+   wrap habilitado por si en una pantalla muy angosta no entran los
+   tres en una sola fila — antes de recortarse, bajan de línea. */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: clamp(12px, 3vw, 24px);
 }
 
 .signin-link {
@@ -111,6 +129,7 @@ body {
   text-decoration: none;
   padding: 8px 4px;
   border-bottom: 2px solid transparent;
+  white-space: nowrap;
   transition: border-color 0.2s ease;
 }
 
@@ -119,89 +138,42 @@ body {
   border-color: var(--cream-50);
 }
 
-.menu-toggle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
+@media (max-width: 480px) {
+  .site-header {
+    padding: 16px 18px;
+  }
+  .header-right {
+    gap: 14px;
+  }
+  .signin-link {
+    font-size: 0.85rem;
+    padding: 6px 2px;
+  }
 }
 
-.menu-toggle span {
-  display: block;
-  height: 2px;
-  width: 22px;
-  border-radius: var(--radius-pill);
-  background: var(--cream-50);
-}
-
-.nav-menu {
-  position: relative;
-  z-index: 101; /* nuevo: asegura que el dropdown quede por encima de todo el resto */
-}
-
-.nav-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 190px;
-  background: var(--cream-50);
-  border-radius: 14px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 16px 34px rgba(91, 17, 38, 0.28);
-  opacity: 0;
-  transform: translateY(-8px);
-  pointer-events: none;
-  transition: opacity 0.16s ease, transform 0.16s ease;
-  z-index: 30;
-}
-
-.nav-dropdown.open {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.nav-dropdown a {
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: var(--wine-900);
-  text-decoration: none;
-}
-
-.nav-dropdown a:hover,
-.nav-dropdown a:focus-visible {
-  background: rgba(91, 17, 38, 0.08);
-}
-
-/* ---------- hero ---------- */
+/* ---------- hero ----------
+   min-height y padding-bottom se redujeron un poco respecto al
+   original para que "With us, you'll connect with" y "We've helped"
+   queden más arriba, sin tanto espacio vacío antes de llegar a ellas. */
 
 .hero {
   position: relative;
-  z-index: 1; /* antes: 2 — ahora explícitamente por debajo del header */
-  min-height: calc(100vh - 92px);
+  z-index: 1;
+  min-height: calc(80vh - 92px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 40px 24px 80px;
+  padding: 40px 24px 40px;
   transform: translateX(-8%);
 }
 
 @media (max-width: 720px) {
   .hero {
     transform: none;
+    min-height: auto;
+    padding: 32px 20px 24px;
   }
 }
 
