@@ -543,9 +543,13 @@ function renderGrid(data) {
 }
 
 function formatIcon(format) {
-  if (format === "in-person") return "👤";
-  if (format === "virtual") return "💻";
-  return "🔀";
+  const normalized = String(format || "").trim().toLowerCase();
+
+  if (normalized === "in-person") return "👤";
+  if (normalized === "online") return "💻";
+  if (normalized === "hybrid") return "🔀";
+
+  return "🔀"; // fallback si aparece algún valor inesperado
 }
 
 // Devuelve el HTML del logo: imagen real si logo_url existe,
