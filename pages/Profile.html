@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
@@ -211,32 +211,7 @@
             <button type="button" id="editToggleBtn" class="btn-save" data-i18n="profile.editBtn">Edit profile</button>
           </div>
         </div>
-<!-- ===== INFO MODAL: para qué sirve el CV ===== -->
-<div class="lc-info-modal-overlay" id="lcInfoModalOverlay">
-  <div class="lc-info-modal-box">
-    <button type="button" class="lc-info-modal-close" id="lcInfoCloseBtn" aria-label="Close">✕</button>
-    <h3 data-i18n="profile.lc.info.title">¿Para qué sirve tu CV en MyChance?</h3>
 
-    <div class="lc-info-faq">
-      <div class="lc-info-faq-item">
-        <p class="lc-info-faq-q" data-i18n="profile.lc.info.q1">¿Puedo descargarlo?</p>
-        <p class="lc-info-faq-a" data-i18n="profile.lc.info.a1">Sí. Podés descargar tu CV en cualquier momento, en formato PDF, listo para adjuntar a tus postulaciones.</p>
-      </div>
-      <div class="lc-info-faq-item">
-        <p class="lc-info-faq-q" data-i18n="profile.lc.info.q2">¿Para qué sirve exactamente?</p>
-        <p class="lc-info-faq-a" data-i18n="profile.lc.info.a2">Es la base que usamos para calcular tu porcentaje de coincidencia con cada oportunidad, y para señalarte qué requisitos te faltan cubrir.</p>
-      </div>
-      <div class="lc-info-faq-item">
-        <p class="lc-info-faq-q" data-i18n="profile.lc.info.q3">¿Quién puede verlo?</p>
-        <p class="lc-info-faq-a" data-i18n="profile.lc.info.a3">Solo vos. Tu CV es privado y no se comparte con ninguna institución a menos que decidas postularte y lo envíes vos mismo.</p>
-      </div>
-      <div class="lc-info-faq-item">
-        <p class="lc-info-faq-q" data-i18n="profile.lc.info.q4">¿Cómo me beneficia?</p>
-        <p class="lc-info-faq-a" data-i18n="profile.lc.info.a4">Cuanto más completo esté, más precisas serán tus recomendaciones — y menos tiempo perdés buscando becas que no aplican a tu perfil.</p>
-      </div>
-    </div>
-  </div>
-</div>
       </form>
 
     </div>
@@ -267,16 +242,18 @@
   </div>
 
   <!-- ===== LC (LIFE CURRICULUM) — ancha, debajo de todo ===== -->
-  <div class="lc-head-row">
-  <div class="lc-head">
-    <h3 data-i18n="profile.lc.title">✨ Curriculum Vita (CV)</h3>
-    <p class="lc-sub" data-i18n="profile.lc.sub">Share more about yourself so we can fine-tune your matches and guide you toward the requirements you're missing.</p>
-  </div>
-  <div class="lc-head-actions">
-    <button type="button" class="lc-info-btn" id="lcInfoBtn" data-i18n="profile.lc.infoBtn">ℹ️ What's this for?</button>
-    <button type="button" class="lc-download-btn" id="lcDownloadBtn" style="display:none;" data-i18n="profile.lc.downloadBtn">⬇ Download PDF</button>
-  </div>
-</div>
+  <div class="lc-card" id="lcCard">
+
+    <div class="lc-head-row">
+      <div class="lc-head">
+        <h3 data-i18n="profile.lc.title">✨ Curriculum Vita (CV)</h3>
+        <p class="lc-sub" data-i18n="profile.lc.sub">Share more about yourself so we can fine-tune your matches and guide you toward the requirements you're missing.</p>
+      </div>
+      <div class="lc-head-actions">
+        <button type="button" class="lc-info-btn" id="lcInfoBtn" data-i18n="profile.lc.infoBtn">ℹ️ What's this for?</button>
+        <button type="button" class="lc-download-btn" id="lcDownloadBtn" style="display:none;" data-i18n="profile.lc.downloadBtn">⬇ Download PDF</button>
+      </div>
+    </div>
 
     <!-- Locked state (free plan) -->
     <div class="lc-locked" id="lcLocked">
@@ -358,7 +335,36 @@
         </div>
       </div>
     </form>
+
+    <!-- ===== INFO MODAL: para qué sirve el CV ===== -->
+    <div class="lc-info-modal-overlay" id="lcInfoModalOverlay">
+      <div class="lc-info-modal-box">
+        <button type="button" class="lc-info-modal-close" id="lcInfoCloseBtn" aria-label="Close">✕</button>
+        <h3 data-i18n="profile.lc.info.title">¿Para qué sirve tu CV en MyChance?</h3>
+
+        <div class="lc-info-faq">
+          <div class="lc-info-faq-item">
+            <p class="lc-info-faq-q" data-i18n="profile.lc.info.q1">¿Puedo descargarlo?</p>
+            <p class="lc-info-faq-a" data-i18n="profile.lc.info.a1">Sí. Podés descargar tu CV en cualquier momento, en formato PDF, listo para adjuntar a tus postulaciones.</p>
+          </div>
+          <div class="lc-info-faq-item">
+            <p class="lc-info-faq-q" data-i18n="profile.lc.info.q2">¿Para qué sirve exactamente?</p>
+            <p class="lc-info-faq-a" data-i18n="profile.lc.info.a2">Es la base que usamos para calcular tu porcentaje de coincidencia con cada oportunidad, y para señalarte qué requisitos te faltan cubrir.</p>
+          </div>
+          <div class="lc-info-faq-item">
+            <p class="lc-info-faq-q" data-i18n="profile.lc.info.q3">¿Quién puede verlo?</p>
+            <p class="lc-info-faq-a" data-i18n="profile.lc.info.a3">Solo vos. Tu CV es privado y no se comparte con ninguna institución a menos que decidas postularte y lo envíes vos mismo.</p>
+          </div>
+          <div class="lc-info-faq-item">
+            <p class="lc-info-faq-q" data-i18n="profile.lc.info.q4">¿Cómo me beneficia?</p>
+            <p class="lc-info-faq-a" data-i18n="profile.lc.info.a4">Cuanto más completo esté, más precisas serán tus recomendaciones — y menos tiempo perdés buscando becas que no aplican a tu perfil.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+  <!-- ===== fin .lc-card ===== -->
 
 </main>
   </div>
