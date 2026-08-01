@@ -23,11 +23,20 @@
 // puede arrastrar y hacer zoom dentro de un círculo antes de
 // confirmar. Recién ahí se sube el recorte final a Supabase Storage.
 //
-// "VER MÁS" EN MOBILE (nuevo): el form de datos personales y el
-// del CV se recortan en celular (ver .collapsible en Profile.css)
-// y un botón los expande. setupSeeMoreToggle() maneja el toggle;
-// al entrar en modo edición se expanden solos para que el usuario
+// "VER MÁS" EN MOBILE: el form de datos personales y el del CV
+// se recortan en celular (ver .collapsible en Profile.css) y un
+// botón los expande. setupSeeMoreToggle() maneja el toggle; al
+// entrar en modo edición se expanden solos para que el usuario
 // pueda llegar a cualquier campo sin buscar el botón primero.
+//
+// USUARIOS DE GOOGLE (nuevo): si el usuario inició sesión con
+// Google, el botón "Edit profile" ya no activa la edición inline
+// de esta página — en vez de eso lo manda al formulario multi-paso
+// (signup.html?mode=complete), que precarga lo que ya tenga
+// guardado. Esto es porque el login con Google existe justamente
+// para saltarse el formulario al entrar, así que completar el
+// perfil queda como una acción opcional que el usuario elige
+// cuándo hacer, no algo forzado.
 // ============================================================
 
 const avatarInput = document.getElementById("avatarInput");
@@ -67,6 +76,7 @@ const lcEditableFields = [
 
 let currentUserId = null;
 let currentUserPlan = "free";
+let isGoogleUser = false; // se define en loadProfile()
 let isEditing = false;
 let isLcEditing = false;
 let GOALS = []; // [{ id (Metas.id), opportunity_id, priority, checklist, opportunity: {...} }]
@@ -118,14 +128,8 @@ function renderMiniLogo(opp) {
 }
 
 // ------------------------------------------------------------
-// "Ver más" en mobile (nuevo)
+// "Ver más" en mobile
 // ------------------------------------------------------------
-// Envuelve un bloque .collapsible + su botón "Ver más" para que
-// se puedan expandir/contraer en celular. En desktop el CSS oculta
-// el botón y .collapsible no tiene límite de altura, así que este
-// toggle no cambia nada ahí. Devuelve { expand, collapse } para
-// poder forzar el estado desde otras partes del código (por
-// ejemplo, al entrar en modo edición).
 function setupSeeMoreToggle(collapsibleEl, buttonEl) {
   if (!collapsibleEl || !buttonEl) return null;
 
@@ -155,9 +159,6 @@ function setupSeeMoreToggle(collapsibleEl, buttonEl) {
 let profileSeeMore = null;
 let lcSeeMore = null;
 
-// Si el usuario cambia el idioma desde Ajustes, el texto del botón
-// (Ver más / See more) tiene que actualizarse aunque no haya
-// tocado el estado expandido/contraído.
 window.addEventListener("languagechange", () => {
   const lang = typeof getCurrentLang === "function" ? getCurrentLang() : "es";
   const profileBtn = document.getElementById("profileSeeMoreBtn");
@@ -180,11 +181,7 @@ window.addEventListener("languagechange", () => {
 });
 
 // ------------------------------------------------------------
-// Multi-select genérico (checkboxes en un dropdown), usado para
-// "Countries of interest" y "Professional interest". El valor
-// seleccionado se guarda como texto separado por comas en el
-// <input type="hidden"> asociado, para no cambiar el formato que
-// ya usa Supabase / signup.js.
+// Multi-select genérico (checkboxes en un dropdown)
 // ------------------------------------------------------------
 function buildMultiSelect({ triggerId, textId, panelId, hiddenInputId, options, placeholderText }) {
   const trigger = document.getElementById(triggerId);
@@ -240,11 +237,6 @@ function buildMultiSelect({ triggerId, textId, panelId, hiddenInputId, options, 
   updateText();
 
   return {
-    // Recibe el string guardado en Supabase (ej. "United States, Canada")
-    // y marca los checkboxes que matcheen (por value o por label,
-    // sin importar mayúsculas/espacios). Lo que no matchee se ignora
-    // silenciosamente — dato viejo cargado como texto libre antes de
-    // este cambio puede no coincidir con ninguna opción de la lista.
     setValue(rawValue) {
       const tokens = String(rawValue || "")
         .split(",")
@@ -267,18 +259,12 @@ function buildMultiSelect({ triggerId, textId, panelId, hiddenInputId, options, 
   };
 }
 
-// Países: reusa el mismo diccionario que ya usa Opportunities
-// (COUNTRY_NAMES, definido en language.js) para que la lista de
-// países sea consistente en toda la app.
 function buildCountryOptions(lang) {
   return Object.keys(COUNTRY_NAMES)
     .map(value => ({ value, label: localizeCountry(value, lang) }))
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
-// Intereses profesionales: lista fija de áreas comunes. Agregá o
-// quitá items de este arreglo según lo que quieras ofrecer — el
-// dropdown se arma solo a partir de esta lista.
 const PROFESSIONAL_INTERESTS = [
   { value: "Engineering", es: "Ingeniería", en: "Engineering" },
   { value: "Computer Science", es: "Informática", en: "Computer Science" },
@@ -328,9 +314,6 @@ function setupMultiSelects() {
   });
 }
 
-// Si el usuario cambia el idioma desde Ajustes, volvemos a armar
-// las opciones (labels traducidos) sin perder lo que ya tenía
-// tildado.
 window.addEventListener("languagechange", () => {
   if (!countriesInterestControl || !professionalInterestControl) return;
   const countriesRaw = document.getElementById("countriesInterest").value;
@@ -382,20 +365,12 @@ function setEditing(editing) {
   if (countriesInterestControl) countriesInterestControl.setDisabled(!editing);
   if (professionalInterestControl) professionalInterestControl.setDisabled(!editing);
   editToggleBtn.textContent = editing ? "Save changes" : "Edit profile";
-  // En mobile, al entrar en modo edición mostramos todos los campos
-  // de una: si no, el usuario tendría que tocar "Ver más" antes de
-  // poder llegar a los campos que quedaron recortados.
   if (editing) profileSeeMore?.expand();
 }
 
 // ------------------------------------------------------------
 // LC
 // ------------------------------------------------------------
-
-// Los campos de LC que son <textarea> (idiomas, experiencia laboral,
-// voluntariado, liderazgo, certificaciones) necesitan crecer solos
-// según el contenido, en vez de quedar con scroll interno o cortar
-// el texto como haría un <input>.
 function autoResizeTextareas() {
   document.querySelectorAll(".lc-form textarea").forEach(t => {
     t.style.height = "auto";
@@ -477,8 +452,6 @@ lcEditToggleBtn?.addEventListener("click", async () => {
   autoResizeTextareas();
 });
 
-// Mientras el usuario escribe en un textarea del LC, que crezca
-// en tiempo real en vez de esperar a guardar.
 document.querySelectorAll(".lc-form textarea").forEach(t => {
   t.addEventListener("input", () => {
     t.style.height = "auto";
@@ -487,7 +460,7 @@ document.querySelectorAll(".lc-form textarea").forEach(t => {
 });
 
 // ------------------------------------------------------------
-// My Goals: cargar Metas + datos de cada Oportunidad
+// My Goals
 // ------------------------------------------------------------
 async function loadGoals() {
   const emptyNote = document.getElementById("goalsEmptyNote");
@@ -526,11 +499,6 @@ async function loadGoals() {
     return;
   }
 
-  // El match_percent de la tabla "Oportunidades" es un valor fijo,
-  // no el calculado para este usuario. Traemos el match real vía el
-  // mismo RPC que usan opportunities.js / dashboard.js, para que el
-  // mini widget de progreso (abajo de la lista) muestre el número
-  // correcto, coherente con el resto de la app.
   const { data: matched, error: matchError } = await supabaseClient
     .rpc("get_matched_opportunities", { p_user_id: currentUserId });
 
@@ -553,9 +521,6 @@ async function loadGoals() {
   emptyNote.style.display = "none";
   premiumNote.style.display = (!isPremium) ? "block" : "none";
 
-  // El checklist del goal de mayor prioridad (#1) arranca abierto,
-  // así se ve directamente debajo de "My Goals" sin tener que
-  // hacer clic para expandirlo.
   if (expandedGoalId === null && GOALS.length > 0) {
     expandedGoalId = GOALS[0].id;
   }
@@ -616,7 +581,6 @@ function renderGoalsList(isPremium) {
     `;
   }).join("");
 
-  // Progreso de cada checklist visible
   GOALS.forEach(goal => {
     const requirements = Array.isArray(goal.opportunity.requirements) ? goal.opportunity.requirements : [];
     if (requirements.length === 0) return;
@@ -639,14 +603,6 @@ function updateChecklistProgress(goalId, total) {
   if (label) label.textContent = `${done} / ${total} completed`;
 }
 
-// ------------------------------------------------------------
-// Mini widget de progreso del goal #1 (mayor prioridad), para que
-// el usuario lo vea acá mismo sin tener que ir al dashboard.
-// Misma lógica que "Current Goal" en dashboard.js: el número
-// arranca en el match real (nunca en 0%) y sube hacia 100% a
-// medida que se tilda la checklist; el tramo ganado se pinta en
-// dorado (--premium-gold) sobre el mismo marrón del match original.
-// ------------------------------------------------------------
 function checklistProgressPct(checklist, totalRequirements) {
   if (!totalRequirements || totalRequirements === 0) return null;
   const done = (checklist || []).filter(Boolean).length;
@@ -655,7 +611,7 @@ function checklistProgressPct(checklist, totalRequirements) {
 
 function renderTopGoalProgress() {
   const container = document.getElementById("topGoalProgressCard");
-  if (!container) return; // si el HTML todavía no tiene este contenedor, no hace nada
+  if (!container) return;
 
   if (GOALS.length === 0) {
     container.innerHTML = "";
@@ -739,8 +695,6 @@ async function toggleChecklistItem(goalId, index) {
   const total = Array.isArray(goal.opportunity.requirements) ? goal.opportunity.requirements.length : 0;
   updateChecklistProgress(goalId, total);
 
-  // El goal que cambió puede ser el #1 (el que muestra el mini
-  // widget), así que lo repintamos también.
   renderTopGoalProgress();
 
   const { error } = await supabaseClient
@@ -798,7 +752,6 @@ async function moveGoal(goalId, direction) {
   const [moved] = GOALS.splice(index, 1);
   GOALS.splice(newIndex, 0, moved);
 
-  // Actualizamos prioridad en memoria y persistimos
   const updates = GOALS.map((g, i) => ({ id: g.id, priority: i + 1 }));
   GOALS.forEach((g, i) => { g.priority = i + 1; });
 
@@ -823,6 +776,7 @@ async function loadProfile() {
   }
 
   currentUserId = userData.user.id;
+  isGoogleUser = userData.user.app_metadata?.provider === "google";
 
   const { data: usuario, error } = await supabaseClient
     .from("Usuarios")
@@ -846,6 +800,13 @@ async function loadProfile() {
 // Toggle Edit / Save (perfil base)
 // ------------------------------------------------------------
 editToggleBtn.addEventListener("click", async () => {
+  // Usuarios de Google: siempre al formulario multi-paso,
+  // nunca edición inline en esta página.
+  if (isGoogleUser) {
+    window.location.href = "signup.html?mode=complete";
+    return;
+  }
+
   if (!isEditing) {
     setEditing(true);
     document.getElementById("fullName").focus();
@@ -897,8 +858,6 @@ function openCropModal(file) {
     cropImage.src = reader.result;
     cropModalOverlay.classList.add("open");
 
-    // Si ya había un cropper de una vez anterior, lo destruimos
-    // antes de crear uno nuevo sobre la imagen actual.
     if (cropper) { cropper.destroy(); cropper = null; }
 
     cropper = new Cropper(cropImage, {
@@ -923,7 +882,7 @@ function openCropModal(file) {
 function closeCropModal() {
   cropModalOverlay.classList.remove("open");
   if (cropper) { cropper.destroy(); cropper = null; }
-  avatarInput.value = ""; // permite volver a elegir el mismo archivo si cancela y reintenta
+  avatarInput.value = "";
 }
 
 avatarInput.addEventListener("change", () => {
@@ -952,9 +911,6 @@ cropConfirmBtn.addEventListener("click", () => {
   }, "image/jpeg", 0.92);
 });
 
-// Sube el recorte final (Blob) a Supabase Storage. Misma lógica que
-// antes tenía avatarInput.addEventListener("change", ...), solo que
-// ahora recibe el Blob ya recortado en vez del archivo original.
 async function uploadAvatarBlob(blob) {
   avatarCamera.classList.add("uploading");
 
