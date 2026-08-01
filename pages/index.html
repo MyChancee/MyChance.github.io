@@ -15,8 +15,23 @@
             <span class="brand-name">MyChance</span>
         </a>
         <nav class="header-right">
-            <a href="about_us.html" class="signin-link">About us</a>
-            <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="signin-link">Contact us</a>
+            <!-- Desktop: links directos (se ocultan en móvil) -->
+            <a href="about_us.html" class="signin-link nav-link-desktop">About us</a>
+            <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="signin-link nav-link-desktop">Contact us</a>
+
+            <!-- Móvil: hamburguesa + dropdown solo para About us / Contact us -->
+            <div class="menu-group">
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="dropdownMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="about_us.html" class="dropdown-link">About us</a>
+                    <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="dropdown-link">Contact us</a>
+                </div>
+            </div>
+
             <a href="login.html" class="signin-link">Log in</a>
         </nav>
     </header>
@@ -65,5 +80,36 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../supabase/base.js"></script>
     <script src="../supabase/Features.js"></script>
+    <script>
+        // Toggle del menú hamburguesa (About us / Contact us) en móvil
+        (function () {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('dropdownMenu');
+            if (!btn || !menu) return;
+
+            function closeMenu() {
+                menu.classList.remove('open');
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const isOpen = menu.classList.toggle('open');
+                btn.classList.toggle('open', isOpen);
+                btn.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target) && e.target !== btn) {
+                    closeMenu();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeMenu();
+            });
+        })();
+    </script>
 </body>
 </html>
