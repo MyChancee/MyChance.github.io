@@ -7,10 +7,12 @@
               tiles that step down the right edge and anchor the corners
    Signature: the two-graduate glyph standing in for the "M" in WELCOME
 
-   HEADER (actualizado): "About us" y "Contact us" pasaron de estar
-   escondidos en un menú hamburguesa a ser links directos, con el mismo
-   estilo que "Log in" (.signin-link). El menú hamburguesa y su dropdown
-   ya no se usan — se sacaron del HTML y de este archivo.
+   HEADER (actualizado de nuevo): en desktop "About us" y "Contact us"
+   siguen siendo links directos igual que "Log in" (.signin-link). En
+   móvil (<=640px) esos dos links se ocultan y aparecen dentro de un
+   menú hamburguesa desplegable (.menu-group / .hamburger-btn /
+   .dropdown-menu) para que el header no se vea apretado. "Log in"
+   siempre queda visible como link suelto.
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -102,23 +104,22 @@ body {
 
 .brand-name{
   color: var(--cream-50);
-  /* antes era un tamaño fijo (30px) que no bajaba en mobile y
-     empujaba el header a desbordar; ahora escala con el viewport. */
   font-size: clamp(1.15rem, 4.5vw, 1.875rem);
   font-family: var(--font-display);
   white-space: nowrap;
 }
 
 /* ---------- header right: About us / Contact us / Log in ----------
-   Los tres son links del mismo tipo (.signin-link), en línea, con
-   wrap habilitado por si en una pantalla muy angosta no entran los
-   tres en una sola fila — antes de recortarse, bajan de línea. */
+   Desktop: los tres son links del mismo tipo (.signin-link), en línea.
+   Móvil (<=640px): About us / Contact us se ocultan y se muestran
+   dentro del menú hamburguesa (.menu-group); Log in se queda visible. */
 .header-right {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: clamp(12px, 3vw, 24px);
+  position: relative;
 }
 
 .signin-link {
@@ -138,6 +139,89 @@ body {
   border-color: var(--cream-50);
 }
 
+/* Grupo del menú hamburguesa: oculto por default (solo se muestra en móvil) */
+.menu-group {
+  display: none;
+  position: relative;
+}
+
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--cream-50);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.hamburger-btn.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-btn.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.dropdown-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 180px;
+  background: var(--wine-900);
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 12px 24px rgba(44, 27, 34, 0.35);
+  z-index: 200;
+}
+
+.dropdown-menu.open {
+  display: flex;
+}
+
+.dropdown-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--cream-50);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.dropdown-link:hover,
+.dropdown-link:focus-visible {
+  background: rgba(250, 248, 242, 0.12);
+}
+
+@media (max-width: 640px) {
+  .nav-link-desktop {
+    display: none;
+  }
+  .menu-group {
+    display: block;
+  }
+}
+
 @media (max-width: 480px) {
   .site-header {
     padding: 16px 18px;
@@ -151,10 +235,7 @@ body {
   }
 }
 
-/* ---------- hero ----------
-   min-height y padding-bottom se redujeron un poco respecto al
-   original para que "With us, you'll connect with" y "We've helped"
-   queden más arriba, sin tanto espacio vacío antes de llegar a ellas. */
+/* ---------- hero ---------- */
 
 .hero {
   position: relative;
