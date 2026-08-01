@@ -205,7 +205,7 @@ async function registrarUsuario(event) {
     mensaje.textContent = "Profile completed! Redirecting...";
     mensaje.style.color = "green";
     setTimeout(() => {
-      window.location.href = "profile.html";
+      window.location.href = "Profile.html";
     }, 1500);
     return;
   }
