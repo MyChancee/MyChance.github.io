@@ -223,7 +223,7 @@ function runOfferSequence() {
       signup.className = 'offer-item signup-btn show-right';
       signup.style.gridRow = 5;
       signup.innerHTML = `<span>Sign up</span>`;
-      signup.addEventListener('click', () => { window.location.href = 'signup.html'; });
+      signup.addEventListener('click', () => { window.location.href = '../pages/signup.html'; });
       stage.appendChild(signup);
 
       setTimeout(() => {
