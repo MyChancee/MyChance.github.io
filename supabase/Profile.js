@@ -44,6 +44,16 @@
 // para saltarse el formulario al entrar, así que completar el
 // perfil queda como una acción opcional que el usuario elige
 // cuándo hacer, no algo forzado.
+//
+// CV — DESCARGA EN PDF + MODAL "¿PARA QUÉ SIRVE?" (nuevo):
+// - lcDownloadBtn genera un PDF con jsPDF a partir de los valores
+//   actuales del form del CV (sin necesidad de guardar primero).
+//   Solo se muestra si el plan es premium/enterprise, igual que
+//   el resto del CV.
+// - lcInfoBtn abre un modal informativo (siempre visible, incluso
+//   en plan free) que explica para qué sirve el CV, quién puede
+//   verlo, etc. Todo el texto sale de DICTIONARY (language.js)
+//   para que cambie de idioma junto con el resto del sitio.
 // ============================================================
 
 const avatarInput = document.getElementById("avatarInput");
@@ -80,6 +90,12 @@ const lcEditableFields = [
   document.getElementById("lcLeadership"),
   document.getElementById("lcCertifications")
 ];
+
+// ---- CV: descarga PDF + modal "¿para qué sirve?" (nuevo) ----
+const lcDownloadBtn = document.getElementById("lcDownloadBtn");
+const lcInfoBtn = document.getElementById("lcInfoBtn");
+const lcInfoModalOverlay = document.getElementById("lcInfoModalOverlay");
+const lcInfoCloseBtn = document.getElementById("lcInfoCloseBtn");
 
 let currentUserId = null;
 let currentUserPlan = "free";
@@ -398,11 +414,13 @@ function setupLc(usuario) {
   if (isPremium) {
     lcLocked.style.display = "none";
     lcForm.style.display = "flex";
+    if (lcDownloadBtn) lcDownloadBtn.style.display = "inline-flex";
     fillLcForm(usuario);
     autoResizeTextareas();
   } else {
     lcLocked.style.display = "block";
     lcForm.style.display = "none";
+    if (lcDownloadBtn) lcDownloadBtn.style.display = "none";
   }
 }
 
@@ -452,6 +470,126 @@ document.querySelectorAll(".lc-form textarea").forEach(t => {
     t.style.height = t.scrollHeight + "px";
   });
 });
+
+// ------------------------------------------------------------
+// CV — Modal "¿Para qué sirve tu CV en MyChance?" (nuevo)
+// ------------------------------------------------------------
+function openLcInfoModal() {
+  lcInfoModalOverlay?.classList.add("open");
+}
+
+function closeLcInfoModal() {
+  lcInfoModalOverlay?.classList.remove("open");
+}
+
+lcInfoBtn?.addEventListener("click", openLcInfoModal);
+lcInfoCloseBtn?.addEventListener("click", closeLcInfoModal);
+
+lcInfoModalOverlay?.addEventListener("click", (e) => {
+  if (e.target === lcInfoModalOverlay) closeLcInfoModal();
+});
+
+// Cerrar con Escape, por comodidad
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lcInfoModalOverlay?.classList.contains("open")) {
+    closeLcInfoModal();
+  }
+});
+
+// ------------------------------------------------------------
+// CV — Descargar en PDF (nuevo)
+// ------------------------------------------------------------
+// Usa jsPDF (cargado desde CDN en Profile.html) para armar un PDF
+// simple a partir de los valores actuales del formulario del CV.
+// No requiere que el usuario haya guardado antes: siempre exporta
+// lo que está viendo en pantalla en ese momento.
+function downloadCvPdf() {
+  if (typeof window.jspdf === "undefined") {
+    console.error("jsPDF no está cargado. Revisá que el script de jsPDF esté incluido antes de Profile.js.");
+    setLcStatus("Could not generate PDF.", true);
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "pt", format: "a4" });
+  const lang = typeof getCurrentLang === "function" ? getCurrentLang() : "es";
+
+  const marginX = 48;
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const maxWidth = doc.internal.pageSize.getWidth() - marginX * 2;
+  let y = 60;
+
+  const fullNameInput = document.getElementById("fullName")?.value.trim();
+  const fullName = fullNameInput || (lang === "es" ? "Sin nombre" : "No name");
+
+  // Encabezado
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.setTextColor("#770937");
+  doc.text(fullName, marginX, y);
+  y += 22;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  doc.setTextColor("#8A7782");
+  doc.text("Curriculum Vitae — MyChance", marginX, y);
+  y += 8;
+
+  doc.setDrawColor("#ECE5D8");
+  doc.line(marginX, y, doc.internal.pageSize.getWidth() - marginX, y);
+  y += 24;
+
+  const boolLabel = (v) =>
+    v === "true" ? t("profile.lc.option.yes", lang)
+    : v === "false" ? t("profile.lc.option.no", lang)
+    : "—";
+
+  const fields = [
+    [t("profile.lc.label.toefl", lang), boolLabel(document.getElementById("lcToefl").value)],
+    [t("profile.lc.label.bachelor", lang), boolLabel(document.getElementById("lcBachelor").value)],
+    [t("profile.lc.label.recLetters", lang), document.getElementById("lcRecLetters").value || "—"],
+    [t("profile.lc.label.languages", lang), document.getElementById("lcLanguages").value || "—"],
+    [t("profile.lc.label.workExperience", lang), document.getElementById("lcWorkExperience").value || "—"],
+    [t("profile.lc.label.volunteerExperience", lang), document.getElementById("lcVolunteerExperience").value || "—"],
+    [t("profile.lc.label.leadership", lang), document.getElementById("lcLeadership").value || "—"],
+    [t("profile.lc.label.certifications", lang), document.getElementById("lcCertifications").value || "—"],
+  ];
+
+  fields.forEach(([label, value]) => {
+    // Salto de página si no queda espacio suficiente
+    if (y > pageHeight - 80) {
+      doc.addPage();
+      y = 60;
+    }
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor("#770937");
+    doc.text(label, marginX, y);
+    y += 16;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.setTextColor("#2C1B22");
+    const lines = doc.splitTextToSize(String(value), maxWidth);
+
+    lines.forEach((line) => {
+      if (y > pageHeight - 60) {
+        doc.addPage();
+        y = 60;
+      }
+      doc.text(line, marginX, y);
+      y += 14;
+    });
+
+    y += 14; // espacio entre campos
+  });
+
+  const fileSafe = fullName.replace(/\s+/g, "_").toLowerCase();
+  doc.save(`cv_${fileSafe}.pdf`);
+}
+
+lcDownloadBtn?.addEventListener("click", downloadCvPdf);
 
 // ------------------------------------------------------------
 // My Goals
