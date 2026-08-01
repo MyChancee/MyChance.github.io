@@ -254,7 +254,13 @@ body {
   .hero {
     transform: none;
     min-height: auto;
-    padding: 32px 20px 24px;
+    /* más padding-top para que "WELCOME!" no quede pegado al
+       cuadro wine decorativo de la esquina superior derecha */
+    padding: 76px 20px 24px;
+  }
+  .hero-subtitle {
+    /* más aire entre el título y el párrafo */
+    margin-top: 34px;
   }
 }
 
