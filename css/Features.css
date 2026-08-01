@@ -1,8 +1,10 @@
 /* ===================== SECCIÓN: IMPACTO + TESTIMONIOS ===================== */
 .impact-section{
   position:relative;
-  padding:60px 20px 90px;
-  overflow:hidden;
+  /* padding-top bajó de 60px a 30px para que la sección quede más
+     arriba, más cerca de "with us, you'll connect with". */
+  padding:30px 20px 90px;
+  overflow-x:hidden;
   font-family: var(--font-body, "Poppins", sans-serif);
 }
 .impact-header{
@@ -110,8 +112,10 @@
 
 /* ===================== SECCIÓN: QUÉ OFRECEMOS ===================== */
 .offer-section{
-  padding:70px 20px 90px;
+  /* padding-top bajó de 70px a 36px para subir la sección */
+  padding:36px 20px 90px;
   text-align:center;
+  overflow-x:hidden;
   font-family: var(--font-body, "Poppins", sans-serif);
 }
 .offer-title{
@@ -172,4 +176,70 @@
 }
 .offer-item.signup-btn:hover{
   background:var(--wine-600, #8A1F38);
+}
+
+/* ===================== MOBILE FIXES =====================
+   El problema en celular era que .offer-stage usaba 2 columnas de
+   210-320px + gap, que suman más ancho que una pantalla de ~375px.
+   Como el grid no achicaba las columnas más allá de ese mínimo, el
+   contenido se salía del viewport y aparecía scroll horizontal con
+   las píldoras cortadas en los bordes (scholarships, courses, etc).
+
+   Abajo de 640px pasamos el grid a 1 sola columna centrada, y
+   ajustamos también los tamaños de las burbujas de testimonios y
+   del título "We've helped: N users" para que no se corten.
+   ============================================================ */
+@media (max-width: 640px){
+  .offer-section{
+    padding-top: 24px;
+  }
+  .offer-title{
+    margin-bottom: 28px;
+  }
+  .offer-stage{
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    gap: 14px;
+    min-height: 0;
+  }
+  .offer-item{
+    font-size: 1rem;
+    padding: 14px 22px;
+    white-space: normal;
+    justify-content: center;
+    text-align: center;
+  }
+  .offer-item.signup-btn{
+    grid-column: 1;
+  }
+
+  .impact-section{
+    padding-top: 18px;
+  }
+  .impact-header{
+    margin-bottom: 26px;
+  }
+  .impact-header h2{
+    gap: 8px;
+  }
+  .impact-title-img{
+    height: clamp(1.3rem, 6vw, 1.9rem);
+  }
+  .impact-header #userCount{
+    height: clamp(1.3rem, 6vw, 1.9rem);
+    font-size: clamp(1.2rem, 5.5vw, 1.7rem);
+  }
+
+  .testimonial-track{
+    height: 300px;
+  }
+  .bubble{
+    max-width: 78vw;
+    padding: 14px 20px;
+    font-size: 0.9rem;
+  }
+
+  .comment-modal{
+    padding: 22px;
+  }
 }
