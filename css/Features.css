@@ -173,6 +173,8 @@
 .offer-item.signup-btn{
   grid-column: 1 / -1;
   justify-self:center;
+  width:fit-content;
+  margin:0 auto;
   background:var(--wine-700, #74182F);
   cursor:pointer;
   font-size:1.15rem;
