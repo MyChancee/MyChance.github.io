@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Terms of Service — MyChance</title>
+    <meta name="description" content="Read the Terms of Service for MyChance, the platform that helps students find scholarships, exchanges, and opportunities.">
+    <link rel="canonical" href="https://mychance.app/terms.html">
+
+    <link rel="icon" type="image/png" href="../mychance-nav-icon.png">
+    <link rel="stylesheet" href="../css/Welcome.css">
+    <link rel="stylesheet" href="../css/Footer.css">
+    <link rel="stylesheet" href="../css/Legal.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="index.html" class="brand">
+            <img src="../mychance_no_text_efefeb_HD (1).png" alt="" height="40" class="brand-logo">
+            <span class="brand-name">MyChance</span>
+        </a>
+        <nav class="header-right">
+            <a href="about_us.html" class="signin-link nav-link-desktop">About us</a>
+            <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="signin-link nav-link-desktop">Contact us</a>
+
+            <div class="menu-group">
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="dropdownMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="about_us.html" class="dropdown-link">About us</a>
+                    <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="dropdown-link">Contact us</a>
+                </div>
+            </div>
+
+            <a href="login.html" class="signin-link">Log in</a>
+        </nav>
+    </header>
+
+    <main class="legal-main">
+        <div class="legal-header">
+            <h1>Terms of Service</h1>
+            <p class="legal-updated">Last updated: August 1, 2026</p>
+        </div>
+
+        <p class="legal-intro">
+            These Terms of Service ("Terms") govern your access to and use of MyChance
+            (the "Platform," "we," "us," or "our"). By creating an account or using
+            MyChance in any way, you agree to be bound by these Terms. If you do not
+            agree, please do not use the Platform.
+        </p>
+
+        <nav class="legal-toc" aria-label="Table of contents">
+            <h2>On this page</h2>
+            <ol>
+                <li><a href="#acceptance">1. Acceptance of terms</a></li>
+                <li><a href="#description">2. Description of the service</a></li>
+                <li><a href="#eligibility">3. Eligibility and accounts</a></li>
+                <li><a href="#conduct">4. Acceptable use</a></li>
+                <li><a href="#content">5. Content and intellectual property</a></li>
+                <li><a href="#plans">6. Plans, payments, and cancellations</a></li>
+                <li><a href="#third-party">7. Third-party opportunities and links</a></li>
+                <li><a href="#disclaimers">8. Disclaimers</a></li>
+                <li><a href="#liability">9. Limitation of liability</a></li>
+                <li><a href="#termination">10. Termination</a></li>
+                <li><a href="#changes">11. Changes to these Terms</a></li>
+                <li><a href="#law">12. Governing law</a></li>
+                <li><a href="#contact">13. Contact us</a></li>
+            </ol>
+        </nav>
+
+        <section class="legal-section" id="acceptance">
+            <h2>1. Acceptance of terms</h2>
+            <p>
+                By accessing or using MyChance, you confirm that you can form a binding
+                contract with us, or that you have the permission of a parent or legal
+                guardian to use the Platform if you are a minor in your jurisdiction.
+                If you use MyChance on behalf of an organization, you confirm you have
+                authority to bind that organization to these Terms.
+            </p>
+        </section>
+
+        <section class="legal-section" id="description">
+            <h2>2. Description of the service</h2>
+            <p>
+                MyChance is a platform that helps students discover scholarships,
+                exchange programs, internships, competitions, and volunteering
+                opportunities. We may show you personalized recommendations based on
+                the information you provide in your profile and Curriculum Vita (CV).
+            </p>
+            <p>
+                MyChance does not guarantee that you will be accepted into any
+                opportunity listed on the Platform. We are not affiliated with the
+                institutions or organizations offering these opportunities unless
+                explicitly stated.
+            </p>
+        </section>
+
+        <section class="legal-section" id="eligibility">
+            <h2>3. Eligibility and accounts</h2>
+            <p>To use MyChance, you agree that:</p>
+            <ul>
+                <li>The information you provide during sign-up and in your profile is accurate and kept up to date.</li>
+                <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+                <li>You are responsible for all activity that occurs under your account.</li>
+                <li>You will notify us immediately of any unauthorized use of your account.</li>
+            </ul>
+        </section>
+
+        <section class="legal-section" id="conduct">
+            <h2>4. Acceptable use</h2>
+            <p>When using MyChance, you agree not to:</p>
+            <ul>
+                <li>Provide false, misleading, or fraudulent information in your profile, CV, or applications.</li>
+                <li>Use the Platform to harass, abuse, or harm another person.</li>
+                <li>Attempt to gain unauthorized access to other users' accounts or to our systems.</li>
+                <li>Scrape, copy, or redistribute content from the Platform without our written permission.</li>
+                <li>Use the Platform for any unlawful purpose or in violation of any applicable law.</li>
+            </ul>
+        </section>
+
+        <section class="legal-section" id="content">
+            <h2>5. Content and intellectual property</h2>
+            <p>
+                The MyChance name, logo, design, and all original content on the
+                Platform (excluding opportunity listings sourced from third parties)
+                are owned by MyChance and protected by intellectual property laws.
+                You may not use our branding without prior written consent.
+            </p>
+            <p>
+                You retain ownership of the information you submit (such as your
+                profile and CV details). By submitting it, you grant MyChance a
+                limited license to use that information to operate the Platform —
+                for example, to calculate your match percentage with opportunities.
+            </p>
+        </section>
+
+        <section class="legal-section" id="plans">
+            <h2>6. Plans, payments, and cancellations</h2>
+            <p>
+                MyChance offers a Free plan and paid plans (such as Premium) with
+                additional features. Prices, features, and billing terms are
+                described at the time of purchase. You may cancel a paid plan at
+                any time; cancellation will take effect at the end of the current
+                billing period unless otherwise stated.
+            </p>
+        </section>
+
+        <section class="legal-section" id="third-party">
+            <h2>7. Third-party opportunities and links</h2>
+            <p>
+                MyChance may display opportunities, links, or information sourced
+                from third-party institutions and organizations. We do our best to
+                keep this information accurate, but we do not control and are not
+                responsible for the content, requirements, deadlines, or outcomes of
+                any third-party opportunity. Always verify details directly with the
+                organization before applying.
+            </p>
+        </section>
+
+        <section class="legal-section" id="disclaimers">
+            <h2>8. Disclaimers</h2>
+            <p>
+                MyChance is provided "as is" and "as available," without warranties
+                of any kind, whether express or implied. We do not guarantee that the
+                Platform will be uninterrupted, error-free, or that any opportunity
+                listed will result in acceptance, funding, or any particular outcome.
+            </p>
+        </section>
+
+        <section class="legal-section" id="liability">
+            <h2>9. Limitation of liability</h2>
+            <p>
+                To the fullest extent permitted by law, MyChance and its team shall
+                not be liable for any indirect, incidental, special, or consequential
+                damages arising out of or related to your use of the Platform,
+                including but not limited to missed opportunities, application
+                outcomes, or loss of data.
+            </p>
+        </section>
+
+        <section class="legal-section" id="termination">
+            <h2>10. Termination</h2>
+            <p>
+                We may suspend or terminate your access to MyChance if you violate
+                these Terms or if we reasonably believe your use of the Platform
+                poses a risk to us or to other users. You may stop using MyChance
+                and request deletion of your account at any time.
+            </p>
+        </section>
+
+        <section class="legal-section" id="changes">
+            <h2>11. Changes to these Terms</h2>
+            <p>
+                We may update these Terms from time to time. If we make material
+                changes, we will notify you through the Platform or by email before
+                the changes take effect. Continued use of MyChance after changes
+                take effect constitutes acceptance of the updated Terms.
+            </p>
+        </section>
+
+        <section class="legal-section" id="law">
+            <h2>12. Governing law</h2>
+            <p>
+                <!-- TODO: reemplazar por la jurisdicción real donde esté constituido MyChance -->
+                These Terms are governed by the laws of [jurisdiction to be
+                determined], without regard to conflict-of-law principles.
+            </p>
+        </section>
+
+        <section class="legal-section" id="contact">
+            <h2>13. Contact us</h2>
+            <p>
+                If you have any questions about these Terms, you can reach us at
+                <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer">@mychance_app on Instagram</a>
+                <!-- TODO: reemplazar/agregar un email real cuando lo tengan, ej: legal@mychance.app -->
+                .
+            </p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-brand-row">
+                    <img src="../mychance_no_text_efefeb_HD (1).png" alt="" class="footer-logo">
+                    <span class="footer-brand-name">MyChance</span>
+                </div>
+                <p class="footer-tagline">We guide, you shine. Helping students find the scholarships, exchanges, and opportunities that fit them best.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about_us.html">About us</a></li>
+                    <li><a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer">Contact us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Get started</h4>
+                <ul>
+                    <li><a href="signup.html">Sign up</a></li>
+                    <li><a href="login.html">Log in</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; 2026 MyChance. All rights reserved.</span>
+            <div class="footer-legal-links">
+                <a href="terms.html">Terms of service</a>
+                <a href="privacy.html">Privacy policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle del menú hamburguesa (About us / Contact us) en móvil
+        (function () {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('dropdownMenu');
+            if (!btn || !menu) return;
+
+            function closeMenu() {
+                menu.classList.remove('open');
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const isOpen = menu.classList.toggle('open');
+                btn.classList.toggle('open', isOpen);
+                btn.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target) && e.target !== btn) {
+                    closeMenu();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeMenu();
+            });
+        })();
+    </script>
+</body>
+</html>
