@@ -95,9 +95,10 @@
   background: rgba(250, 248, 242, 0.24);
 }
 
-.footer-social img{
-  width: 16px;
-  height: 16px;
+.footer-social svg{
+  width: 18px;
+  height: 18px;
+  color: var(--cream-50);
 }
 
 .footer-bottom{
