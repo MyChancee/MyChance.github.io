@@ -3,10 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyChance</title>
+
+    <!-- ===== SEO básico ===== -->
+    <!-- 1) Título único y descriptivo (antes era solo "MyChance") -->
+    <title>MyChance — Scholarships, Exchanges & Opportunities for Students</title>
+
+    <!-- 2) Meta description: el texto gris que aparece en los resultados de Google -->
+    <meta name="description" content="Discover scholarships, exchange programs, internships, and volunteering opportunities matched to your profile. MyChance guides you every step of the way toward your dreams.">
+
+    <!-- 3) Open Graph: controla la preview cuando compartís el link en WhatsApp / Instagram / Facebook -->
+    <!-- TODO: reemplazar https://mychance.app/ por tu dominio real -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="MyChance — Scholarships, Exchanges & Opportunities for Students">
+    <meta property="og:description" content="Discover scholarships, exchange programs, internships, and volunteering opportunities matched to your profile.">
+    <meta property="og:image" content="https://mychancee.github.io/mychance_no_text_efefeb_HD%20(1).png">
+    <meta property="og:url" content="https://mychancee.github.io/">
+    <meta property="og:site_name" content="MyChance">
+
+    <!-- 4) Twitter Card: lo mismo que Open Graph pero para cuando se comparte en X/Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MyChance — Scholarships, Exchanges & Opportunities for Students">
+    <meta name="twitter:description" content="Discover scholarships, exchange programs, internships, and volunteering opportunities matched to your profile.">
+    <meta name="twitter:image" content="https://mychance.app/mychance_no_text_efefeb_HD%20(1).png">
+
+    <!-- 5) Canonical: evita contenido duplicado si la página es accesible por más de una URL -->
+    <!-- TODO: reemplazar por tu dominio real -->
+    <link rel="canonical" href="https://mychancee.github.io/">
+
     <link rel="icon" type="image/png" href="../mychance-nav-icon.png">
     <link rel="stylesheet" href="../css/Welcome.css">
     <link rel="stylesheet" href="../css/Features.css">
+    <link rel="stylesheet" href="../css/Footer.css">
 </head>
 <body>
     <header class="site-header">
@@ -16,7 +43,7 @@
         </a>
         <nav class="header-right">
             <!-- Desktop: links directos (se ocultan en móvil) -->
-            <a href="../pages/about_us.html" class="signin-link nav-link-desktop">About us</a>
+            <a href=",,/pages/about_us.html" class="signin-link nav-link-desktop">About us</a>
             <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="signin-link nav-link-desktop">Contact us</a>
 
             <!-- Móvil: hamburguesa + dropdown solo para About us / Contact us -->
@@ -27,7 +54,7 @@
                     <span></span>
                 </button>
                 <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="about_us.html" class="dropdown-link">About us</a>
+                    <a href="../pages/about_us.html" class="dropdown-link">About us</a>
                     <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" class="dropdown-link">Contact us</a>
                 </div>
             </div>
@@ -77,6 +104,54 @@
             <p id="modalText"></p>
         </div>
     </div>
+
+    <!-- ===== FOOTER (nuevo) ===== -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-brand-row">
+                    <img src="../mychance_no_text_efefeb_HD (1).png" alt="" class="footer-logo">
+                    <span class="footer-brand-name">MyChance</span>
+                </div>
+                <p class="footer-tagline">We guide, you shine. Helping students find the scholarships, exchanges, and opportunities that fit them best.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor"/>
+    </svg>
+</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="../pages/about_us.html">About us</a></li>
+                    <li><a href="https://www.instagram.com/mychance_app" target="_blank" rel="noopener noreferrer">Contact us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Get started</h4>
+                <ul>
+                    <li><a href="../pages/signup.html">Sign up</a></li>
+                    <li><a href="../pages/login.html">Log in</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; 2026 MyChance. All rights reserved.</span>
+            <div class="footer-legal-links">
+                <!-- TODO: reemplazar "#" cuando existan estas páginas -->
+                <a href="../pages/Terms.html">Terms of service</a>
+                <a href="../pages/Privacy.html">Privacy policy</a>
+            </div>
+        </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../supabase/base.js"></script>
     <script src="../supabase/Features.js"></script>
